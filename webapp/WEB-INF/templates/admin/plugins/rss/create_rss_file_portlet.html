@@ -1,0 +1,38 @@
+<div class="content-box" >
+    
+    <h2>#i18n{rss.create_rss_file.tableLabel}</h2>
+    
+    <form method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFilePortlet.jsp">
+        
+        <p>
+            <label for="rss_name" >#i18n{rss.create_rss_file.rowTitleName} * : </label> 
+            <input type="text" id="rss_name" name="rss_name" size="60" maxlength="50" tabindex="1" />
+        </p>
+         <p>
+		    <label for="workgroup_key">#i18n{rss.create_rss_file.rowWorkgroupFile} : </label>		     
+		     <@combo name="workgroup_key" items=user_workgroup_list default_value="${selected_workgroup}" />
+		</p>
+        <p>
+            <label for="rss_portlet_id" >#i18n{rss.create_rss_file.rowTitleDocumentList} * : </label> 
+			<#if portlet_list?has_content>
+	            <@combo name="rss_portlet_id" default_value="" items=portlet_list />
+            <#else>
+            	<em>#i18n{rss.create_rss_file.noPortletAvailable}</em>
+            </#if>
+        </p>
+        
+        <p>
+            <label for="rss_description" >#i18n{rss.create_rss_file.rowTitleDescription} * :</label>  
+            <input type="text" id="rss_description" name="rss_description" size="60" maxlength="200" tabindex="2" />
+        </p>
+        
+        <p>   
+            <input type="submit" value="#i18n{rss.create_rss_file.buttonValidate}" class="button" tabindex="3" />
+            <input type="submit" value="#i18n{rss.create_rss_file_resource.button_back}" class="button" name="cancel" />
+        </p>
+        
+    </form>
+    
+</div>
+
+

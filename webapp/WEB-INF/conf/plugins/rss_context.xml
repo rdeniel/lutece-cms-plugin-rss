@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>    
+   <!-- package sqlquery -->
+	<bean id="rssFeedDAO"  class="fr.paris.lutece.plugins.rss.business.RssFeedDAO" />  
+	<bean id="rssGeneratedFileDAO"  class="fr.paris.lutece.plugins.rss.business.RssGeneratedFileDAO" />    
+	<bean id="rssPortletDAO"  class="fr.paris.lutece.plugins.rss.business.portlet.RssPortletDAO" />
+	<bean id="rssListPortletDAO"  class="fr.paris.lutece.plugins.rss.business.portlet.RssListPortletDAO" />
+	<bean id="rssService"  factory-method="getInstance" class="fr.paris.lutece.plugins.rss.service.RssService" />
+			
+	<bean id="resourceRssFactory"  class="fr.paris.lutece.plugins.rss.business.resourceRss.ResourceRssFactory" />
+	
+</beans>
+

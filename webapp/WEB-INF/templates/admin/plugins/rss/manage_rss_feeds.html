@@ -1,0 +1,101 @@
+<div class="content-box" >
+	<#if permission_advanced_parameter>
+		<form method="post" action="jsp/admin/plugins/rss/ManageAdvancedParameters.jsp">
+			<input type="submit" value="#i18n{rss.manage_rss.labelAdvancedParameters}" class="button bt-toolbar" />
+		</form>		        
+    </#if>
+    <h2>#i18n{rss.manage_rss_feeds.tableLabel}</h2>
+    <form method="post"  action="jsp/admin/plugins/rss/ManageRssFeeds.jsp">
+        <@pagination paginator=paginator />
+        
+        <!-- Number of feeds per page selector -->
+        #i18n{rss.manage_rss_feeds.labelItemsPerPage} :
+        <select name="items_per_page">
+            <#list [ "10" , "20" , "50" , "100" ] as nb>
+            <#if nb_items_per_page = nb >
+            <option selected="selected" value="${nb}">${nb}</option>
+            <#else>
+            <option value="${nb}">${nb}</option>
+            </#if>
+            </#list>
+        </select>
+        <input type="submit" class="button" value="#i18n{rss.manage_rss_feeds.buttonItemsPerPage}" />
+    </form>
+    
+    <table summary="#i18n{rss.manage_rss_feeds.tableSummary}">
+        <tr>
+            <th>#i18n{rss.manage_rss_feeds.columnTitleName}</th>
+            <th>#i18n{rss.manage_rss_feeds.columnTitleUrl}</th>
+            <th>Include</th>
+            <th></th>
+            <th></th>
+            <th>#i18n{rss.manage_rss_feeds.columnTitleLastUpdate}</th>
+            <th></th>
+            <th>#i18n{rss.manage_rss_feeds.columnTitleActions}</th>
+        </tr>
+        <tr>
+            
+            <div>
+                
+                
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>#i18n{rss.manage_rss_feeds.columnTitleDate}</td>
+                <td>#i18n{rss.manage_rss_feeds.columnTitleStatus}</td>
+                <td>#i18n{rss.manage_rss_feeds.columnTitleError}</td>
+                <td></td>
+                
+                
+            </div>
+            
+            
+        </tr>
+        
+        <#list rss_feeds_list as feed >
+        <tr>
+            <td> <a href="jsp/admin/plugins/rss/ModifyRssFeed.jsp?id_rss_feed=${feed.id}"> ${feed.name}</td>
+            <td>${feed.url}</td>
+            <td>${feed.includeTag}</td>
+            <td>
+                
+                <td><#if feed.lastFetchDate?exists>
+                    ${feed.lastFetchDate?string.medium_short}
+                    </#if>
+                </td>
+                <td>
+                    <#if feed.lastFetchStatus != 1>
+                    <img src="images/admin/skin/enable.png" alt="#i18n{rss.manage_rss_file.labelStateUp}" title="#i18n{rss.manage_rss_file.labelStateUp}"/>
+                    <#else>
+                    <img src="images/admin/skin/disable.png" alt="#i18n{rss.manage_rss_file.labelStateDown}" title="#i18n{rss.manage_rss_file.labelStateDown}"/>
+                    </#if>
+                </td>
+                <td>
+                    <#if feed.lastFetchError?exists>
+                    <#if feed.lastFetchError != "">
+                    #i18n{rss.manage_rss_feeds.labelConnectionError}
+                    </#if>
+                    </#if>
+                </td>
+                
+            </td>
+            
+            <td>
+                <a href="jsp/admin/plugins/rss/DoFetchRssFeed.jsp?id_rss_feed=${feed.id}" class="admin-menu">
+                <img src="images/admin/skin/actions/reload.png" width="24" height="24" alt="#i18n{rss.manage_rss_feeds.labelReload}" title="#i18n{rss.manage_rss_feeds.labelReload} ${feed.name}"></a>
+                <a href="jsp/admin/plugins/rss/DoConfirmDeleteRssFeed.jsp?id_rss_feed=${feed.id}" class="admin-menu">
+                <img src="images/admin/skin/actions/delete.png" width="24" height="24" alt="#i18n{rss.manage_rss_feeds.labelDelete}" title="#i18n{rss.manage_rss_feeds.labelDelete}"></a>
+            </td>
+            
+        </tr>
+        </#list>
+        
+    </table>
+    
+    <form method="post"  action="jsp/admin/plugins/rss/CreateRssFeed.jsp">
+        <input type="submit" value="#i18n{rss.manage_rss_feeds.buttonAddFeed}" class="button"/>
+    </form>
+    
+    
+</div>

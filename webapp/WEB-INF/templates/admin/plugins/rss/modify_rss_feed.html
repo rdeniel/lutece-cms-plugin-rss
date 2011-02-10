@@ -1,0 +1,25 @@
+<div class="content-box">
+    <h2>#i18n{rss.modify_rss_feed.tableLabel} ${rss_feed.name}</h2>
+    <div>
+        <form method="post" action="jsp/admin/plugins/rss/DoModifyRssFeed.jsp">
+            <p>
+                <label for="rss_feed_name" >#i18n{rss.modify_rss_feed.rowTitleName} * : </label> 
+                <input type="text" id="rss_feed_name" name="rss_feed_name" size="60" maxlength="50" value="${rss_feed.name}" tabindex="1" />
+            </p>
+            <p>
+                <label for="rss_feed_url" >#i18n{rss.modify_rss_feed.rowTitleUrl} * :</label>  
+                <input type="text" id="rss_feed_url" name="rss_feed_url" size="60" maxlength="200" value="${rss_feed.url}" tabindex="2" />
+            </p>
+            <p>
+			    <label for="rss_style">#i18n{rss.modify_rss_feed.rowRssStyle} : </label>		     
+			     <@combo name="rss_style" items=rss_style_list default_value="${rss_feed.idIncludeStyle}" />
+			</p>
+            <p>
+			    <label for="workgroup_key">#i18n{rss.modify_rss_feed.rowWorkgroupFile!} : </label>
+			     <@combo name="workgroup_key" items=user_workgroup_list default_value="${rss_feed.workgroup!}" />
+			</p>
+            <input type="hidden" name="id_rss_feed" value="${rss_feed.id}" />
+            <input type="submit" value="#i18n{rss.modify_rss_feed.buttonModify}" class="button" tabindex="3" />
+        </form>
+    </div>
+</div>

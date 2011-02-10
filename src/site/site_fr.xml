@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Lutece">
+    -<bannerLeft>
+        <name>Page d'accueil du site RSS</name>
+        <src>http://fr.lutece.paris.fr/fr/images/local/skin/banner.gif</src>
+        <href>http://fr.lutece.paris.fr/</href>
+    </bannerLeft>
+    <bannerRight>
+        <src>http://fr.lutece.paris.fr/fr/images/local/skin/banner_right.gif</src>
+    </bannerRight>
+    <body>
+        <links>
+            <item name="Lutece" href="http://fr.lutece.paris.fr/" />
+        </links>
+
+        <menu name="Plugin RSS">
+            <item name="Introduction" href="index.html"/>
+        </menu>
+        
+        <menu name="Documentation technique">
+            <item name="Installation" href="rss-install.html"/>
+        </menu>
+
+        <menu name="Téléchargements" inherit="bottom" >
+			     <item name="Versions stables" href="../../../stable_builds/plugins/plugin-rss/"/>
+			     <item name="Nightly builds" href="../../../nightly_builds/plugins/plugin-rss/" />
+		</menu>
+
+		<menu ref="reports" />
+    </body>
+</project>

@@ -1,0 +1,30 @@
+<div class="content-box" >
+    
+    <h2>#i18n{rss.create_rss_feed.tableLabel}</h2>
+    
+    <form method="post"  name="create_rss_feed" id="create_rss_feed" action="jsp/admin/plugins/rss/DoCreateRssFeed.jsp">
+        
+        <p>
+            <label for="folder_name" >#i18n{rss.create_rss_feed.rowTitleName} * : </label> 
+            <input type="text" id="rss_feed_name" name="rss_feed_name" size="60" maxlength="50" tabindex="1" />
+        </p>
+        
+        <p>
+            <label for="folder_path" >#i18n{rss.create_rss_feed.rowTitleUrl} * :</label>  
+            <input type="text" id="rss_feed_url" name="rss_feed_url" size="60" maxlength="200" tabindex="2" />
+        </p>
+        <p>
+		    <label for="rss_style">#i18n{rss.create_rss_feed.rowRssStyle} : </label>		     
+		     <@combo name="rss_style" items=rss_style_list default_value="" />
+		</p>
+        <p>
+		    <label for="workgroup_key">#i18n{rss.create_rss_feed.rowWorkgroupFile} : </label>		     
+		     <@combo name="workgroup_key" items=user_workgroup_list default_value="${selected_workgroup}" />
+		</p>        
+        <p>   
+            <input type="submit" value="#i18n{rss.create_rss_feed.buttonValidate}" class="button" tabindex="3" />
+        </p>
+        
+    </form>
+    
+</div>

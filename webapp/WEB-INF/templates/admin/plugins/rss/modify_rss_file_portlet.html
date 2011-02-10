@@ -1,0 +1,30 @@
+<div class="content-box" >
+    <h2>#i18n{rss.modify_rss_file.tableLabel}</h2>
+    <form method="post"  name="modify_rss_file" id="modify_rss_file" action="jsp/admin/plugins/rss/DoModifyRssFilePortlet.jsp">   
+        <p>
+            <label for="rss_name" >#i18n{rss.modify_rss_file.rowTitleName} * : </label> 
+            <input type="text" id="rss_name" name="rss_name" value="${rssFile.name}" size="60" maxlength="50" tabindex="1" />
+        </p>
+        <p>
+		    <label for="workgroup_key">#i18n{rss.modify_rss_file.rowWorkgroupFile} : </label>
+		     <@combo name="workgroup_key"  items=user_workgroup_list default_value="${rssFile.workgroup}" />
+		</p>
+        <p>
+            <label for="rss_name" >#i18n{rss.modify_rss_file.rowTitleDocumentList} * : </label> 
+            <@combo name="rss_portlet_id" default_value="${rssFile.portletId}" items=portlet_list />
+        </p>
+        <p>
+            <label for="rss_description" >#i18n{rss.modify_rss_file.rowTitleDescription} * :</label>  
+            <input type="text" id="rss_description" name="rss_description" value="${rssFile.description}" size="60" maxlength="200" tabindex="2" />
+        </p>
+        <p>
+            <input type="hidden" id="rss_id" name="rss_id" value="${rssFile.id}" />
+        </p>
+        <p>   
+            <input type="submit" value="#i18n{rss.modify_rss_file.buttonValidate}" class="button" tabindex="3" />
+            <input type="submit" value="#i18n{rss.create_rss_file_resource.button_back}" class="button" name="cancel" />
+        </p> 
+    </form>
+</div>
+
+

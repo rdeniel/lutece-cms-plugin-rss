@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<rss version="2.0">
+    <channel>
+        <title>${site_name}</title>
+        <link>${site_url}</link>
+        <description>${site_description}</description>
+        <language>${file_language}</language>
+        <image>
+            <url>
+                ${site_url}/images/local/skin/valid-rss.png
+            </url>
+            <title>${site_name}</title>
+            <link>${site_url}</link>
+        </image>
+        <#list itemList as document >
+        <item>
+            <title>${document.title}</title>
+            <link>${site_url}/jsp/site/Portal.jsp?document_id=${document.id}&amp;portlet_id=${id_portlet}</link>
+            <description>${document.summary}</description>
+            <guid isPermaLink="false">${site_url}/jsp/site/Portal.jsp?document_id=${document.id}&amp;portlet_id=${id_portlet}</guid>
+           <#setting locale="en_US">
+           <pubDate>${document.dateModification?string("EEE, d MMM yyyy HH:mm:ss Z")}</pubDate>
+        </item>
+        </#list>
+    </channel>
+</rss>

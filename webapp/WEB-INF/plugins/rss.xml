@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?><plug-in>
+    
+    <!-- Plugin Informations -->
+    <name>rss</name>
+    <class>fr.paris.lutece.plugins.rss.service.RssPlugin</class>
+    <version>2.2.3</version>
+    <description>rss.plugin.description</description>
+    <documentation/>
+    <installation/>
+    <changes/>
+    <user-guide/>
+    <provider>rss.plugin.provider</provider>
+    <provider-url>http://lutece.paris.fr</provider-url>
+    <icon-url>images/admin/skin/plugins/rss/rss.png</icon-url>
+    <copyright>Copyright 2001-2009 Mairie de Paris</copyright>
+    <core-version-dependency>
+        <min-core-version>2.4.0</min-core-version>
+		<max-core-version/>
+    </core-version-dependency>
+    <db-pool-required>0</db-pool-required>
+    
+    <!-- Page Include Service -->
+    <page-include-services>
+        <page-include-service>
+            <page-include-service-id>rss.include.service.name</page-include-service-id>
+            <page-include-service-class>fr.paris.lutece.plugins.rss.web.RssInclude</page-include-service-class>
+        </page-include-service>
+        <page-include-service>
+            <page-include-service-id>rss.include.feed.name</page-include-service-id>
+            <page-include-service-class>fr.paris.lutece.plugins.rss.web.RssFeedInclude</page-include-service-class>
+        </page-include-service>
+        <page-include-service>
+            <page-include-service-id>rss.include.feed.list</page-include-service-id>
+            <page-include-service-class>fr.paris.lutece.plugins.rss.web.RssListInclude</page-include-service-class>
+        </page-include-service>
+    </page-include-services>
+    
+    <!-- Xpage configuration -->
+   <applications>
+      <application>
+	 <application-id>list_rss</application-id>
+	 <application-class>fr.paris.lutece.plugins.rss.web.RssListApp</application-class>
+      </application>
+   </applications>
+    
+    <!-- Admin features -->
+    <admin-features>
+        <admin-feature>
+            <feature-id>RSS_MANAGEMENT</feature-id>
+            <feature-title>rss.adminFeature.rss_management.name</feature-title>
+            <feature-description>rss.adminFeature.rss_management.description</feature-description>
+            <feature-level>2</feature-level>
+            <feature-url>jsp/admin/plugins/rss/ManageRssFiles.jsp</feature-url>
+        </admin-feature>
+        
+        <admin-feature>
+            <feature-id>RSS_FEEDS_MANAGEMENT</feature-id>
+            <feature-title>rss.adminFeature.rss_feeds_management.name</feature-title>
+            <feature-description>rss.adminFeature.rss_feeds_management.description</feature-description>
+            <feature-level>2</feature-level>
+            <feature-url>jsp/admin/plugins/rss/ManageRssFeeds.jsp</feature-url>
+        </admin-feature>
+    </admin-features>
+    
+    <!-- Portlet parameters -->
+    <portlets>
+        <portlet>
+            <portlet-class>fr.paris.lutece.plugins.rss.business.portlet.RssPortletHome</portlet-class>
+            <portlet-type-id>RSS_PORTLET</portlet-type-id>
+            <portlet-type-name>rss.portlet.name</portlet-type-name>
+            <portlet-creation-url>plugins/rss/CreatePortletRss.jsp</portlet-creation-url>
+            <portlet-update-url>plugins/rss/ModifyPortletRss.jsp</portlet-update-url>
+            <portlet-create-action-url>plugins/rss/DoCreatePortletRss.jsp</portlet-create-action-url>
+            <portlet-modify-action-url>plugins/rss/DoModifyPortletRss.jsp</portlet-modify-action-url>
+            <!-- optional entries -->
+            <portlet-create-script-template>/admin/portlet/script_create_portlet.html</portlet-create-script-template>
+            <portlet-modify-script-template>/admin/portlet/script_modify_portlet.html</portlet-modify-script-template>
+            <portlet-create-specific-template>/admin/plugins/rss/portlet/create_portlet_rss.html</portlet-create-specific-template>
+            <portlet-modify-specific-template>/admin/plugins/rss/portlet/modify_portlet_rss.html</portlet-modify-specific-template>
+            <portlet-create-specific-form-template/>
+            <portlet-modify-specific-form-template/>    
+        </portlet>
+	    <portlet>
+	       <portlet-class>fr.paris.lutece.plugins.rss.business.portlet.RssListPortletHome</portlet-class>
+		   <portlet-type-id>RSS_LIST_PORTLET</portlet-type-id>
+		   <portlet-type-name>rss.list.portlet.name</portlet-type-name>
+		   <portlet-creation-url>plugins/rss/CreatePortletRssList.jsp</portlet-creation-url>
+		   <portlet-update-url>plugins/rss/ModifyPortletRssList.jsp</portlet-update-url>
+	    </portlet>
+    </portlets>
+    
+    <daemons>
+        <daemon>
+            <daemon-id>fetchRssFeeds</daemon-id>
+            <daemon-name>rss.daemon.fetchRssFeeds.name</daemon-name>
+            <daemon-description>rss.daemon.fetchRssFeeds.description</daemon-description>
+            <daemon-class>fr.paris.lutece.plugins.rss.service.daemon.FetchRssFeedsDaemon</daemon-class>
+        </daemon>
+        <daemon>
+            <daemon-id>resetRssFeeds</daemon-id>
+            <daemon-name>rss.daemon.resetRssFeeds.name</daemon-name>
+            <daemon-description>rss.daemon.resetRssFeeds.description</daemon-description>
+            <daemon-class>fr.paris.lutece.plugins.rss.service.daemon.ResetRssFeedsMemoryCacheDaemon</daemon-class>
+        </daemon>
+		<daemon>
+            <daemon-id>generateRssFiles</daemon-id>
+            <daemon-name>rss.daemon.generateRssFiles.name</daemon-name>
+            <daemon-description>rss.daemon.generateRssFiles.description</daemon-description>
+            <daemon-class>fr.paris.lutece.plugins.rss.service.daemon.GenerateRssFilesDaemon</daemon-class>
+        </daemon>
+    </daemons>
+    
+    <!-- Admin Dashboard  components -->
+    <admindashboard-components>
+    	<admindashboard-component>
+            <dashboard-component-name>rssAdminDashboardComponent</dashboard-component-name>
+            <dashboard-component-class>fr.paris.lutece.plugins.rss.web.RssAdminDashboardComponent</dashboard-component-class>
+        </admindashboard-component>
+    </admindashboard-components>
+    
+</plug-in>

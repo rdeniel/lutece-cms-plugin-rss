@@ -1,0 +1,1 @@
+ALTER TABLE rss_feed ADD COLUMN workgroup_key varchar(50) DEFAULT NULL;

@@ -1,0 +1,26 @@
+<div class="content-box">
+  <h2> #i18n{workflow.modify_task.title}</h2>
+   <form action="jsp/admin/plugins/rss/DoCreateRssFileResource.jsp" method="post" name="" id=""  >
+	   <input name="rss_resource_key" value="${resource_rss.key}" type="hidden">
+	   <input name="rss_type" value="${rss_type}" type="hidden">
+	  	
+	  	<div class="highlight-box">
+	  	 <p>
+            <label for="rss_name" >#i18n{rss.create_rss_file.rowTitleName} * : </label>
+            <input type="text" id="rss_name" name="rss_name" size="60" maxlength="50" tabindex="1" value="${rss_name}"/>
+        </p>
+        <p>
+		    <label for="workgroup_key">#i18n{rss.create_rss_file.rowWorkgroupFile} : </label>		     
+		     <@combo name="workgroup_key" items=user_workgroup_list default_value="${selected_workgroup}" />
+		</p>
+		 </div>
+	  		${resource_rss_config}
+	  		
+	   
+	    <p>
+	  		<input type="submit" value="#i18n{rss.create_rss_file_resource.button_save}" class="button" name="save" />
+	  		<input type="submit" value="#i18n{rss.create_rss_file_resource.button_back}" class="button" name="cancel" />
+	   </p>
+ 	</form>
+ </div>
+

@@ -1,0 +1,24 @@
+<div class="content-box" >
+    <h2>#i18n{rss.modify_rss_file.tableLabel}</h2>
+    <form method="post"  name="modify_rss_file" id="modify_rss_file" action="jsp/admin/plugins/rss/DoModifyRssFileResource.jsp">   
+        <input name="rss_resource_key" value="${resource_rss.key}" type="hidden">
+        <input type="hidden" id="rss_id" name="rss_id" value="${rssFile.id}" />
+        <div class="highlight-box">
+        <p>
+            <label for="rss_name" >#i18n{rss.modify_rss_file.rowTitleName} * : </label> 
+            <input type="text" id="rss_name" name="rss_name" value="${rssFile.name}" size="60" maxlength="50" tabindex="1" />
+        </p>
+        <p>
+		    <label for="workgroup_key">#i18n{rss.modify_rss_file.rowWorkgroupFile} : </label>
+		     <@combo name="workgroup_key"  items=user_workgroup_list default_value="${rssFile.workgroup}" />
+		</p>
+		</div>
+        ${resource_rss_config}
+        <p>   
+            <input type="submit" value="#i18n{rss.modify_rss_file.buttonValidate}" class="button" tabindex="3" />
+            <input type="submit" value="#i18n{rss.create_rss_file_resource.button_back}" class="button" name="cancel" />
+        </p> 
+    </form>
+</div>
+
+

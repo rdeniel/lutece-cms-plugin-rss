@@ -1,0 +1,66 @@
+<div class="content-box" >
+    <h2>#i18n{rss.manage_rss_file.tableLabel}</h2>
+    <form method="post"  action="jsp/admin/plugins/rss/ManageRssFiles.jsp">
+        <@pagination paginator=paginator />
+        
+        <!-- Number of files per page selector -->
+        #i18n{rss.manage_rss_file.labelItemsPerPage} :
+        <select name="items_per_page">
+            <#list [ "10" , "20" , "50" , "100" ] as nb>
+            <#if nb_items_per_page = nb >
+            <option selected="selected" value="${nb}">${nb}</option>
+            <#else>
+            <option value="${nb}">${nb}</option>
+            </#if>
+            </#list>
+        </select>
+        <input type="submit" class="button" value="#i18n{rss.manage_rss_file.buttonItemsPerPage}" />
+    </form>
+    
+    
+    <table summary="#i18n{rss.manage_rss_file.tableSummary}">
+        <tr>
+            <th width="20%">#i18n{rss.manage_rss_file.columnTitleFile}</th>
+            <th width="30%">#i18n{rss.manage_rss_file.columnTitleDescription}</th>
+            <th width="20%">#i18n{rss.manage_rss_file.columnTitleUrl}</th>
+            <th width="10%">#i18n{rss.manage_rss_file.columnTitlePortlet}</th>
+            <th width="5%">#i18n{rss.manage_rss_file.columnTitleState}</th>
+            <th width="5%">#i18n{rss.manage_rss_file.columnTitleAction}</th>
+            <th width="10%">#i18n{rss.manage_rss_file.columnTitleLastUpdate}</th>
+        </tr>      
+        <#list rss_files_list as rssFile >             
+        <tr>
+            <td >
+                <a href="jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}"> ${rssFile.name}</a>
+            </td> 
+            <td >${rssFile.description}</td>
+            <td >
+                <a href="${rss_file_url}${rssFile.name}">${rss_file_url}${rssFile.name}</a>
+            </td>
+            <td >
+            <#if rssFile.portletName?exists>
+                ${rssFile.portletName}
+            </#if>
+            </td>
+            <td >
+                <#if rssFile.state != 1>
+                <img src="images/admin/skin/enable.png" width="24" height="24" alt="#i18n{rss.manage_rss_file.labelStateUp}" title="#i18n{rss.manage_rss_file.labelStateUp}"/>
+                <#else>
+                <img src="images/admin/skin/disable.png" width="24" height="24" alt="#i18n{rss.manage_rss_file.labelStateDown}" title="#i18n{rss.manage_rss_file.labelStateDown}"/>
+                </#if>
+            </td> 
+            <td >
+                <a href ="jsp/admin/plugins/rss/DoConfirmDeleteRssFile.jsp?rss_id=${rssFile.id}">
+                    <img src="images/admin/skin/actions/delete.png" alt="#i18n{rss.manage_rss_file.labelDelete}" title="#i18n{rss.manage_rss_file.labelDelete}" >
+                </a>
+            </td>
+            <#if rssFile.updateDate?exists>
+            <td >${rssFile.updateDate?date}</td>
+            </#if>
+        </tr>		
+        </#list>
+    </table>
+    <form method="post"  action="jsp/admin/plugins/rss/CreateRssFile.jsp">
+        <input type="submit" value="#i18n{rss.manage_rss_file.buttonAddFeed}" class="button"/>
+    </form>
+</div>
