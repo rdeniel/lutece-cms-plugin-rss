@@ -17,7 +17,7 @@
         <repository>
             <id>lutece</id>
             <name>luteceRepository</name>
-            <url>http://dev.lutece.paris.fr/maven_repository</url>
+            <url>http://dev.lutece.paris.fr/maven_repository/plugin-rss</url>
             <layout>default</layout>
         </repository>
     </repositories>
@@ -53,8 +53,8 @@
         <jiraComponentId>10151</jiraComponentId>
     </properties>
     <scm>
-        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms</connection>
-        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms</developerConnection>
-        <url>http://dev.lutece.paris.fr/viewvc/portal/trunk/plugins/cms</url>
+        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/plugin-rss</connection>
+        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/plugin-rss</developerConnection>
+        <url>http://dev.lutece.paris.fr/viewvc/portal/trunk/plugins/cms/plugin-rss</url>
     </scm>
 </project>
