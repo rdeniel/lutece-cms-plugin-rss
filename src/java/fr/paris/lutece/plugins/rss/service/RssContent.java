@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.rss.service;
 
+import java.io.Serializable;
+
 import fr.paris.lutece.portal.service.resource.Resource;
 
 
@@ -40,7 +42,7 @@ import fr.paris.lutece.portal.service.resource.Resource;
  *
  * This class provides a structure for RSS feeds contents
  */
-public class RssContent implements Resource
+public class RssContent implements Resource, Serializable
 {
     private String _strContent;
 
