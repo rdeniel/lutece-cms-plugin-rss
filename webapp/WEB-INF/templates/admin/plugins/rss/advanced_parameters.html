@@ -1,7 +1,12 @@
 <div class="highlight-box">
-	<p>
-		<label>#i18n{rss.manage_rss.labelActivationDefault}</label>
-		<input type="radio" name="acti" value="activate">#i18n{rss.manage_rss.activationDefault_true}</input>
-		<input type="radio" name="acti" value="desactivate">#i18n{rss.manage_rss.activationDefault_false}</input>
-	</p>
+	<form method="post" action="jsp/admin/plugins/rss/DoModifyRssParameterValues.jsp">
+		<p>
+			<label>#i18n{rss.manage_rss.labelActivationDefault}</label>
+			<input type="radio" name="acti" value="activate">#i18n{rss.manage_rss.activationDefault_true}</input>
+			<input type="radio" name="acti" value="desactivate">#i18n{rss.manage_rss.activationDefault_false}</input>
+		</p>
+		<p>
+			<input type="submit" class="button" value="#i18n{rss.modify_rss_feed.buttonModify}" />
+		</p>
+	</form>
 </div>

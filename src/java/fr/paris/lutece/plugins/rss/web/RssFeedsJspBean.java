@@ -441,4 +441,10 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
         return getAdminPage( template.getHtml(  ) );
     }
     
+    public String doModifyRssAdvancedParameters ( HttpServletRequest request ){
+    	
+    	
+    	return getHomeUrl( request );
+    }
+    
 }
