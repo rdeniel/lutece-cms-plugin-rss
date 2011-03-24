@@ -57,7 +57,7 @@ public class RssListPortlet extends Portlet
      */
     public RssListPortlet(  )
     {
-        setPortletTypeId( RssPortletHome.getInstance(  ).getPortletTypeId(  ) );
+        setPortletTypeId( RssListPortletHome.getInstance(  ).getPortletTypeId(  ) );
     }
 
     /**
@@ -100,7 +100,7 @@ public class RssListPortlet extends Portlet
      */
     public void update(  )
     {
-        RssPortletHome.getInstance(  ).update( this );
+    	RssListPortletHome.getInstance(  ).update( this );
     }
 
     /**
@@ -108,6 +108,6 @@ public class RssListPortlet extends Portlet
      */
     public void remove(  )
     {
-        RssPortletHome.getInstance(  ).remove( this );
+    	RssListPortletHome.getInstance(  ).remove( this );
     }
 }
