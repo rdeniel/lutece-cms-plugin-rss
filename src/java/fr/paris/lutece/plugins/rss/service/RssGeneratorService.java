@@ -100,9 +100,12 @@ public final class RssGeneratorService
      *
      * @param nIdPortlet the portlet id for wich the file is created
      * @param strRssFileDescription the Description
+     * @param strEncoding encoding
+     * @param strFeedType feed type
+     * @param nMaxItems max items
      * @return String the XML content of the RSS document
      */
-    public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding, String strFeedType )
+    public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding, String strFeedType, int nMaxItems )
     {
         String strRssFileSiteName = AppPropertiesService.getProperty( PROPERTY_SITE_NAME );
         String strRssFileLanguage = AppPropertiesService.getProperty( PROPERTY_SITE_LANGUAGE );
@@ -149,7 +152,7 @@ public final class RssGeneratorService
     	
     	resource.setItems( listItems );
     	
-    	return FeedUtil.getFeed( resource, strFeedType, strEncoding );
+    	return FeedUtil.getFeed( resource, strFeedType, strEncoding, nMaxItems );
 
     }
 

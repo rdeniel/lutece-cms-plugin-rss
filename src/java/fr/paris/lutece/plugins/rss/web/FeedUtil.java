@@ -61,6 +61,7 @@ public final class FeedUtil
 {
 	private static final String EMPTY_STRING = "";
 	private static final String ATOM_PREFIX = "atom";
+	private static final int MAX_ITEM_UNLIMITED = 0;
 	
 	/**
 	 * Utility class
@@ -75,9 +76,10 @@ public final class FeedUtil
 	 * @param resource resource
 	 * @param strFeedType feed type
 	 * @param strEncoding encoding
+	 * @param nMaxItems max items
 	 * @return the xml generated
 	 */
-	public static String getFeed( IFeedResource resource, String strFeedType, String strEncoding )
+	public static String getFeed( IFeedResource resource, String strFeedType, String strEncoding, int nMaxItems )
 	{
     	if ( resource.getItems().isEmpty() )
     	{
@@ -97,7 +99,7 @@ public final class FeedUtil
         	feed.setEncoding( strEncoding );
         	
         	// items
-        	feed.setEntries( getATOMEntries( resource.getItems() ) );
+        	feed.setEntries( getATOMEntries( resource.getItems(), nMaxItems ) );
         	
         	wireFeed = feed;
     	}
@@ -121,8 +123,8 @@ public final class FeedUtil
 				rss.setImage( image );
     		}
     		
-    		// items    		
-    		rss.setItems( getRSSItems( resource.getItems() ) );
+    		// items
+    		rss.setItems( getRSSItems( resource.getItems(), nMaxItems ) );
     		
     		wireFeed = rss;
     	}
@@ -169,21 +171,37 @@ public final class FeedUtil
     		return EMPTY_STRING;
     	}
     	
-    	return getFeed( resource, resourceRSS.getFeedType(), resourceRSS.getEncoding() );
+    	return getFeed( resource, resourceRSS.getFeedType(), resourceRSS.getEncoding(), resourceRSS.getMaxItems() );
 	}
 	
     /**
      * Gets the atom entries
      * @param listItems the items
+     * @param nMaxItems max item
      * @return the entries
      */
-    private static List getATOMEntries( List<IFeedResourceItem> listItems )
+    private static List getATOMEntries( List<IFeedResourceItem> listItems, int nMaxItems )
     {
     	List listEntries = new ArrayList();
+    	
+    	boolean bLimit = nMaxItems != MAX_ITEM_UNLIMITED;
+    	int nIndex = 1;
     	
     	for ( IFeedResourceItem item : listItems )
 		{
 			listEntries.add( getATOMEntry( item ) );
+			if ( bLimit )
+			{
+				if ( nIndex < nMaxItems )
+				{
+					nIndex++;
+				}
+				else
+				{
+					// break
+					break;
+				}
+			}
 		}
     	
     	return listEntries;
@@ -192,15 +210,30 @@ public final class FeedUtil
     /**
      * Gets the entries for the given items. 
      * @param listItems the items
+     * @param nMaxItems max item
      * @return the list
      */
-	private static List getRSSItems( List<IFeedResourceItem> listItems )
+	private static List getRSSItems( List<IFeedResourceItem> listItems, int nMaxItems )
     {
     	List listEntries = new ArrayList();
-		
+    	
+    	boolean bLimit = nMaxItems != MAX_ITEM_UNLIMITED;
+    	int nIndex = 1;
 		for ( IFeedResourceItem item : listItems )
 		{
 			listEntries.add( getRSSItem( item ) );
+			if ( bLimit )
+			{
+				if ( nIndex < nMaxItems )
+				{
+					nIndex++;
+				}
+				else
+				{
+					// break
+					break;
+				}
+			}
 		}
 		
 		return listEntries;

@@ -139,7 +139,7 @@ public final class AutoUpdatingRss
                 else
                 {
                     strRss = RssGeneratorService.createRssDocument( generatedFile.getPortletId(  ),
-                            generatedFile.getDescription(  ), generatedFile.getFeedType(  ), generatedFile.getFeedType(  ) );
+                            generatedFile.getDescription(  ), generatedFile.getFeedType(  ), generatedFile.getFeedType(  ), generatedFile.getMaxItems() );
                 }
 
                 // Call the create file method

@@ -288,7 +288,7 @@ public class RssJspBean extends PluginAdminPageJspBean
         strRssFileName = UploadUtil.cleanFileName( strRssFileName );
 
         // Call the create xml document method
-        String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, rssFile.getDescription(  ), rssFile.getEncoding(), rssFile.getFeedType() );
+        String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, rssFile.getDescription(  ), rssFile.getEncoding(), rssFile.getFeedType(), rssFile.getMaxItems() );
 
         // Call the create file method
         RssGeneratorService.createFileRss( strRssFileName, strRssDocument );
@@ -702,7 +702,7 @@ public class RssJspBean extends PluginAdminPageJspBean
         }
 
         // Check if a RSS file exists for this portlet
-        String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, strRssFileDescription, strEncoding, strFeedType );
+        String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, strRssFileDescription, strEncoding, strFeedType, nMaxItems );
 
         // Call the create file method
         RssGeneratorService.createFileRss( strRssFileName, strRssDocument );
