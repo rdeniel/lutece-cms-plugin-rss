@@ -33,7 +33,15 @@
  */
 package fr.paris.lutece.plugins.rss.service;
 
+import fr.paris.lutece.plugins.document.business.Document;
 import fr.paris.lutece.plugins.rss.business.RssGeneratedFileHome;
+import fr.paris.lutece.plugins.rss.web.FeedUtil;
+import fr.paris.lutece.portal.business.rss.FeedResource;
+import fr.paris.lutece.portal.business.rss.FeedResourceImage;
+import fr.paris.lutece.portal.business.rss.FeedResourceItem;
+import fr.paris.lutece.portal.business.rss.IFeedResource;
+import fr.paris.lutece.portal.business.rss.IFeedResourceImage;
+import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
@@ -44,9 +52,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -62,15 +72,18 @@ public final class RssGeneratorService
     public static final String PROPERTY_RSS_STORAGE_FOLDER_PATH = "rss.storage.folder.path";
     public static final String PROPERTY_STORAGE_DIRECTORY_NAME = "rss.storage.directory.name";
     private static final String TEMPLATE_PUSH_RSS_XML = "admin/plugins/rss/rss_xml.html";
+    private static final String TEMPLATE_FEED_LINK = "admin/plugins/rss/feed_link.html";
     private static final String MARK_ITEM_LIST = "itemList";
     private static final String MARK_RSS_SITE_NAME = "site_name";
     private static final String MARK_RSS_FILE_LANGUAGE = "file_language";
     private static final String MARK_RSS_SITE_URL = "site_url";
+    private static final String MARK_DOCUMENT_ID = "document_id";
     private static final String MARK_RSS_SITE_DESCRIPTION = "site_description";
     private static final String MARK_ID_PORTLET = "id_portlet";
     private static final String PROPERTY_SITE_NAME = "lutece.name";
     private static final String PROPERTY_SITE_LANGUAGE = "rss.language";
     private static final String PROPERTY_WEBAPP_PROD_URL = "lutece.prod.url";
+    private static final String CONSTANT_IMAGE_RSS = "/images/local/skin/valid-rss.png";
 
     /**
      * Private constructor
@@ -89,32 +102,55 @@ public final class RssGeneratorService
      * @param strRssFileDescription the Description
      * @return String the XML content of the RSS document
      */
-    public static String createRssDocument( int nIdPortlet, String strRssFileDescription )
+    public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding, String strFeedType )
     {
-        HashMap model = new HashMap(  );
-
-        // Update the head of the document
         String strRssFileSiteName = AppPropertiesService.getProperty( PROPERTY_SITE_NAME );
         String strRssFileLanguage = AppPropertiesService.getProperty( PROPERTY_SITE_LANGUAGE );
         String strIdPortlet = Integer.toString( nIdPortlet );
         String strWebAppUrl = AppPropertiesService.getProperty( PROPERTY_WEBAPP_PROD_URL );
         String strSiteUrl = strWebAppUrl + "/";
-        model.put( MARK_RSS_SITE_NAME, strRssFileSiteName );
-        model.put( MARK_RSS_FILE_LANGUAGE, strRssFileLanguage );
-        model.put( MARK_RSS_SITE_URL, strSiteUrl );
-        model.put( MARK_ID_PORTLET, strIdPortlet );
-        model.put( MARK_RSS_SITE_DESCRIPTION, strRssFileDescription );
 
-        // Find documents by portlet
-        List listDocuments = RssGeneratedFileHome.findDocumentsByPortlet( nIdPortlet );
-        //The date must respect RFC-822 date-time
-        model.put( MARK_ITEM_LIST, listDocuments );
+    	IFeedResource resource = new FeedResource();
+    	resource.setTitle( strRssFileSiteName );
+    	resource.setLanguage( strRssFileLanguage );
+    	resource.setLink( strSiteUrl );
+    	resource.setDescription( strRssFileDescription );
+    	
+    	IFeedResourceImage image = new FeedResourceImage();
+    	image.setLink( strSiteUrl );
+    	image.setTitle( strRssFileDescription );
+    	image.setUrl( strSiteUrl + CONSTANT_IMAGE_RSS );
+    	resource.setImage( image );
+    	
+    	Locale locale = new Locale( strRssFileLanguage );
+    	
+        List<Document> listDocuments = RssGeneratedFileHome.findDocumentsByPortlet( nIdPortlet );
+    	
+        List<IFeedResourceItem> listItems = new ArrayList<IFeedResourceItem>();
+    	for ( Document document :  listDocuments )
+    	{
+    		IFeedResourceItem item = new FeedResourceItem();
+    		item.setTitle( document.getTitle() );
+    		item.setDescription( document.getSummary() );
+    		item.setDate( document.getDateModification() );
+    		
+    		// link creation
+    		Map<String, Object> model = new HashMap<String, Object>();
+    		model.put( MARK_ID_PORTLET, strIdPortlet );
+    		model.put( MARK_DOCUMENT_ID, document.getId() );
+    		model.put( MARK_RSS_SITE_URL, strSiteUrl );
+    		HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_FEED_LINK, locale, model );
+    		String strLink = template.getHtml();
+    		item.setGUID( strLink );
+    		item.setLink( strLink );
+    		
+    		listItems.add( item );
+    	}
+    	
+    	resource.setItems( listItems );
+    	
+    	return FeedUtil.getFeed( resource, strFeedType, strEncoding );
 
-        Locale locale = new Locale( strRssFileLanguage );
-
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_PUSH_RSS_XML, locale, model );
-
-        return template.getHtml(  );
     }
 
     /**

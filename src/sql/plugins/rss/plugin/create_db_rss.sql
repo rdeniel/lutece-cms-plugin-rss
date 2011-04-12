@@ -28,6 +28,9 @@ CREATE TABLE rss_generation (
   date_update timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ,
   workgroup_key varchar(50) DEFAULT NULL,
   type_resource_rss varchar(50) DEFAULT NULL,
+  max_items int default 0,
+  feed_type varchar(50) DEFAULT 'rss_2.0',
+  feed_encoding varchar(50) DEFAULT 'UTF-8',
   PRIMARY KEY  (id_rss)
 );
 

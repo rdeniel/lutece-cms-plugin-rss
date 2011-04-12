@@ -18,6 +18,18 @@
             <input type="text" id="rss_description" name="rss_description" value="${rssFile.description}" size="60" maxlength="200" tabindex="2" />
         </p>
         <p>
+            <label for="rss_max_items" >#i18n{rss.modify_rss_file.maxItem} * : </label>
+            <input type="text" id="rss_max_items" name="rss_max_items" size="60" maxlength="10" tabindex="2" value="${rssFile.maxItems}"/>
+        </p>
+        <p>
+        	<label for="rss_feed_type">#i18n{rss.modify_rss_file.feedType} : </label>		     
+		     <@combo name="rss_feed_type" items=feed_type_list default_value="${rssFile.feedType}" />
+        </p>
+        <p>
+        	<label for="rss_encoding">#i18n{rss.modify_rss_file.encoding} : </label>		     
+		     <@combo name="rss_encoding" items=encoding_list default_value="${rssFile.encoding}" />
+        </p>
+        <p>
             <input type="hidden" id="rss_id" name="rss_id" value="${rssFile.id}" />
         </p>
         <p>   

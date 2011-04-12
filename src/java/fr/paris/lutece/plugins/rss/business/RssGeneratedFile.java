@@ -33,10 +33,10 @@
  */
 package fr.paris.lutece.plugins.rss.business;
 
+import java.sql.Timestamp;
+
 import fr.paris.lutece.portal.service.portlet.PortletRemovalListenerService;
 import fr.paris.lutece.portal.service.workgroup.AdminWorkgroupResource;
-
-import java.sql.Timestamp;
 
 
 /**
@@ -57,8 +57,11 @@ public class RssGeneratedFile implements AdminWorkgroupResource
     private Timestamp _dateUpdate;
     private String _strWorkgroup;
     private String _strTypeResourceRss;
+    private String _strFeedType;
+    private String _strEncoding;
+    private int _nMaxItems;
 
-    /**
+	/**
      * Initialize the Rss
      */
     public static void init(  )
@@ -232,4 +235,60 @@ public class RssGeneratedFile implements AdminWorkgroupResource
     {
         _strTypeResourceRss = strTypeResourceRss;
     }
+    
+    /**
+     * Gets the max items
+     * @return the max item
+     */
+    public int getMaxItems()
+	{
+		return _nMaxItems;
+	}
+
+    /**
+     * Sets the max items
+     * @param nMaxItems the max items
+     */
+	public void setMaxItems( int nMaxItems )
+	{
+		this._nMaxItems = nMaxItems;
+	}
+	
+	/**
+	 * The feed type
+	 * @return the feed type
+	 * @see FeedType#getType()
+	 */
+	public String getFeedType()
+	{
+		return _strFeedType;
+	}
+	
+	/**
+	 * The feed type 
+	 * @param strFeedType the feed type
+	 * @see FeedType#getType()
+	 */
+	public void setFeedType( String strFeedType )
+	{
+		_strFeedType = strFeedType;
+	}
+	
+    /**
+     * Gets the encoding
+     * @return the encoding
+     */
+	public String getEncoding()
+	{
+		return _strEncoding;
+	}
+
+	/**
+	 * Gets the encoding
+	 * @param strEncoding the encoding
+	 */
+	public void setEncoding( String strEncoding )
+	{
+		this._strEncoding = strEncoding;
+	}
 }

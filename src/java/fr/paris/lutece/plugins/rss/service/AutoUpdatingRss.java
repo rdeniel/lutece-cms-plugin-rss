@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.rss.service;
 
 import fr.paris.lutece.plugins.rss.business.RssGeneratedFile;
 import fr.paris.lutece.plugins.rss.business.RssGeneratedFileHome;
+import fr.paris.lutece.plugins.rss.web.FeedUtil;
 import fr.paris.lutece.portal.business.rss.IResourceRss;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -129,12 +130,16 @@ public final class AutoUpdatingRss
                                                          .getResourceRssInstance( generatedFile.getTypeResourceRss(  ),
                             null );
                     resourceRss.setId( generatedFile.getId(  ) );
-                    strRss = resourceRss.createHtmlRss(  );
+                    resourceRss.setMaxItems( generatedFile.getMaxItems(  ) );
+                    resourceRss.setEncoding( generatedFile.getEncoding(  ) );
+                    resourceRss.setFeedType( generatedFile.getFeedType(  ) );
+                    
+                    strRss = FeedUtil.getFeed( resourceRss );
                 }
                 else
                 {
                     strRss = RssGeneratorService.createRssDocument( generatedFile.getPortletId(  ),
-                            generatedFile.getDescription(  ) );
+                            generatedFile.getDescription(  ), generatedFile.getFeedType(  ), generatedFile.getFeedType(  ) );
                 }
 
                 // Call the create file method

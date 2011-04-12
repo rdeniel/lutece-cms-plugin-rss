@@ -45,6 +45,7 @@ import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.portlet.PortletService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.service.workgroup.AdminWorkgroupService;
@@ -55,12 +56,15 @@ import fr.paris.lutece.util.filesystem.UploadUtil;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -75,6 +79,9 @@ public class RssJspBean extends PluginAdminPageJspBean
     private static final String PARAMETER_PUSH_RSS_PORTLET_ID = "rss_portlet_id";
     private static final String PARAMETER_PUSH_RSS_ID = "rss_id";
     private static final String PARAMETER_PUSH_RSS_NAME = "rss_name";
+    private static final String PARAMETER_PUSH_RSS_MAX_ITEMS = "rss_max_items";
+    private static final String PARAMETER_PUSH_RSS_ENCODING = "rss_encoding";
+    private static final String PARAMETER_PUSH_RSS_FEED_TYPE = "rss_feed_type";
     private static final String PARAMETER_PUSH_RSS_DESCRIPTION = "rss_description";
     private static final String PARAMETER_RSS_TYPE = "rss_type";
     private static final String PARAMETER_RSS_RESOURCE_KEY = "rss_resource_key";
@@ -97,9 +104,14 @@ public class RssJspBean extends PluginAdminPageJspBean
     private static final String MARK_PAGINATOR = "paginator";
     private static final String MARK_NB_ITEMS_PER_PAGE = "nb_items_per_page";
     private static final String MARK_USER_WORKGROUP_LIST = "user_workgroup_list";
+    private static final String MARK_ENCODING_LIST = "encoding_list";
+    private static final String MARK_FEED_TYPE_LIST = "feed_type_list";
     private static final String MARK_WORKGROUP_SELECTED = "selected_workgroup";
     private static final String MARK_RSS_TYPE = "rss_type";
     private static final String MARK_RSS_NAME = "rss_name";
+    private static final String MARK_RSS_MAX_ITEMS = "rss_max_items";
+    private static final String MARK_RSS_ENCODING = "rss_encoding";
+    private static final String MARK_RSS_FEED_TYPE = "rss_feed_type";
     private static final String MARK_RESOURCE_RSS = "resource_rss";
     private static final String MARK_RESOURCE_RSS_CONFIG = "resource_rss_config";
     private static final int STATE_OK = 0;
@@ -111,6 +123,8 @@ public class RssJspBean extends PluginAdminPageJspBean
     private static final String PROPERTY_PAGE_TITLE_CREATE = "rss.create_rss_file.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_MODIFY = "rss.modify_rss_file.pageTitle";
     private static final String PROPERTY_RSS_PER_PAGE = "rss.rssPerPage";
+    private static final String PROPERTY_RSS_ENCODING = "rss.encoding";
+    private static final String PROPERTY_RSS_FEED_TYPE = "rss.feedType";
 
     //Messages
     private static final String MESSAGE_FILENAME_TOO_LONG = "rss.message.filenameTooLong";
@@ -119,6 +133,9 @@ public class RssJspBean extends PluginAdminPageJspBean
     private static final String MESSAGE_RESOURCE = "rss.message.noResource";
     private static final String MESSAGE_CONFIRM_DELETE_RSS_FILE = "rss.message.confirmRemoveRssFile";
     private static final String MESSAGE_RSS_LINKED_FEED = "rss.message.linkedToFeed";
+    private static final String MESSAGE_MAX_ITEMS = "rss.message.maxItems";
+    private static final String MESSAGE_NO_ENCODING = "rss.message.noEncoding";
+    private static final String MESSAGE_NO_FEED_TYPE = "rss.message.noFeedType";
 
     //JSPs
     private static final String JSP_CREATE_RESOURCE_RSS_FILE = "jsp/admin/plugins/rss/DoCreateRssFile.jsp";
@@ -160,6 +177,26 @@ public class RssJspBean extends PluginAdminPageJspBean
 
         return getAdminPage( templateList.getHtml(  ) );
     }
+    
+    /**
+     * Gets the available feed types
+     * @return the feed types
+     */
+    private List<String> getFeedTypes()
+    {
+    	return Arrays.asList( AppPropertiesService.getProperty( PROPERTY_RSS_FEED_TYPE ).split( "," ) );
+    }
+    
+    /**
+     * Gets the available encodings
+     * @return the encodings
+     */
+    private List<String> getEncodings()
+    {
+    	return Arrays.asList( AppPropertiesService.getProperty( PROPERTY_RSS_ENCODING ).split( "," ) );
+    }
+    
+    
 
     /**
      * Modification of a push RSS file
@@ -176,7 +213,10 @@ public class RssJspBean extends PluginAdminPageJspBean
         }
 
         String strRssFileId = request.getParameter( PARAMETER_PUSH_RSS_ID );
-        String strWorkgroup = request.getParameter( PARAMETER_WORKGROUP_KEY );
+        String strWorkgroup = request.getParameter( PARAMETER_WORKGROUP_KEY ); 
+        String strMaxItems = request.getParameter( PARAMETER_PUSH_RSS_MAX_ITEMS );
+        String strEncoding = request.getParameter( PARAMETER_PUSH_RSS_ENCODING );
+        String strFeedType = request.getParameter( PARAMETER_PUSH_RSS_FEED_TYPE );
 
         int nRssFileId = Integer.parseInt( strRssFileId );
         String strPortletId = request.getParameter( PARAMETER_PUSH_RSS_PORTLET_ID );
@@ -184,6 +224,39 @@ public class RssJspBean extends PluginAdminPageJspBean
         if ( ( strPortletId == null ) || !strPortletId.matches( REGEX_ID ) )
         {
             return AdminMessageService.getMessageUrl( request, MESSAGE_NO_DOCUMENT_PORTLET, AdminMessage.TYPE_STOP );
+        }
+        
+        if ( StringUtils.isBlank( strFeedType ) )
+        {
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
+        }
+        
+        if ( !getFeedTypes().contains( strFeedType ) )
+    	{
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
+    	}
+
+        if ( StringUtils.isBlank( strEncoding ) )
+        {
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_ENCODING, AdminMessage.TYPE_STOP );
+        }
+        
+        int nMaxItems;
+        if ( StringUtils.isBlank( strMaxItems ) )
+        {
+        	nMaxItems = 0;
+        }
+        else
+        {
+        	try
+        	{
+        		nMaxItems = Integer.parseInt( strMaxItems );
+        	}
+        	catch ( NumberFormatException nfe )
+        	{
+        		AppLogService.error( nfe.getMessage(), nfe );
+        		return AdminMessageService.getMessageUrl( request, MESSAGE_MAX_ITEMS, AdminMessage.TYPE_STOP );
+        	}
         }
 
         int nPortletId = Integer.parseInt( strPortletId );
@@ -197,6 +270,10 @@ public class RssJspBean extends PluginAdminPageJspBean
         rssFile.setState( STATE_OK );
         rssFile.setWorkgroup( strWorkgroup );
         rssFile.setDescription( strRssFileDescription );
+        rssFile.setMaxItems( nMaxItems );
+        rssFile.setFeedType( strFeedType );
+        rssFile.setEncoding( strEncoding );
+
 
         // Update the database with the new push RSS file
         RssGeneratedFileHome.update( rssFile );
@@ -211,7 +288,7 @@ public class RssJspBean extends PluginAdminPageJspBean
         strRssFileName = UploadUtil.cleanFileName( strRssFileName );
 
         // Call the create xml document method
-        String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, rssFile.getDescription(  ) );
+        String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, rssFile.getDescription(  ), rssFile.getEncoding(), rssFile.getFeedType() );
 
         // Call the create file method
         RssGeneratorService.createFileRss( strRssFileName, strRssDocument );
@@ -244,6 +321,9 @@ public class RssJspBean extends PluginAdminPageJspBean
 
         String strWorkgroup = request.getParameter( PARAMETER_WORKGROUP_KEY );
         String strRssFileName = request.getParameter( PARAMETER_PUSH_RSS_NAME );
+        String strMaxItems = request.getParameter( PARAMETER_PUSH_RSS_MAX_ITEMS );
+        String strEncoding = request.getParameter( PARAMETER_PUSH_RSS_ENCODING );
+        String strFeedType = request.getParameter( PARAMETER_PUSH_RSS_FEED_TYPE );
 
         String strResourceRssKey = request.getParameter( PARAMETER_RSS_RESOURCE_KEY );
         IResourceRss resourceRss = RssService.getInstance(  ).getResourceRssInstance( strResourceRssKey, getLocale(  ) );
@@ -282,8 +362,44 @@ public class RssJspBean extends PluginAdminPageJspBean
                 return strError;
             }
         }
+        
+        if ( StringUtils.isBlank( strFeedType ) )
+        {
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
+        }
+        
+        if ( !getEncodings().contains( strFeedType ) )
+    	{
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
+    	}
+        
+        
+        if ( StringUtils.isBlank( strEncoding ) )
+        {
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_ENCODING, AdminMessage.TYPE_STOP );
+        }
 
-        String strRssFileDescription = request.getParameter( PARAMETER_PUSH_RSS_DESCRIPTION );
+        
+        int nMaxItems;        
+        if ( StringUtils.isBlank( strMaxItems ) )
+        {
+        	// set to 0 -- no limit
+        	nMaxItems = 0;
+        }
+        else
+        {
+        	try
+        	{
+        		nMaxItems = Integer.parseInt( strMaxItems );
+        	}
+        	catch ( NumberFormatException nfe )
+        	{
+        		AppLogService.error( nfe.getMessage(), nfe );
+        		return AdminMessageService.getMessageUrl( request, MESSAGE_MAX_ITEMS, AdminMessage.TYPE_STOP );
+        	}
+        }
+
+        // String strRssFileDescription = request.getParameter( PARAMETER_PUSH_RSS_DESCRIPTION );
 
         RssGeneratedFile rssFile = new RssGeneratedFile(  );
         rssFile.setId( nRssFileId );
@@ -292,8 +408,13 @@ public class RssJspBean extends PluginAdminPageJspBean
         rssFile.setWorkgroup( strWorkgroup );
         rssFile.setDescription( resourceRss.getDescription(  ) );
         rssFile.setTypeResourceRss( resourceRss.getResourceRssType(  ).getKey(  ) );
+        rssFile.setMaxItems( nMaxItems );
+        rssFile.setFeedType( strFeedType );
+        rssFile.setEncoding( strEncoding );
 
         resourceRss.setId( rssFile.getId(  ) );
+        resourceRss.setEncoding( strEncoding );
+        resourceRss.setFeedType( strFeedType );
 
         // Check if the resource does exist
         if ( !resourceRss.checkResource(  ) )
@@ -309,7 +430,7 @@ public class RssJspBean extends PluginAdminPageJspBean
 
         // Check if a RSS file exists for this portlet
         //String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, strRssFileDescription );
-        String strRss = resourceRss.createHtmlRss(  );
+        String strRss = FeedUtil.getFeed( resourceRss );
 
         // Call the create file method
         RssGeneratorService.createFileRss( strRssFileName, strRss );
@@ -366,11 +487,55 @@ public class RssJspBean extends PluginAdminPageJspBean
                     {
                         model.put( MARK_RSS_NAME, STRING_EMPTY );
                     }
-
+                    
+                    if ( request.getParameter( PARAMETER_PUSH_RSS_MAX_ITEMS ) != null )
+                    {
+                    	model.put( MARK_RSS_MAX_ITEMS, request.getParameter( PARAMETER_PUSH_RSS_MAX_ITEMS ) );
+                    }
+                    else
+                    {
+                        model.put( MARK_RSS_MAX_ITEMS, STRING_EMPTY );
+                    }
+                    
+                    if ( request.getParameter( PARAMETER_PUSH_RSS_MAX_ITEMS ) != null )
+                    {
+                    	model.put( MARK_RSS_MAX_ITEMS, request.getParameter( PARAMETER_PUSH_RSS_MAX_ITEMS ) );
+                    }
+                    else
+                    {
+                        model.put( MARK_RSS_MAX_ITEMS, STRING_EMPTY );
+                    }
+                    
+                    
+                    if ( request.getParameter( PARAMETER_PUSH_RSS_FEED_TYPE ) != null )
+                    {
+                    	model.put( MARK_RSS_FEED_TYPE, request.getParameter( PARAMETER_PUSH_RSS_FEED_TYPE ) );
+                    }
+                    else
+                    {
+                    	model.put( MARK_RSS_FEED_TYPE, STRING_EMPTY );
+                    }
+                    
+                    if ( request.getParameter( PARAMETER_PUSH_RSS_ENCODING ) != null )
+                    {
+                    	model.put( MARK_RSS_ENCODING, request.getParameter( PARAMETER_PUSH_RSS_ENCODING ) );
+                    }
+                    else
+                    {
+                    	model.put( MARK_RSS_ENCODING, STRING_EMPTY );
+                    }
+                    
                     ReferenceList refListWorkGroups = AdminWorkgroupService.getUserWorkgroups( getUser(  ),
                             getLocale(  ) );
-
+                    
                     model.put( MARK_USER_WORKGROUP_LIST, refListWorkGroups );
+                    
+                    ReferenceList refListEncoding = getRefListEncoding();
+                    
+                    model.put( MARK_ENCODING_LIST, refListEncoding );
+                    
+                    ReferenceList refListFeedType = getRefListFeedType();
+                    model.put( MARK_FEED_TYPE_LIST, refListFeedType );
 
                     //RSS-24 : the first workgroup will be selected by default
                     if ( !refListWorkGroups.isEmpty(  ) )
@@ -406,6 +571,40 @@ public class RssJspBean extends PluginAdminPageJspBean
 
         return null;
     }
+    
+    /**
+     * Builds the reference list of supported encoding
+     * @return the ReferenceList
+     */
+    private ReferenceList getRefListEncoding()
+    {
+    	List<String> listEncodings = getEncodings();
+    	ReferenceList refList = new ReferenceList();
+    	// ut8 will be the default one
+    	for ( String strEncoding : listEncodings )
+    	{
+    		refList.addItem( strEncoding, strEncoding );
+    	}
+    	
+    	return refList;
+    }
+    
+    /**
+     * Builds the reference list of Feed types
+     * @return the ReferenceList
+     */
+    private ReferenceList getRefListFeedType()
+    {
+    	List<String> listFeedType = getFeedTypes();
+    	ReferenceList refList = new ReferenceList();
+    	
+    	for ( String strFeedType : listFeedType )
+    	{
+    		refList.addItem( strFeedType, strFeedType );
+    	}
+    	
+    	return refList;
+    }
 
     /**
      * Creates the push RSS file corresponding to the given portlet
@@ -424,6 +623,9 @@ public class RssJspBean extends PluginAdminPageJspBean
         String strRssFileName = request.getParameter( PARAMETER_PUSH_RSS_NAME );
         String strRssFileDescription = request.getParameter( PARAMETER_PUSH_RSS_DESCRIPTION );
         String strWorkgroup = request.getParameter( PARAMETER_WORKGROUP_KEY );
+        String strRssMaxItems = request.getParameter( PARAMETER_PUSH_RSS_MAX_ITEMS );
+        String strFeedType = request.getParameter( PARAMETER_PUSH_RSS_FEED_TYPE );
+        String strEncoding = request.getParameter( PARAMETER_PUSH_RSS_ENCODING );
 
         if ( ( strPortletId == null ) || !strPortletId.matches( REGEX_ID ) )
         {
@@ -463,9 +665,44 @@ public class RssJspBean extends PluginAdminPageJspBean
         {
             return AdminMessageService.getMessageUrl( request, MESSAGE_FILENAME_ALREADY_EXISTS, AdminMessage.TYPE_STOP );
         }
+        
+        if ( StringUtils.isBlank( strFeedType ) )
+        {
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
+        }
+        
+        if ( !getFeedTypes().contains( strFeedType ) )
+    	{
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
+    	}
+        
+        if ( StringUtils.isBlank( strEncoding ) )
+        {
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_ENCODING, AdminMessage.TYPE_STOP );
+        }
+
+        
+        int nMaxItems;        
+        if ( StringUtils.isBlank( strRssMaxItems ) )
+        {
+        	// set to 0 -- no limit
+        	nMaxItems = 0;
+        }
+        else
+        {
+        	try
+        	{
+        		nMaxItems = Integer.parseInt( strRssMaxItems );
+        	}
+        	catch ( NumberFormatException nfe )
+        	{
+        		AppLogService.error( nfe.getMessage(), nfe );
+        		return AdminMessageService.getMessageUrl( request, MESSAGE_MAX_ITEMS, AdminMessage.TYPE_STOP );
+        	}
+        }
 
         // Check if a RSS file exists for this portlet
-        String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, strRssFileDescription );
+        String strRssDocument = RssGeneratorService.createRssDocument( nPortletId, strRssFileDescription, strEncoding, strFeedType );
 
         // Call the create file method
         RssGeneratorService.createFileRss( strRssFileName, strRssDocument );
@@ -477,6 +714,9 @@ public class RssJspBean extends PluginAdminPageJspBean
         rssFile.setState( STATE_OK );
         rssFile.setDescription( strRssFileDescription );
         rssFile.setWorkgroup( strWorkgroup );
+        rssFile.setMaxItems( nMaxItems );
+        rssFile.setFeedType( strFeedType );
+        rssFile.setEncoding( strEncoding );
 
         RssGeneratedFileHome.create( rssFile );
 
@@ -530,6 +770,18 @@ public class RssJspBean extends PluginAdminPageJspBean
         HashMap model = new HashMap(  );
         model.put( MARK_PORTLET_LIST, referenceList );
         model.put( MARK_USER_WORKGROUP_LIST, refListWorkGroups );
+        
+        
+        ReferenceList refListEncoding = getRefListEncoding();
+        
+        model.put( MARK_RSS_MAX_ITEMS, STRING_EMPTY );
+        
+        model.put( MARK_ENCODING_LIST, refListEncoding );
+        model.put( MARK_RSS_ENCODING, STRING_EMPTY );
+        
+        ReferenceList refListFeedType = getRefListFeedType();
+        model.put( MARK_FEED_TYPE_LIST, refListFeedType );
+        model.put( MARK_RSS_FEED_TYPE, STRING_EMPTY );
 
         //RSS-24 : the first workgroup will be selected by default
         if ( !refListWorkGroups.isEmpty(  ) )
@@ -558,7 +810,10 @@ public class RssJspBean extends PluginAdminPageJspBean
 
         String strWorkgroup = request.getParameter( PARAMETER_WORKGROUP_KEY );
         String strRssFileName = request.getParameter( PARAMETER_PUSH_RSS_NAME );
-
+        String strRssMaxItems = request.getParameter( PARAMETER_PUSH_RSS_MAX_ITEMS );
+        String strEncoding = request.getParameter( PARAMETER_PUSH_RSS_ENCODING );
+        String strFeedType = request.getParameter( PARAMETER_PUSH_RSS_FEED_TYPE );
+        
         String strResourceRssKey = request.getParameter( PARAMETER_RSS_RESOURCE_KEY );
         IResourceRss resourceRss = RssService.getInstance(  ).getResourceRssInstance( strResourceRssKey, getLocale(  ) );
 
@@ -607,6 +862,41 @@ public class RssJspBean extends PluginAdminPageJspBean
                 return strError;
             }
         }
+        
+        if ( StringUtils.isBlank( strFeedType ) )
+        {
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
+        }
+        
+        if ( !getEncodings().contains( strFeedType ) )
+    	{
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
+    	}
+        
+        
+        if ( StringUtils.isBlank( strEncoding ) )
+        {
+        	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_ENCODING, AdminMessage.TYPE_STOP );
+        }
+        
+        int nMaxItems;        
+        if ( StringUtils.isBlank( strRssMaxItems ) )
+        {
+        	// set to 0 -- no limit
+        	nMaxItems = 0;
+        }
+        else
+        {
+        	try
+        	{
+        		nMaxItems = Integer.parseInt( strRssMaxItems );
+        	}
+        	catch ( NumberFormatException nfe )
+        	{
+        		AppLogService.error( nfe.getMessage(), nfe );
+        		return AdminMessageService.getMessageUrl( request, MESSAGE_MAX_ITEMS, AdminMessage.TYPE_STOP );
+        	}
+        }
 
         RssGeneratedFile rssFile = new RssGeneratedFile(  );
         rssFile.setName( strRssFileName );
@@ -614,14 +904,20 @@ public class RssJspBean extends PluginAdminPageJspBean
         rssFile.setDescription( resourceRss.getDescription(  ) );
         rssFile.setWorkgroup( strWorkgroup );
         rssFile.setTypeResourceRss( resourceRss.getResourceRssType(  ).getKey(  ) );
+        rssFile.setMaxItems( nMaxItems );
+        rssFile.setFeedType( strFeedType );
+        rssFile.setEncoding( strEncoding );
         RssGeneratedFileHome.create( rssFile );
 
+        resourceRss.setEncoding( strEncoding );
+        resourceRss.setFeedType( strFeedType );
         resourceRss.setId( rssFile.getId(  ) );
 
         //sauvegarde du coté directory
         resourceRss.doSaveConfig( request, getLocale(  ) );
+        
 
-        String strRss = resourceRss.createHtmlRss(  );
+        String strRss = FeedUtil.getFeed( resourceRss );
 
         // Call the create file method
         RssGeneratorService.createFileRss( strRssFileName, strRss );
@@ -708,6 +1004,13 @@ public class RssJspBean extends PluginAdminPageJspBean
 
         model.put( MARK_RSS_FILE, rss );
         model.put( MARK_USER_WORKGROUP_LIST, refListWorkGroups );
+        
+        ReferenceList refListEncoding = getRefListEncoding();
+        
+        model.put( MARK_ENCODING_LIST, refListEncoding );
+        
+        ReferenceList refListFeedType = getRefListFeedType();
+        model.put( MARK_FEED_TYPE_LIST, refListFeedType );
 
         HtmlTemplate template = null;
 
