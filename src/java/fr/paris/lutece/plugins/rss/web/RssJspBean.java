@@ -368,7 +368,7 @@ public class RssJspBean extends PluginAdminPageJspBean
         	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
         }
         
-        if ( !getEncodings().contains( strFeedType ) )
+        if ( !getFeedTypes().contains( strFeedType ) )
     	{
         	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
     	}
@@ -868,7 +868,7 @@ public class RssJspBean extends PluginAdminPageJspBean
         	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
         }
         
-        if ( !getEncodings().contains( strFeedType ) )
+        if ( !getFeedTypes().contains( strFeedType ) )
     	{
         	return AdminMessageService.getMessageUrl( request, MESSAGE_NO_FEED_TYPE, AdminMessage.TYPE_STOP );
     	}
