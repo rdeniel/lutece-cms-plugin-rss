@@ -118,7 +118,7 @@ public class RssContentLoader implements ResourceLoader
     }
 
     /**
-     * Fetch a RSS feed
+     * Fetch an active RSS feed
      * @param nId The RSS feed Id
      * @return The content of the RSS feed
      * @throws RssParsingException If a parsing exception occurs
@@ -126,7 +126,7 @@ public class RssContentLoader implements ResourceLoader
     public static String fetchRssFeed( int nId ) throws RssParsingException
     {
         String strContent = null;
-        RssFeed rss = RssFeedHome.findByPrimaryKey( nId );
+        RssFeed rss = RssFeedHome.findByPrimaryKey( nId, true );
         HttpAccess httpAccess = new HttpAccess(  );
 
         try

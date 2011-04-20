@@ -1,18 +1,23 @@
-<div class="content-box" >
-	<#if permission_advanced_parameter>
-		<form method="post" action="jsp/admin/plugins/rss/ManageAdvancedParameters.jsp">
-			<input type="submit" value="#i18n{rss.manage_rss.labelAdvancedParameters}" class="button bt-toolbar" />
-		</form>		        
+<div id="content-box-actions">
+    <form method="post"  action="jsp/admin/plugins/rss/CreateRssFeed.jsp">
+        <input type="submit" value="#i18n{rss.manage_rss_feeds.buttonAddFeed}" class="button bt-toolbar"/>
+    </form>
+    <#if permission_advanced_parameter>
+        <form method="post" action="jsp/admin/plugins/rss/ManageAdvancedParameters.jsp">
+            <input type="submit" value="#i18n{rss.manage_rss.labelAdvancedParameters}" class="button bt-toolbar" />
+        </form>             
     </#if>
-    <h2>#i18n{rss.manage_rss_feeds.tableLabel}</h2>
+</div>
+<div class="content-box" >
+    <h2>#i18n{rss.manage_rss_feeds.active.tableLabel}</h2>
     <form method="post"  action="jsp/admin/plugins/rss/ManageRssFeeds.jsp">
-        <@pagination paginator=paginator />
+        <@pagination paginator=paginator_active />
         
         <!-- Number of feeds per page selector -->
         #i18n{rss.manage_rss_feeds.labelItemsPerPage} :
-        <select name="items_per_page">
+        <select name="items_per_page_active">
             <#list [ "10" , "20" , "50" , "100" ] as nb>
-            <#if nb_items_per_page = nb >
+            <#if nb_items_per_page_active = nb >
             <option selected="selected" value="${nb}">${nb}</option>
             <#else>
             <option value="${nb}">${nb}</option>
@@ -29,9 +34,10 @@
             <th>Include</th>
             <th></th>
             <th></th>
-            <th>#i18n{rss.manage_rss_feeds.columnTitleLastUpdate}</th>
+            <th>#i18n{rss.manage_rss_feeds.active.columnTitleLastUpdate}</th>
             <th></th>
             <th>#i18n{rss.manage_rss_feeds.columnTitleActions}</th>
+            <th></th>
         </tr>
         <tr>
             
@@ -42,10 +48,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>#i18n{rss.manage_rss_feeds.columnTitleDate}</td>
-                <td>#i18n{rss.manage_rss_feeds.columnTitleStatus}</td>
-                <td>#i18n{rss.manage_rss_feeds.columnTitleError}</td>
+                <td>#i18n{rss.manage_rss_feeds.active.columnTitleDate}</td>
+                <td>#i18n{rss.manage_rss_feeds.active.columnTitleStatus}</td>
+                <td>#i18n{rss.manage_rss_feeds.active.columnTitleError}</td>
                 <td></td>
+                <td>#i18n{rss.manage_rss_feeds.active.columnTitleChangeOrder}</td>
                 
                 
             </div>
@@ -53,27 +60,27 @@
             
         </tr>
         
-        <#list rss_feeds_list as feed >
+        <#list active_rss_feeds_list as active_feed >
         <tr>
-            <td> <a href="jsp/admin/plugins/rss/ModifyRssFeed.jsp?id_rss_feed=${feed.id}"> ${feed.name}</td>
-            <td>${feed.url}</td>
-            <td>${feed.includeTag}</td>
+            <td> <a href="jsp/admin/plugins/rss/ModifyRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true"> ${active_feed.name}</td>
+            <td>${active_feed.url}</td>
+            <td>${active_feed.includeTag}</td>
             <td>
                 
-                <td><#if feed.lastFetchDate?exists>
-                    ${feed.lastFetchDate?string.medium_short}
+                <td><#if active_feed.lastFetchDate?exists>
+                    ${active_feed.lastFetchDate?string.medium_short}
                     </#if>
                 </td>
                 <td>
-                    <#if feed.lastFetchStatus != 1>
-                    <img src="images/admin/skin/enable.png" alt="#i18n{rss.manage_rss_file.labelStateUp}" title="#i18n{rss.manage_rss_file.labelStateUp}"/>
+                    <#if active_feed.lastFetchStatus != 1>
+                    <img src="images/admin/skin/enable.png" alt="#i18n{rss.manage_rss_file.active.labelStateUp}" title="#i18n{rss.manage_rss_file.active.labelStateUp}"/>
                     <#else>
-                    <img src="images/admin/skin/disable.png" alt="#i18n{rss.manage_rss_file.labelStateDown}" title="#i18n{rss.manage_rss_file.labelStateDown}"/>
+                    <img src="images/admin/skin/disable.png" alt="#i18n{rss.manage_rss_file.active.labelStateDown}" title="#i18n{rss.manage_rss_file.active.labelStateDown}"/>
                     </#if>
                 </td>
                 <td>
-                    <#if feed.lastFetchError?exists>
-                    <#if feed.lastFetchError != "">
+                    <#if active_feed.lastFetchError?exists>
+                    <#if active_feed.lastFetchError != "">
                     #i18n{rss.manage_rss_feeds.labelConnectionError}
                     </#if>
                     </#if>
@@ -82,20 +89,68 @@
             </td>
             
             <td>
-                <a href="jsp/admin/plugins/rss/DoFetchRssFeed.jsp?id_rss_feed=${feed.id}" class="admin-menu">
-                <img src="images/admin/skin/actions/reload.png" width="24" height="24" alt="#i18n{rss.manage_rss_feeds.labelReload}" title="#i18n{rss.manage_rss_feeds.labelReload} ${feed.name}"></a>
-                <a href="jsp/admin/plugins/rss/DoConfirmDeleteRssFeed.jsp?id_rss_feed=${feed.id}" class="admin-menu">
+                <a href="jsp/admin/plugins/rss/DoFetchRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true" class="admin-menu">
+                <img src="images/admin/skin/actions/reload.png" width="24" height="24" alt="#i18n{rss.manage_rss_feeds.active.labelReload}" title="#i18n{rss.manage_rss_feeds.active.labelReload} ${active_feed.name}"></a>
+                <a href="jsp/admin/plugins/rss/DoConfirmActivateRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true" class="admin-menu">
+                <img src="images/admin/skin/disable.png" width="24" height="24" alt="#i18n{rss.manage_rss_feeds.labelDeactivate}" title="#i18n{rss.manage_rss_feeds.labelDeactivate} ${active_feed.name}"></a>
+                <a href="jsp/admin/plugins/rss/DoConfirmDeleteRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true" class="admin-menu">
                 <img src="images/admin/skin/actions/delete.png" width="24" height="24" alt="#i18n{rss.manage_rss_feeds.labelDelete}" title="#i18n{rss.manage_rss_feeds.labelDelete}"></a>
+            </td>
+            <td>
+                <form method="post" action="jsp/admin/plugins/rss/DoChangeRssFeedOrder.jsp">
+                        <select id="new_order" name="new_order" >
+                            <#list 1..nb_active_rss_feed?number as i>
+                                <option <#if active_feed.id == i>selected="selected"</#if> value="${i}" >${i}</option>
+                            </#list>
+                        </select>                   
+                    <input type="hidden" name="id_rss_feed" value="${active_feed.id}" />
+                    <input class="button" type="submit" value="#i18n{rss.manage_rss_feeds.active.labelModifyOrder}" />
+                 </form>
             </td>
             
         </tr>
         </#list>
         
-    </table>
+    </table>  
+</div>
     
-    <form method="post"  action="jsp/admin/plugins/rss/CreateRssFeed.jsp">
-        <input type="submit" value="#i18n{rss.manage_rss_feeds.buttonAddFeed}" class="button"/>
+<div class="content-box" >
+    <h2>#i18n{rss.manage_rss_feeds.inactive.tableLabel}</h2>
+    <form method="post"  action="jsp/admin/plugins/rss/ManageRssFeeds.jsp">
+        <@pagination paginator=paginator_inactive />
+        
+        <!-- Number of feeds per page selector -->
+        #i18n{rss.manage_rss_feeds.labelItemsPerPage} :
+        <select name="items_per_page_inactive">
+            <#list [ "10" , "20" , "50" , "100" ] as nb>
+            <#if nb_items_per_page_inactive = nb >
+            <option selected="selected" value="${nb}">${nb}</option>
+            <#else>
+            <option value="${nb}">${nb}</option>
+            </#if>
+            </#list>
+        </select>
+        <input type="submit" class="button" value="#i18n{rss.manage_rss_feeds.buttonItemsPerPage}" />
     </form>
     
+    <table summary="#i18n{rss.manage_rss_feeds.tableSummary}">
+	    <tr>
+	       <th>#i18n{rss.manage_rss_feeds.columnTitleName}</th>
+            <th>#i18n{rss.manage_rss_feeds.columnTitleUrl}</th>
+            <th>#i18n{rss.manage_rss_feeds.columnTitleActions}</th>
+	    </tr>
+        <#list inactive_rss_feeds_list as inactive_feed >
+        <tr>
+            <td> <a href="jsp/admin/plugins/rss/ModifyRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false"> ${inactive_feed.name}</td>
+            <td>${inactive_feed.url}</td>
+            <td>
+                <a href="jsp/admin/plugins/rss/DoActivateRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false" class="admin-menu">
+                <img src="images/admin/skin/enable.png" width="24" height="24" alt="#i18n{rss.manage_rss_feeds.labelActivate}" title="#i18n{rss.manage_rss_feeds.labelActivate} ${inactive_feed.name}"></a>
+                <a href="jsp/admin/plugins/rss/DoConfirmDeleteRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false" class="admin-menu">
+                <img src="images/admin/skin/actions/delete.png" width="24" height="24" alt="#i18n{rss.manage_rss_feeds.labelDelete}" title="#i18n{rss.manage_rss_feeds.labelDelete}"></a>
+            </td>
+        </tr>
+        </#list>
+    </table>
     
 </div>

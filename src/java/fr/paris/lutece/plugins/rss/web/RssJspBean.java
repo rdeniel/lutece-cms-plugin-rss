@@ -119,7 +119,7 @@ public class RssJspBean extends PluginAdminPageJspBean
     private static final String PROPERTY_PATH_PLUGIN_WAREHOUSE = "path.plugins.warehouse";
     private static final String PROPERTY_FILE_TYPE = "rss.file.type";
     private static final String PROPERTY_NAME_MAX_LENGTH = "rss.name.max.length";
-    private static final String PROPERTY_PAGE_TITLE_FILES = "rss.manage_rss_feeds.pageTitle";
+    private static final String PROPERTY_PAGE_TITLE_FILES = "rss.manage_rss_file.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_CREATE = "rss.create_rss_file.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_MODIFY = "rss.modify_rss_file.pageTitle";
     private static final String PROPERTY_RSS_PER_PAGE = "rss.rssPerPage";
@@ -162,12 +162,12 @@ public class RssJspBean extends PluginAdminPageJspBean
         _nItemsPerPage = getItemsPerPage( request );
         _strCurrentPageIndex = getPageIndex( request );
 
-        List listRssFileList = RssGeneratedFileHome.getRssFileList(  );
-        listRssFileList = (List) AdminWorkgroupService.getAuthorizedCollection( listRssFileList, getUser(  ) );
+        List<RssGeneratedFile>  listRssFileList = RssGeneratedFileHome.getRssFileList(  );
+        listRssFileList = (List<RssGeneratedFile> ) AdminWorkgroupService.getAuthorizedCollection( listRssFileList, getUser(  ) );
 
         Paginator paginator = new Paginator( listRssFileList, _nItemsPerPage, getHomeUrl( request ),
                 PARAMETER_PAGE_INDEX, _strCurrentPageIndex );
-        HashMap model = new HashMap(  );
+        HashMap<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_PAGINATOR, paginator );
         model.put( MARK_NB_ITEMS_PER_PAGE, "" + _nItemsPerPage );
         model.put( MARK_PUSH_RSS_LIST, paginator.getPageItems(  ) );
@@ -477,7 +477,7 @@ public class RssJspBean extends PluginAdminPageJspBean
 
                 if ( resourceRss.contentResourceRss(  ) )
                 {
-                    HashMap model = new HashMap(  );
+                    HashMap<String, Object> model = new HashMap<String, Object>(  );
 
                     if ( request.getParameter( PARAMETER_PUSH_RSS_NAME ) != null )
                     {
@@ -735,7 +735,7 @@ public class RssJspBean extends PluginAdminPageJspBean
 
         ReferenceList referenceList = RssService.getInstance(  ).getRefListResourceRssType( getLocale(  ) );
 
-        HashMap model = new HashMap(  );
+        HashMap<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_RESOURCE_LIST, referenceList );
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_PUSH_RSS_FILE, getLocale(  ), model );
@@ -767,7 +767,7 @@ public class RssJspBean extends PluginAdminPageJspBean
             referenceList.addItem( portlet.getId(  ), portlet.getName(  ) );
         }
 
-        HashMap model = new HashMap(  );
+        HashMap<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_PORTLET_LIST, referenceList );
         model.put( MARK_USER_WORKGROUP_LIST, refListWorkGroups );
         
@@ -990,7 +990,7 @@ public class RssJspBean extends PluginAdminPageJspBean
         int nRssFileId = Integer.parseInt( request.getParameter( PARAMETER_PUSH_RSS_ID ) );
         RssGeneratedFile rss = RssGeneratedFileHome.findByPrimaryKey( nRssFileId );
 
-        HashMap model = new HashMap(  );
+        HashMap<String, Object> model = new HashMap<String, Object>(  );
 
         if ( request.getParameter( PARAMETER_WORKGROUP_KEY ) != null )
         {

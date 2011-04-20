@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2009, Mairie de Paris
+ * Copyright (c) 2002-2010, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,56 +31,53 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.rss.business;
+package fr.paris.lutece.plugins.rss.business.parameter;
 
-import fr.paris.lutece.portal.service.i18n.I18nService;
-import fr.paris.lutece.portal.service.util.RemovalListener;
-
-import java.util.Collection;
-import java.util.Locale;
-
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.util.ReferenceItem;
+import fr.paris.lutece.util.ReferenceList;
 
 /**
- * Portlet Removal Listener
+ * 
+ * RssFeedParameterHome
+ *
  */
-public class RssGeneratedFilePortletRemovalListener implements RemovalListener
+public class RssFeedParameterHome
 {
-    private static final String PROPERTY_PORTLET_CANNOT_BE_REMOVED = "rss.message.portletCannotBeRemoved";
+	// Static variable pointed at the DAO instance
+    private static IRssFeedParameterDAO _dao = (IRssFeedParameterDAO) SpringContextService.getPluginBean( "rss", "rssFeedParameterDAO" );
 
     /**
-    * Check if the object can be safely removed
-    * @param strId The object id
-    * @return true if the object can be removed otherwise false
+    * Load the parameter value
+    * @param strParameterKey the parameter key
+    * @param plugin
+    * @return The parameter value
     */
-    public boolean canBeRemoved( String strId )
+    public static ReferenceItem findByKey( String strParameterKey, Plugin plugin )
     {
-        if ( strId == null )
-        {
-            return true;
-        }
-
-        Collection<RssGeneratedFile> listRssFiles = RssGeneratedFileHome.getRssFileList(  );
-
-        for ( RssGeneratedFile rssGeneratedFile : listRssFiles )
-        {
-            if ( Integer.toString( rssGeneratedFile.getPortletId(  ) ).equals( strId ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return _dao.load( strParameterKey, plugin );
     }
 
     /**
-     * Gives a message explaining why the object can't be removed
-     * @param strId The object id
-     * @param locale The current locale
-     * @return The message
+     * Update the parameter value
+     * @param strParameterKey The parameter key
+     * @param strParameterValue The parameter value
+     * @param plugin
      */
-    public String getRemovalRefusedMessage( String strId, Locale locale )
+    public static void update( ReferenceItem param, Plugin plugin )
     {
-        // Build a message mailing list for using this Portlet 
-        return I18nService.getLocalizedString( PROPERTY_PORTLET_CANNOT_BE_REMOVED, locale );
+        _dao.store( param, plugin );
     }
+    
+    /**
+     * Load all the parameter default values
+     * @param plugin Plugin
+     * @return a list of ReferenceItem
+     */
+    public static ReferenceList findAll( Plugin plugin )
+    {
+    	return _dao.selectAll( plugin );
+    }
+    
 }

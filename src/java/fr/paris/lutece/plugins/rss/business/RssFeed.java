@@ -53,6 +53,7 @@ public class RssFeed implements AdminWorkgroupResource
     private String _strWorkgroup;
     private String _strIncludeTag;
     private int _nIdIncludeStyle;
+    private boolean _bActive;
 
     /**
     * Returns the Id
@@ -237,5 +238,23 @@ public class RssFeed implements AdminWorkgroupResource
     public void setIdIncludeStyle( int nIdIncludeStyle )
     {
         _nIdIncludeStyle = nIdIncludeStyle;
+    }
+    
+    /**
+     * 
+     * @return true if this feed is active
+     */
+    public boolean getIsActive(  )
+    {
+    	return _bActive;
+    }
+    
+    /**
+     * 
+     * @param bActive
+     */
+    public void setIsActive( boolean bActive )
+    {
+    	_bActive = bActive;
     }
 }

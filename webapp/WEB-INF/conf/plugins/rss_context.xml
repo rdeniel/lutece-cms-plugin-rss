@@ -8,6 +8,7 @@
 	<bean id="rssPortletDAO"  class="fr.paris.lutece.plugins.rss.business.portlet.RssPortletDAO" />
 	<bean id="rssListPortletDAO"  class="fr.paris.lutece.plugins.rss.business.portlet.RssListPortletDAO" />
 	<bean id="rssService"  factory-method="getInstance" class="fr.paris.lutece.plugins.rss.service.RssService" />
+	<bean id="rssFeedParameterDAO" class="fr.paris.lutece.plugins.rss.business.parameter.RssFeedParameterDAO" />
 			
 	<bean id="resourceRssFactory"  class="fr.paris.lutece.plugins.rss.business.resourceRss.ResourceRssFactory" />
 	

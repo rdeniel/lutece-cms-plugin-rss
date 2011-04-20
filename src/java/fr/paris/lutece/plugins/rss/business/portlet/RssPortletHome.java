@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.rss.business.portlet;
 
+import java.util.List;
+
 import fr.paris.lutece.portal.business.portlet.IPortletInterfaceDAO;
 import fr.paris.lutece.portal.business.portlet.PortletHome;
 import fr.paris.lutece.portal.business.portlet.PortletTypeHome;
@@ -106,6 +108,16 @@ public class RssPortletHome extends PortletHome
      */
     public static boolean checkNoPortletLinked( int nIdRssFeed )
     {
-        return _dao.checkNoPortletLinked( nIdRssFeed );
+        return _dao.checkLinkedPortlet( nIdRssFeed ).isEmpty(  );
+    }
+    
+    /**
+     * Checks whether the rss feed is linked to a portlet
+     * @return The linked portlet if found, <code>null</code> otherwise
+     * @param nIdRssFeed The identifier of the rss feed
+     */
+    public static List<RssPortlet> checkLinkedPortlet( int nIdRssFeed )
+    {
+    	return _dao.checkLinkedPortlet( nIdRssFeed );
     }
 }

@@ -33,9 +33,12 @@
  */
 package fr.paris.lutece.plugins.rss.business;
 
+import fr.paris.lutece.plugins.rss.business.portlet.IRssPortletDAO;
+import fr.paris.lutece.plugins.rss.business.portlet.RssPortlet;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,6 +49,8 @@ public final class RssFeedHome
 {
     // Static variable pointed at the DAO instance
     private static IRssFeedDAO _dao = (IRssFeedDAO) SpringContextService.getPluginBean( "rss", "rssFeedDAO" );
+    
+    private static IRssPortletDAO _daoPortlet = (IRssPortletDAO) SpringContextService.getPluginBean( "rss", "rssPortletDAO" );
 
     /**
      * Private constructor - this class need not be instantiated
@@ -91,12 +96,17 @@ public final class RssFeedHome
     }
 
     /**
-     * Remove the RssFeed whose identifier is specified in parameter
-     * @param nId The RssFeed ID
+     * Remove the RssFeed
+     * @param rssFeed The rssFeed to remove
      */
-    public static void remove( int nId )
+    public static void remove( RssFeed rssFeed )
     {
-        _dao.delete( nId );
+    	if( rssFeed.getIsActive(  ) )
+    	{
+    		int nMaxOrder = _dao.newPrimaryKey( true ) -1;
+    		rssFeed = updateOrder( rssFeed, nMaxOrder);	
+    	}
+        _dao.delete( rssFeed );
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -105,11 +115,12 @@ public final class RssFeedHome
     /**
      * Returns an instance of a rssFeed whose identifier is specified in parameter
      * @param nKey The Primary key of the rssFeed
+     * @param bActive <code>true</code> if the rssFeed is active, <code>false</code> otherwise
      * @return An instance of rssFeed
      */
-    public static RssFeed findByPrimaryKey( int nKey )
+    public static RssFeed findByPrimaryKey( int nKey, boolean bActive )
     {
-        return _dao.load( nKey );
+        return _dao.load( nKey, bActive );
     }
 
     /**
@@ -118,7 +129,17 @@ public final class RssFeedHome
      */
     public static List<RssFeed> getRssFeeds(  )
     {
-        return _dao.selectRssFeeds(  );
+        return _dao.selectRssFeeds( true );
+    }
+    
+    /**
+     * Returns a list of rss feeds
+     * @param bActive <code>true</code> for active feeds
+     * @return A List of rssFeeds
+     */
+    public static List<RssFeed> getRssFeeds( boolean bActive )
+    {
+        return _dao.selectRssFeeds( bActive );
     }
 
     /**
@@ -127,7 +148,17 @@ public final class RssFeedHome
      */
     public static ReferenceList getRssFeedsReferenceList(  )
     {
-        return _dao.selectRssFeedReferenceList(  );
+        return _dao.selectRssFeedReferenceList( true );
+    }
+    
+    /**
+     * Returns a list of rssFeeds objects
+     * @param bActive <code>true</code> for active feeds
+     * @return A list of rssFeeds
+     */
+    public static ReferenceList getRssFeedsReferenceList( boolean bActive )
+    {
+        return _dao.selectRssFeedReferenceList( bActive );
     }
 
     /**
@@ -138,5 +169,96 @@ public final class RssFeedHome
     public static boolean checkUrlNotUsed( String strUrl )
     {
         return _dao.checkUrlNotUsed( strUrl );
+    }
+    
+    /**
+     * Updates an active feed to a new order and shifts in-between feeds consequently.
+     * Linked portlets get updated as well.
+     *
+     * @param rssFeed The feed to update order
+     * @param nNewOrder the new order for the feed
+     * @return the feed updated to the new order or <code>null</code> if the feed is inactive
+     * @throws IndexOutOfBoundsException if  the new order parameter is less than 1 or greater than the current max order
+     */
+    public static RssFeed updateOrder( RssFeed rssFeed, int nNewOrder )
+    	throws IndexOutOfBoundsException
+    {
+    	if( !rssFeed.getIsActive(  ) )
+    	{
+    		return null;
+    	}
+    	
+    	int nMaxOrder = _dao.newPrimaryKey( true ) - 1;
+    	int nOldOrder = rssFeed.getId(  );
+    	
+    	if ( ( nNewOrder < 1 ) || ( nNewOrder > nMaxOrder ) )
+        {
+            throw new IndexOutOfBoundsException(  );
+        }
+
+        if ( nNewOrder == nOldOrder )
+        {
+            return rssFeed;
+        }
+        
+        List<RssPortlet> listLinkedPortlet = new ArrayList<RssPortlet>(  );
+        
+        for( RssFeed currentRssFeed : getRssFeeds( true ) )
+        {
+        	int nCurrentOrder = currentRssFeed.getId(  );
+        	
+        	if ( ( nOldOrder > nNewOrder ) && ( nCurrentOrder < nOldOrder ) && ( nCurrentOrder >= nNewOrder ) )
+            {
+                currentRssFeed.setId( nCurrentOrder + 1 );
+                _dao.store( currentRssFeed );
+            	_dao.storeLastFetchInfos( currentRssFeed );
+            	for( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nCurrentOrder ) )
+            	{
+            		linkedPortlet.setRssFeedId( Integer.toString( nCurrentOrder + 1 ) );
+            		listLinkedPortlet.add( linkedPortlet );
+            	}
+            }
+            else if ( ( nOldOrder < nNewOrder ) && ( nCurrentOrder > nOldOrder ) && ( nCurrentOrder <= nNewOrder ) )
+            {
+                currentRssFeed.setId( nCurrentOrder - 1 );
+                _dao.store( currentRssFeed );
+            	_dao.storeLastFetchInfos( currentRssFeed );
+            	for( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nCurrentOrder ) )
+            	{
+            		linkedPortlet.setRssFeedId( Integer.toString( nCurrentOrder - 1 ) );
+            		listLinkedPortlet.add( linkedPortlet );
+            	}
+            }
+        }
+        
+        rssFeed.setId( nNewOrder );
+        _dao.store( rssFeed );
+        _dao.storeLastFetchInfos( rssFeed );
+        
+        for( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nOldOrder ) )
+    	{
+    		linkedPortlet.setRssFeedId( Integer.toString( nNewOrder ) );
+    		listLinkedPortlet.add( linkedPortlet );
+    	}
+        
+        for( RssPortlet portletToUpdate : listLinkedPortlet )
+        {
+        	_daoPortlet.store( portletToUpdate );
+        }
+        
+        return rssFeed;
+    }
+    
+    /**
+     * De/activate a feed
+     * @param rssFeed the feed to de/activate
+     * @param bActive <code>true</code> to activate the feed, <code>false</code> otherwise
+     * @return the updated feed
+     */
+    public static RssFeed setActive( RssFeed rssFeed, boolean bActive )
+    {    	
+    	remove( rssFeed );
+    	rssFeed.setIsActive( bActive );
+    	return create( rssFeed );
     }
 }

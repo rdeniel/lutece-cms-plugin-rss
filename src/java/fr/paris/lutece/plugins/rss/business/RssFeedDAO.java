@@ -46,6 +46,8 @@ import java.util.List;
 public final class RssFeedDAO implements IRssFeedDAO
 {
     // Constants
+	//There are to tables. One for the active feeds and the other for the inactive ones
+	//queries for active feeds
     private static final String SQL_QUERY_NEW_PK = " SELECT max( id_rss_feed ) FROM rss_feed ";
     private static final String SQL_QUERY_SELECT = " SELECT id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style FROM rss_feed WHERE id_rss_feed = ?  ";
     private static final String SQL_QUERY_INSERT = " INSERT INTO rss_feed ( id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ";
@@ -53,15 +55,27 @@ public final class RssFeedDAO implements IRssFeedDAO
     private static final String SQL_QUERY_UPDATE = " UPDATE rss_feed SET id_rss_feed = ?, name = ?, url = ?, workgroup_key = ?, include_style = ? WHERE id_rss_feed = ?  ";
     private static final String SQL_QUERY_SELECTALL = " SELECT id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style FROM rss_feed ";
     private static final String SQL_QUERY_UPDATE_LAST_FETCH_INFOS = " UPDATE rss_feed SET last_fetch_date = ?, last_fetch_status = ?, last_fetch_error = ? WHERE id_rss_feed = ?  ";
-    private static final String SQL_QUERY_SELECT_URL = "SELECT url from rss_feed WHERE url = ? ";
+    
+    //queries for inactive feeds
+    private static final String SQL_QUERY_NEW_PK_OFF = " SELECT max( id_rss_feed ) FROM rss_feed_inactive ";
+    private static final String SQL_QUERY_SELECT_OFF = " SELECT id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style FROM rss_feed_inactive WHERE id_rss_feed = ?  ";
+    private static final String SQL_QUERY_INSERT_OFF = " INSERT INTO rss_feed_inactive ( id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_DELETE_OFF = " DELETE FROM rss_feed_inactive WHERE id_rss_feed = ?  ";
+    private static final String SQL_QUERY_UPDATE_OFF = " UPDATE rss_feed_inactive SET id_rss_feed = ?, name = ?, url = ?, workgroup_key = ?, include_style = ? WHERE id_rss_feed = ?  ";
+    private static final String SQL_QUERY_SELECTALL_OFF = " SELECT id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style FROM rss_feed_inactive ";
+    private static final String SQL_QUERY_UPDATE_LAST_FETCH_INFOS_OFF = " UPDATE rss_feed_inactive SET last_fetch_date = ?, last_fetch_status = ?, last_fetch_error = ? WHERE id_rss_feed = ?  ";
+    
+    private static final String SQL_QUERY_SELECT_URL = "SELECT url FROM rss_feed WHERE url = ? UNION SELECT url FROM rss_feed_inactive WHERE url = ? ";
+    
 
     /**
-     * Generates a new primary key
+     * Generates a new primary key either in the active feed table or in the inactive feed one
+     * @param bActive <code>true</code> for the active feed table
      * @return The new primary key
      */
-    private int newPrimaryKey(  )
+    public int newPrimaryKey( boolean bActive )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK );
+        DAOUtil daoUtil = new DAOUtil( bActive ? SQL_QUERY_NEW_PK : SQL_QUERY_NEW_PK_OFF );
         daoUtil.executeQuery(  );
 
         int nKey;
@@ -84,8 +98,9 @@ public final class RssFeedDAO implements IRssFeedDAO
      */
     public void insert( RssFeed rssFeed )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT );
-        rssFeed.setId( newPrimaryKey(  ) );
+    	boolean bActive = rssFeed.getIsActive(  );
+        DAOUtil daoUtil = new DAOUtil( bActive ? SQL_QUERY_INSERT : SQL_QUERY_INSERT_OFF );
+        rssFeed.setId( newPrimaryKey( bActive ) );
         daoUtil.setInt( 1, rssFeed.getId(  ) );
         daoUtil.setString( 2, rssFeed.getName(  ) );
         daoUtil.setString( 3, rssFeed.getUrl(  ) );
@@ -103,10 +118,11 @@ public final class RssFeedDAO implements IRssFeedDAO
      * Load the data of RssFeed from the table
      * @return the instance of the RssFeed
      * @param nRssFeedId The identifier of RssFeed
+     * @param bActive <code>true</code> if the field is active
      */
-    public RssFeed load( int nRssFeedId )
+    public RssFeed load( int nRssFeedId, boolean bActive )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT );
+        DAOUtil daoUtil = new DAOUtil( bActive ? SQL_QUERY_SELECT : SQL_QUERY_SELECT_OFF );
         daoUtil.setInt( 1, nRssFeedId );
         daoUtil.executeQuery(  );
 
@@ -115,6 +131,7 @@ public final class RssFeedDAO implements IRssFeedDAO
         if ( daoUtil.next(  ) )
         {
             rssFeed = new RssFeed(  );
+            rssFeed.setIsActive( bActive );
             rssFeed.setId( daoUtil.getInt( 1 ) );
             rssFeed.setName( daoUtil.getString( 2 ) );
             rssFeed.setUrl( daoUtil.getString( 3 ) );
@@ -132,12 +149,12 @@ public final class RssFeedDAO implements IRssFeedDAO
 
     /**
      * Delete a record from the table
-     * @param nId Delete the rss feed
+     * @param rssFeed the feed to delete
      */
-    public void delete( int nId )
+    public void delete( RssFeed rssFeed )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE );
-        daoUtil.setInt( 1, nId );
+        DAOUtil daoUtil = new DAOUtil( rssFeed.getIsActive(  ) ? SQL_QUERY_DELETE : SQL_QUERY_DELETE_OFF );
+        daoUtil.setInt( 1, rssFeed.getId(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
@@ -149,7 +166,7 @@ public final class RssFeedDAO implements IRssFeedDAO
      */
     public void store( RssFeed rssFeed )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE );
+        DAOUtil daoUtil = new DAOUtil( rssFeed.getIsActive(  ) ? SQL_QUERY_UPDATE : SQL_QUERY_UPDATE_OFF );
         daoUtil.setInt( 1, rssFeed.getId(  ) );
         daoUtil.setString( 2, rssFeed.getName(  ) );
         daoUtil.setString( 3, rssFeed.getUrl(  ) );
@@ -168,7 +185,7 @@ public final class RssFeedDAO implements IRssFeedDAO
      */
     public void storeLastFetchInfos( RssFeed rssFeed )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE_LAST_FETCH_INFOS );
+        DAOUtil daoUtil = new DAOUtil( rssFeed.getIsActive(  ) ? SQL_QUERY_UPDATE_LAST_FETCH_INFOS : SQL_QUERY_UPDATE_LAST_FETCH_INFOS_OFF );
         daoUtil.setTimestamp( 1, rssFeed.getLastFetchDate(  ) );
         daoUtil.setInt( 2, rssFeed.getLastFetchStatus(  ) );
         daoUtil.setString( 3, rssFeed.getLastFetchError(  ) );
@@ -177,14 +194,15 @@ public final class RssFeedDAO implements IRssFeedDAO
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
     }
-
+    
     /**
      * Load the list of rssFeeds
+     * @param bActive <code>true</code> if the field is active
      * @return The List of the RssFeeds
      */
-    public List<RssFeed> selectRssFeeds(  )
+    public List<RssFeed> selectRssFeeds( boolean bActive )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL );
+        DAOUtil daoUtil = new DAOUtil( bActive ? SQL_QUERY_SELECTALL : SQL_QUERY_SELECTALL_OFF );
         daoUtil.executeQuery(  );
 
         List<RssFeed> list = new ArrayList<RssFeed>(  );
@@ -193,6 +211,7 @@ public final class RssFeedDAO implements IRssFeedDAO
         {
             RssFeed rssFeed = new RssFeed(  );
 
+            rssFeed.setIsActive( bActive );
             rssFeed.setId( daoUtil.getInt( 1 ) );
             rssFeed.setName( daoUtil.getString( 2 ) );
             rssFeed.setUrl( daoUtil.getString( 3 ) );
@@ -219,6 +238,7 @@ public final class RssFeedDAO implements IRssFeedDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_URL );
         daoUtil.setString( 1, strUrl );
+        daoUtil.setString( 2, strUrl );
         daoUtil.executeQuery(  );
 
         if ( daoUtil.next(  ) )
@@ -235,12 +255,13 @@ public final class RssFeedDAO implements IRssFeedDAO
 
     /**
      * Load the list of rssFeeds
+     * @param bActive <code>true</code> for active feeds
      * @return A referenceList representing the RssFeeds
      */
-    public ReferenceList selectRssFeedReferenceList(  )
+    public ReferenceList selectRssFeedReferenceList( boolean bActive )
     {
         ReferenceList listRssFeeds = new ReferenceList(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL );
+        DAOUtil daoUtil = new DAOUtil( bActive ? SQL_QUERY_SELECTALL : SQL_QUERY_SELECTALL_OFF );
         daoUtil.executeQuery(  );
 
         while ( daoUtil.next(  ) )

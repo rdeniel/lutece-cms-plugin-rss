@@ -39,11 +39,17 @@ import java.util.List;
 
 
 /**
- *
- * @author Isabelle
+ * IRssFeedDAO
  */
 public interface IRssFeedDAO
 {
+	/**
+     * Generates a new primary key either in the active feed table or in the inactive feed one
+     * @param bActive <code>true</code> for the active feed table
+     * @return The new primary key
+     */
+    int newPrimaryKey( boolean bActive );
+    
     /**
      * Checks whether url referenced is pointed as an external feed
      * @param strUrl The url to be tested
@@ -53,9 +59,9 @@ public interface IRssFeedDAO
 
     /**
      * Delete a record from the table
-     * @param nId Delete the rss feed
+     * @param rssFeed the feed to delete
      */
-    void delete( int nId );
+    void delete( RssFeed rssFeed );
 
     /**
      * Insert a new record in the table.
@@ -65,23 +71,26 @@ public interface IRssFeedDAO
 
     /**
      * Load the data of RssFeed from the table
-     * @param nRssFeedId The identifier of RssFeed
      * @return the instance of the RssFeed
+     * @param nRssFeedId The identifier of RssFeed
+     * @param bActive <code>true</code> if the field is active
      */
-    RssFeed load( int nRssFeedId );
-
+    RssFeed load( int nRssFeedId, boolean bActive );
+    
     /**
      * Load the list of rssFeeds
+     * @param bActive <code>true</code> for active feeds
      * @return A referenceList representing the RssFeeds
      */
-    ReferenceList selectRssFeedReferenceList(  );
+    ReferenceList selectRssFeedReferenceList( boolean bActive );
 
     /**
      * Load the list of rssFeeds
+     * @param bActive <code>true</code> if the field is active
      * @return The List of the RssFeeds
      */
-    List<RssFeed> selectRssFeeds(  );
-
+    List<RssFeed> selectRssFeeds( boolean bActive );
+    
     /**
      * Update the record in the table
      * @param rssFeed The reference of rssFeed

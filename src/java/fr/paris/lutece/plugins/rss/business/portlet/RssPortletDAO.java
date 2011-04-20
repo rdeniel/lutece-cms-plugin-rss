@@ -33,6 +33,9 @@
  */
 package fr.paris.lutece.plugins.rss.business.portlet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.paris.lutece.portal.business.portlet.Portlet;
 import fr.paris.lutece.util.sql.DAOUtil;
 
@@ -48,7 +51,7 @@ public final class RssPortletDAO implements IRssPortletDAO
     private static final String SQL_QUERY_INSERT = "INSERT INTO rss_portlet ( id_portlet, rss_feed_id ) VALUES ( ?, ? )";
     private static final String SQL_QUERY_DELETE = "DELETE FROM rss_portlet WHERE id_portlet = ? ";
     private static final String SQL_QUERY_UPDATE = "UPDATE rss_portlet SET id_portlet = ?, rss_feed_id = ? WHERE id_portlet = ? ";
-    private static final String SQL_QUERY_CHECK_PORTLET_LINKED = "SELECT rss_feed_id FROM rss_portlet WHERE rss_feed_id = ? ";
+    private static final String SQL_QUERY_LINKED_PORTLET = "SELECT id_portlet FROM rss_portlet WHERE rss_feed_id = ? ";
 
     ///////////////////////////////////////////////////////////////////////////////////////
     // Access methods to data
@@ -126,21 +129,24 @@ public final class RssPortletDAO implements IRssPortletDAO
      * @return A boolean
      * @param nIdRssFeed The identifier of the Rss feed
      */
-    public boolean checkNoPortletLinked( int nIdRssFeed )
+    public List<RssPortlet> checkLinkedPortlet( int nIdRssFeed )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_CHECK_PORTLET_LINKED );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_LINKED_PORTLET );
         daoUtil.setInt( 1, nIdRssFeed );
         daoUtil.executeQuery(  );
 
-        if ( daoUtil.next(  ) )
+        List<RssPortlet> listPortlet = new ArrayList<RssPortlet>(  );
+        
+        while ( daoUtil.next(  ) )
         {
-            daoUtil.free(  );
-
-            return false;
+            RssPortlet portlet = new RssPortlet(  );
+            portlet.setId( daoUtil.getInt( 1 ) );
+            portlet.setRssFeedId( Integer.toString( nIdRssFeed ) ); 
+            listPortlet.add( portlet );
         }
 
         daoUtil.free(  );
 
-        return true;
+        return listPortlet;
     }
 }

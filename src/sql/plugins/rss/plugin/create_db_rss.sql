@@ -14,6 +14,21 @@ CREATE TABLE rss_feed (
   PRIMARY KEY  (id_rss_feed)
 );
 
+--
+-- Structure for table rss_feed_inactive
+--
+DROP TABLE IF EXISTS rss_feed_inactive;
+CREATE TABLE rss_feed_inactive (
+  id_rss_feed int DEFAULT '0' NOT NULL ,
+  name varchar(255) DEFAULT NULL,
+  url varchar(255) DEFAULT NULL,
+  last_fetch_date datetime DEFAULT NULL,
+  last_fetch_status int DEFAULT NULL,
+  last_fetch_error varchar(255) DEFAULT NULL,
+  workgroup_key varchar(50) DEFAULT NULL,
+  include_style int default -1,
+  PRIMARY KEY  (id_rss_feed)
+);
 
 --
 -- Structure for table rss_generation
@@ -35,3 +50,13 @@ CREATE TABLE rss_generation (
 );
 
 CREATE INDEX index_rss_portlet ON rss_generation(id_portlet);
+
+--
+-- Structure for table rss_feed_parameter
+--
+DROP TABLE IF EXISTS rss_feed_parameter
+CREATE TABLE rss_feed_parameter (
+    parameter_key varchar(100) NOT NULL,
+    parameter_value varchar(100) NOT NULL,
+    PRIMARY KEY (parameter_key)
+);
