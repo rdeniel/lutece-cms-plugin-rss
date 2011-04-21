@@ -54,7 +54,7 @@ CREATE INDEX index_rss_portlet ON rss_generation(id_portlet);
 --
 -- Structure for table rss_feed_parameter
 --
-DROP TABLE IF EXISTS rss_feed_parameter
+DROP TABLE IF EXISTS rss_feed_parameter;
 CREATE TABLE rss_feed_parameter (
     parameter_key varchar(100) NOT NULL,
     parameter_value varchar(100) NOT NULL,
