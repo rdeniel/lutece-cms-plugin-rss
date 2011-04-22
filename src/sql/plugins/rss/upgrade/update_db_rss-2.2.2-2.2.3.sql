@@ -14,8 +14,8 @@ CREATE TABLE rss_feed_inactive (
   PRIMARY KEY  (id_rss_feed)
 );
 
-RENAME TABLE rss_feed_active TO tmp_table,
-             rss_feed_inactive TO rss_feed_active,
+RENAME TABLE rss_feed TO tmp_table,
+             rss_feed_inactive TO rss_feed,
              tmp_table TO rss_feed_inactive;
 
 CREATE TABLE rss_feed_parameter (
