@@ -33,6 +33,15 @@
  */
 package fr.paris.lutece.plugins.rss.service;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import fr.paris.lutece.plugins.document.business.Document;
 import fr.paris.lutece.plugins.rss.business.RssGeneratedFileHome;
 import fr.paris.lutece.plugins.rss.web.FeedUtil;
@@ -48,16 +57,8 @@ import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * This class provides utilities to create RSS documents.
@@ -107,11 +108,34 @@ public final class RssGeneratorService
      */
     public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding, String strFeedType, int nMaxItems )
     {
-        String strRssFileSiteName = AppPropertiesService.getProperty( PROPERTY_SITE_NAME );
+    	return createRssDocument(nIdPortlet, strRssFileDescription, strEncoding, strFeedType, nMaxItems, null );
+    }
+    
+    /**
+     * Creates the push RSS document corresponding to the given portlet
+     *
+     * @param nIdPortlet the portlet id for wich the file is created
+     * @param strRssFileDescription the Description
+     * @param strEncoding encoding
+     * @param strFeedType feed type
+     * @param nMaxItems max items
+     * @return String the XML content of the RSS document
+     */
+    public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding, String strFeedType, int nMaxItems, HttpServletRequest request )
+    {
+    	String strRssFileSiteName = AppPropertiesService.getProperty( PROPERTY_SITE_NAME );
         String strRssFileLanguage = AppPropertiesService.getProperty( PROPERTY_SITE_LANGUAGE );
         String strIdPortlet = Integer.toString( nIdPortlet );
         String strWebAppUrl = AppPropertiesService.getProperty( PROPERTY_WEBAPP_PROD_URL );
-        String strSiteUrl = strWebAppUrl + "/";
+        String strSiteUrl = StringUtils.EMPTY;
+        if ( StringUtils.isNotBlank( strWebAppUrl ) )
+        {
+        	strSiteUrl = strWebAppUrl + "/";
+        }
+        else
+        {	
+        	strSiteUrl = AppPathService.getBaseUrl(request);
+        }        
 
     	IFeedResource resource = new FeedResource();
     	resource.setTitle( strRssFileSiteName );
@@ -140,7 +164,7 @@ public final class RssGeneratorService
     		// link creation
     		Map<String, Object> model = new HashMap<String, Object>();
     		model.put( MARK_ID_PORTLET, strIdPortlet );
-    		model.put( MARK_DOCUMENT_ID, document.getId() );
+    		model.put( MARK_DOCUMENT_ID, document.getId() );    		
     		model.put( MARK_RSS_SITE_URL, strSiteUrl );
     		HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_FEED_LINK, locale, model );
     		String strLink = template.getHtml();
@@ -153,7 +177,6 @@ public final class RssGeneratorService
     	resource.setItems( listItems );
     	
     	return FeedUtil.getFeed( resource, strFeedType, strEncoding, nMaxItems );
-
     }
 
     /**
