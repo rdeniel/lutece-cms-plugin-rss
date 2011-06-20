@@ -84,6 +84,7 @@ public final class RssGeneratorService
     private static final String PROPERTY_SITE_NAME = "lutece.name";
     private static final String PROPERTY_SITE_LANGUAGE = "rss.language";
     private static final String PROPERTY_WEBAPP_PROD_URL = "lutece.prod.url";
+    private static final String PROPERTY_BASE_URL = "lutece.base.url";
     private static final String CONSTANT_IMAGE_RSS = "/images/local/skin/valid-rss.png";
 
     /**
@@ -133,8 +134,15 @@ public final class RssGeneratorService
         	strSiteUrl = strWebAppUrl + "/";
         }
         else
-        {	
-        	strSiteUrl = AppPathService.getBaseUrl(request);
+        {
+        	if ( request == null )
+        	{
+        		strSiteUrl = AppPropertiesService.getProperty( PROPERTY_BASE_URL );
+        	}
+        	else
+        	{
+        		strSiteUrl = AppPathService.getBaseUrl( request );
+        	}
         }        
 
     	IFeedResource resource = new FeedResource();
