@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.sun.syndication.feed.atom.Entry;
 
 import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
@@ -22,7 +24,7 @@ public class DefaultAtomFeedTypeProvider extends AbstractAtomFeedTypeProvider
 	 */
 	public boolean isInvoked( String strFeedType )
 	{
-		return ATOM_PREFIX.startsWith( strFeedType );
+		return StringUtils.isNotBlank( strFeedType ) && strFeedType.startsWith( ATOM_PREFIX );
 	}
 	
 	/**

@@ -58,7 +58,7 @@ public class DefaultRssFeedTypeProvider extends AbstractRssFeedTypeProvider
 	 */
 	public boolean isInvoked( String strFeedType )
 	{
-		return RSS_PREFIX.startsWith( strFeedType );
+		return StringUtils.isNotBlank( strFeedType ) && strFeedType.startsWith( RSS_PREFIX );
 	}
 	
 	/**
