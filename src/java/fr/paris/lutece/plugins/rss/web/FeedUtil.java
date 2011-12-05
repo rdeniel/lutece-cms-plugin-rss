@@ -33,23 +33,14 @@
  */
 package fr.paris.lutece.plugins.rss.web;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
 import com.sun.syndication.feed.WireFeed;
-import com.sun.syndication.feed.atom.Entry;
-import com.sun.syndication.feed.atom.Feed;
-import com.sun.syndication.feed.rss.Channel;
-import com.sun.syndication.feed.rss.Content;
-import com.sun.syndication.feed.rss.Guid;
-import com.sun.syndication.feed.rss.Image;
-import com.sun.syndication.feed.rss.Item;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.WireFeedOutput;
 
+import fr.paris.lutece.plugins.rss.service.type.FeedTypeManager;
 import fr.paris.lutece.portal.business.rss.IFeedResource;
-import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
 import fr.paris.lutece.portal.business.rss.IResourceRss;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -59,10 +50,6 @@ import fr.paris.lutece.portal.service.util.AppLogService;
  */
 public final class FeedUtil
 {
-	private static final String EMPTY_STRING = "";
-	private static final String ATOM_PREFIX = "atom";
-	private static final int MAX_ITEM_UNLIMITED = 0;
-	
 	/**
 	 * Utility class
 	 */
@@ -81,69 +68,27 @@ public final class FeedUtil
 	 */
 	public static String getFeed( IFeedResource resource, String strFeedType, String strEncoding, int nMaxItems )
 	{
-    	if ( resource.getItems().isEmpty() )
+    	if ( resource.getItems(  ).isEmpty(  ) )
     	{
-    		// an empty feed will fail
-    		return EMPTY_STRING;
+    		return StringUtils.EMPTY;
     	}
     	
     	// WireFeed does not contain enough data, but can be passed for output generation.
-    	WireFeed wireFeed;
-    	
-    	if ( isATOM( strFeedType ) )
-    	{
-    		// ATOM
-    		Feed feed = new Feed( strFeedType );
-        	feed.setLanguage( resource.getLanguage() );
-        	feed.setTitle( resource.getTitle() );
-        	feed.setEncoding( strEncoding );
-        	
-        	// items
-        	feed.setEntries( getATOMEntries( resource.getItems(), nMaxItems ) );
-        	
-        	wireFeed = feed;
-    	}
-    	else
-    	{
-    		// RSS
-    		Channel rss = new Channel( strFeedType );
-    		rss.setLanguage( resource.getLanguage() );
-    		rss.setTitle( resource.getTitle() );
-    		rss.setEncoding( strEncoding );
-    		rss.setDescription( resource.getDescription() );
-    		rss.setLink( resource.getLink() );
-    		
-    		// image
-    		if ( resource.getImage() != null )
-    		{
-				Image image = new Image();
-				image.setTitle( resource.getImage().getTitle() );
-				image.setUrl( resource.getImage().getUrl() );
-				image.setLink( resource.getImage().getLink() );
-				rss.setImage( image );
-    		}
-    		
-    		// items
-    		rss.setItems( getRSSItems( resource.getItems(), nMaxItems ) );
-    		
-    		wireFeed = rss;
-    	}
+    	WireFeed wireFeed = FeedTypeManager.getManager(  ).getWireFeed( strFeedType, resource, strEncoding, nMaxItems );
     	
     	WireFeedOutput output = new WireFeedOutput();
-    	String strXML;
+    	String strXML = StringUtils.EMPTY;
     	try
 		{
     		strXML = output.outputString( wireFeed );
 		}
 		catch ( IllegalArgumentException e )
 		{
-			AppLogService.error( e.getMessage(), e );
-			strXML = EMPTY_STRING;
+			AppLogService.error( e.getMessage(  ), e );
 		}
 		catch ( FeedException e )
 		{
-			AppLogService.error( e.getMessage(), e );
-			strXML = EMPTY_STRING;
+			AppLogService.error( e.getMessage(  ), e );
 		}
 		
 		return strXML;
@@ -157,143 +102,21 @@ public final class FeedUtil
 	 */
 	public static String getFeed( IResourceRss resourceRSS )
 	{
-    	IFeedResource resource = resourceRSS.getFeed();
+    	IFeedResource resource = resourceRSS.getFeed(  );
     	
     	if ( resource == null )
     	{
     		// no implementation - use the deprecated
-    		return resourceRSS.createHtmlRss();
+    		return resourceRSS.createHtmlRss(  );
     	}
     	
-    	if ( resource.getItems().isEmpty() )
+    	if ( resource.getItems(  ).isEmpty(  ) )
     	{
     		// an empty feed will fail
-    		return EMPTY_STRING;
+    		return StringUtils.EMPTY;
     	}
     	
-    	return getFeed( resource, resourceRSS.getFeedType(), resourceRSS.getEncoding(), resourceRSS.getMaxItems() );
+    	return getFeed( resource, resourceRSS.getFeedType(  ), resourceRSS.getEncoding(  ), resourceRSS.getMaxItems(  ) );
 	}
-	
-    /**
-     * Gets the atom entries
-     * @param listItems the items
-     * @param nMaxItems max item
-     * @return the entries
-     */
-    private static List getATOMEntries( List<IFeedResourceItem> listItems, int nMaxItems )
-    {
-    	List listEntries = new ArrayList();
-    	
-    	boolean bLimit = nMaxItems != MAX_ITEM_UNLIMITED;
-    	int nIndex = 1;
-    	
-    	for ( IFeedResourceItem item : listItems )
-		{
-			listEntries.add( getATOMEntry( item ) );
-			if ( bLimit )
-			{
-				if ( nIndex < nMaxItems )
-				{
-					nIndex++;
-				}
-				else
-				{
-					// break
-					break;
-				}
-			}
-		}
-    	
-    	return listEntries;
-    }
     
-    /**
-     * Gets the entries for the given items. 
-     * @param listItems the items
-     * @param nMaxItems max item
-     * @return the list
-     */
-	private static List getRSSItems( List<IFeedResourceItem> listItems, int nMaxItems )
-    {
-    	List listEntries = new ArrayList();
-    	
-    	boolean bLimit = nMaxItems != MAX_ITEM_UNLIMITED;
-    	int nIndex = 1;
-		for ( IFeedResourceItem item : listItems )
-		{
-			listEntries.add( getRSSItem( item ) );
-			if ( bLimit )
-			{
-				if ( nIndex < nMaxItems )
-				{
-					nIndex++;
-				}
-				else
-				{
-					// break
-					break;
-				}
-			}
-		}
-		
-		return listEntries;
-    }
-    
-    /**
-     * Builds an ATOM {@link Entry}
-     * @param resourceItem the item
-     * @return the entry
-     */
-    private static Entry getATOMEntry( IFeedResourceItem resourceItem )
-    {
-    	Entry entry = new Entry();
-    	
-    	entry.setTitle( resourceItem.getTitle() );
-    	entry.setPublished( resourceItem.getDate() );
-    	com.sun.syndication.feed.atom.Content summary = new com.sun.syndication.feed.atom.Content();
-    	summary.setValue( resourceItem.getTitle() );
-    	entry.setSummary( summary );
-    	
-    	com.sun.syndication.feed.atom.Content content = new com.sun.syndication.feed.atom.Content();
-    	content.setValue( resourceItem.getDescription() );
-    	// we don't handle multi-content
-    	entry.setContents( Collections.singletonList( content ) );
-    	
-    	return entry;
-    }
-    
-    /**
-     * The entry from the item
-     * @param item the item
-     * @return the entry
-     */
-    private static Item getRSSItem( IFeedResourceItem resourceItem )
-    {
-    	Item item = new Item();
-    	
-    	item.setTitle( resourceItem.getTitle() );
-    	item.setPubDate( resourceItem.getDate() );
-    	item.setLink( resourceItem.getLink() );
-    	
-    	Guid guid = new Guid();
-    	guid.setValue( resourceItem.getGUID() );
-    	guid.setPermaLink( false );
-    	item.setGuid( guid );
-    	
-    	Content content = new Content();
-    	content.setValue( resourceItem.getDescription() );
-    	item.setContent( content );
-
-    	return item;
-    }
-    
-    /**
-     * <code>true</code> if this feed is ATOM
-     * @return <code>true</code> if the feed is ATOM, <code>false</code> otherwise.
-     */
-    private static boolean isATOM( String strFeedType )
-    {
-    	return strFeedType.startsWith( ATOM_PREFIX );
-    }
-
 }
