@@ -7,7 +7,11 @@
         </p>
         <p>
 		    <label for="workgroup_key">#i18n{rss.modify_rss_file.rowWorkgroupFile} : </label>
-		     <@combo name="workgroup_key"  items=user_workgroup_list default_value="${rssFile.workgroup}" />
+		     	<#if rssFile.workgroup??> 
+		     		<@combo name="workgroup_key"  items=user_workgroup_list default_value="${rssFile.workgroup}"/>
+		     	<#else>
+		     		<@combo name="workgroup_key"  items=user_workgroup_list default_value=""/>
+		     	</#if> 
 		</p>
         <p>
             <label for="rss_name" >#i18n{rss.modify_rss_file.rowTitleDocumentList} * : </label> 
