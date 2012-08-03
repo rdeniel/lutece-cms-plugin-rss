@@ -22,7 +22,7 @@
 		     <@combo name="workgroup_key" items=user_workgroup_list default_value="${selected_workgroup}" />
 		</p>        
         <p>
-            <input type="hidden" name="rss_feed_is_active" value=<#if is_active = "1">"true"<#else>"false"</#if> />  
+            <input type="hidden" name="rss_feed_is_active" value=<#if is_active! = "1">"true"<#else>"false"</#if> />  
             <input type="submit" value="#i18n{rss.create_rss_feed.buttonValidate}" class="button" tabindex="3" />
         </p>
         

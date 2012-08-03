@@ -25,7 +25,7 @@ Author:  Raphaïel Luta (raphael@apache.org)
 		
 	<xsl:variable name="device_class">
 	<xsl:choose>
-		<xsl:when test="string(display-on-small-device)='0'">hide-for-small</xsl:when>
+		<xsl:when test="string(display-on-small-device)='0'">hidden-phone</xsl:when>
 		<xsl:otherwise></xsl:otherwise>
 	</xsl:choose>
 	</xsl:variable>
