@@ -1,27 +1,41 @@
-<div class="content-box" >
+<div class="row" >
     
-    <h2>#i18n{rss.create_rss_file.tableLabel}</h2>
+    <legend>#i18n{rss.create_rss_file.tableLabel}</legend>
     
-    <form method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFile.jsp">
+    <form class="form-horizontal" method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFile.jsp">
+	<fieldset>
         
-        <p>
-            <label for="rss_type" >#i18n{rss.create_rss_file.rowSwitchType} * : </label> 
+        
+            <div class="control-group">
+		<label class="control-label" for="rss_type" >#i18n{rss.create_rss_file.rowSwitchType} * : </label> 
             
             
-        </p>
+        
 		
-			<input type="radio" id="rss_type" name="rss_type" value="portlet" />#i18n{rss.create_rss_file.rowPortlet} 
+			<div class="controls">
+	<input type="radio" id="rss_type" name="rss_type" value="portlet" />
+		</div>
+	</div>#i18n{rss.create_rss_file.rowPortlet} 
 		<#if resource_list?size &gt; 0>
-		<p><label for="rss_type" >&nbsp;</label> 
-        	<input type="radio" id="rss_type" name="rss_type" value="resourceRss" />#i18n{rss.create_rss_file.rowResourceRss} <@combo name="rss_resource_key" default_value="-1" items=resource_list />
-        </p>
-        </#if>
-        <p>   
-            <input type="submit" value="#i18n{rss.create_rss_file.buttonValidate}" class="button" tabindex="3" />
-            
-        </p>
+		<div class="control-group">
+		<label class="control-label" for="rss_type" >&nbsp;</label> 
+        	<div class="controls">
+	<input type="radio" id="rss_type" name="rss_type" value="resourceRss" />
+		</div>
+	</div>#i18n{rss.create_rss_file.rowResourceRss} <div class="controls">
+	<@combo name="rss_resource_key" default_value="-1" items=resource_list />
+		</div>
+	</div>
         
-    </form>
+        </#if>
+           
+            <button class="btn btn-primary" type="submit" >#i18n{rss.create_rss_file.buttonValidate}</button>
+	
+            
+        
+        
+    </fieldset>
+</form>
     
 </div>
 

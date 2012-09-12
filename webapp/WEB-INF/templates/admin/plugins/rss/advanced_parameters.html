@@ -1,14 +1,21 @@
-<div class="highlight-box">
-	<form method="post" action="jsp/admin/plugins/rss/DoModifyRssParameterValues.jsp">
+<div class="well">
+	<form class="form-horizontal" method="post" action="jsp/admin/plugins/rss/DoModifyRssParameterValues.jsp">
+	<fieldset>
 		<!-- FEDD ACTIVATED BY DEFAULT -->
-        <p>
-            <label for="is_active">#i18n{rss.manage_rss.labelActivationDefault} :</label>
+        
+            <div class="control-group">
+		<label class="control-label" for="is_active">#i18n{rss.manage_rss.labelActivationDefault} :</label>
             <#list ["0", "1"] as b_active>
-                <input type="radio" name="is_active" value="${b_active}" <#if is_active = b_active>checked="checked"</#if> >#i18n{rss.manage_rss.activationDefault.${b_active}}</input>
+                <div class="controls">
+	<input type="radio" name="is_active" value="${b_active}" <#if is_active = b_active>
+		</div>
+	</div>checked="checked"</#if> >#i18n{rss.manage_rss.activationDefault.${b_active}}</input>
             </#list>
-        </p>
-		<p>
-			<input type="submit" class="button" value="#i18n{rss.modify_rss_feed.buttonModify}" />
-		</p>
-	</form>
+        
+		
+			<button class="btn btn-primary" type="submit" >#i18n{rss.modify_rss_feed.buttonModify}</button>
+	
+		
+	</fieldset>
+</form>
 </div>

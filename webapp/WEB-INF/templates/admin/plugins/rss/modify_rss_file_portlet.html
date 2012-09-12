@@ -1,46 +1,81 @@
-<div class="content-box" >
-    <h2>#i18n{rss.modify_rss_file.tableLabel}</h2>
-    <form method="post"  name="modify_rss_file" id="modify_rss_file" action="jsp/admin/plugins/rss/DoModifyRssFilePortlet.jsp">   
-        <p>
-            <label for="rss_name" >#i18n{rss.modify_rss_file.rowTitleName} * : </label> 
-            <input type="text" id="rss_name" name="rss_name" value="${rssFile.name}" size="60" maxlength="50" tabindex="1" />
-        </p>
-        <p>
-		    <label for="workgroup_key">#i18n{rss.modify_rss_file.rowWorkgroupFile} : </label>
+<div class="row" >
+    <legend>#i18n{rss.modify_rss_file.tableLabel}</legend>
+    <form class="form-horizontal" method="post"  name="modify_rss_file" id="modify_rss_file" action="jsp/admin/plugins/rss/DoModifyRssFilePortlet.jsp">
+	<fieldset>   
+        
+            <div class="control-group">
+		<label class="control-label" for="rss_name" >#i18n{rss.modify_rss_file.rowTitleName} * : </label> 
+            <div class="controls">
+	<input type="text" id="rss_name" name="rss_name" value="${rssFile.name}" size="60" maxlength="50" tabindex="1" />
+		</div>
+	</div>
+        
+        
+		    <div class="control-group">
+		<label class="control-label" for="workgroup_key">#i18n{rss.modify_rss_file.rowWorkgroupFile} : </label>
 		     	<#if rssFile.workgroup??> 
-		     		<@combo name="workgroup_key"  items=user_workgroup_list default_value="${rssFile.workgroup}"/>
+		     		<div class="controls">
+	<@combo name="workgroup_key"  items=user_workgroup_list default_value="${rssFile.workgroup}"/>
+		</div>
+	</div>
 		     	<#else>
-		     		<@combo name="workgroup_key"  items=user_workgroup_list default_value=""/>
+		     		<div class="controls">
+	<@combo name="workgroup_key"  items=user_workgroup_list default_value=""/>
+		</div>
+	</div>
 		     	</#if> 
-		</p>
-        <p>
-            <label for="rss_name" >#i18n{rss.modify_rss_file.rowTitleDocumentList} * : </label> 
-            <@combo name="rss_portlet_id" default_value="${rssFile.portletId}" items=portlet_list />
-        </p>
-        <p>
-            <label for="rss_description" >#i18n{rss.modify_rss_file.rowTitleDescription} * :</label>  
-            <input type="text" id="rss_description" name="rss_description" value="${rssFile.description}" size="60" maxlength="200" tabindex="2" />
-        </p>
-        <p>
-            <label for="rss_max_items" >#i18n{rss.modify_rss_file.maxItem} * : </label>
-            <input type="text" id="rss_max_items" name="rss_max_items" size="60" maxlength="10" tabindex="2" value="${rssFile.maxItems}"/>
-        </p>
-        <p>
-        	<label for="rss_feed_type">#i18n{rss.modify_rss_file.feedType} : </label>		     
-		     <@combo name="rss_feed_type" items=feed_type_list default_value="${rssFile.feedType}" />
-        </p>
-        <p>
-        	<label for="rss_encoding">#i18n{rss.modify_rss_file.encoding} : </label>		     
-		     <@combo name="rss_encoding" items=encoding_list default_value="${rssFile.encoding}" />
-        </p>
-        <p>
+		
+        
+            <div class="control-group">
+		<label class="control-label" for="rss_name" >#i18n{rss.modify_rss_file.rowTitleDocumentList} * : </label> 
+            <div class="controls">
+	<@combo name="rss_portlet_id" default_value="${rssFile.portletId}" items=portlet_list />
+		</div>
+	</div>
+        
+        
+            <div class="control-group">
+		<label class="control-label" for="rss_description" >#i18n{rss.modify_rss_file.rowTitleDescription} * :</label>  
+            <div class="controls">
+	<input type="text" id="rss_description" name="rss_description" value="${rssFile.description}" size="60" maxlength="200" tabindex="2" />
+		</div>
+	</div>
+        
+        
+            <div class="control-group">
+		<label class="control-label" for="rss_max_items" >#i18n{rss.modify_rss_file.maxItem} * : </label>
+            <div class="controls">
+	<input type="text" id="rss_max_items" name="rss_max_items" size="60" maxlength="10" tabindex="2" value="${rssFile.maxItems}"/>
+		</div>
+	</div>
+        
+        
+        	<div class="control-group">
+		<label class="control-label" for="rss_feed_type">#i18n{rss.modify_rss_file.feedType} : </label>		     
+		     <div class="controls">
+	<@combo name="rss_feed_type" items=feed_type_list default_value="${rssFile.feedType}" />
+		</div>
+	</div>
+        
+        
+        	<div class="control-group">
+		<label class="control-label" for="rss_encoding">#i18n{rss.modify_rss_file.encoding} : </label>		     
+		     <div class="controls">
+	<@combo name="rss_encoding" items=encoding_list default_value="${rssFile.encoding}" />
+		</div>
+	</div>
+        
+        
             <input type="hidden" id="rss_id" name="rss_id" value="${rssFile.id}" />
-        </p>
-        <p>   
-            <input type="submit" value="#i18n{rss.modify_rss_file.buttonValidate}" class="button" tabindex="3" />
-            <input type="submit" value="#i18n{rss.create_rss_file_resource.button_back}" class="button" name="cancel" />
-        </p> 
-    </form>
+        
+           
+            <button class="btn btn-primary" type="submit" >#i18n{rss.modify_rss_file.buttonValidate}</button>
+	
+            <button class="btn btn-primary" type="submit" >#i18n{rss.create_rss_file_resource.button_back}</button>
+	
+         
+    </fieldset>
+</form>
 </div>
 
 
