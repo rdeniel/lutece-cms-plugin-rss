@@ -1,45 +1,42 @@
-<div class="row">
-    <legend>#i18n{rss.modify_rss_feed.tableLabel} ${rss_feed.name}</legend>
-    <div>
-        <form class="form-horizontal" method="post" action="jsp/admin/plugins/rss/DoModifyRssFeed.jsp">
-	<fieldset>
-            
-                <div class="control-group">
-		<label class="control-label" for="rss_feed_name" >#i18n{rss.modify_rss_feed.rowTitleName} * : </label> 
-                <div class="controls">
-	<input type="text" id="rss_feed_name" name="rss_feed_name" size="60" maxlength="50" value="${rss_feed.name}" tabindex="1" />
+<div class="row" >
+	<div class="container" >
+		<div class="span10 offset1">
+		<fieldset>
+		<legend>#i18n{rss.modify_rss_feed.tableLabel}</legend>
+		<form class="form-horizontal" method="post"  name="modify_rss_feed" id="modify_rss_feed" action="jsp/admin/plugins/rss/DoModifyRssFeed.jsp">
+		<input type="hidden" name="id_rss_feed" value="${rss_feed.id}" />
+        <input type="hidden" name="rss_feed_is_active" value=<#if rss_feed.isActive>"true"<#else>"false"</#if> />
+		<div class="control-group">
+		<label class="control-label" for="folder_name" >#i18n{rss.modify_rss_feed.rowTitleName} * : </label> 
+            <div class="controls">
+				<input type="text" id="rss_feed_name" name="rss_feed_name"  value="${rss_feed.name}" class="input-xlarge" maxlength="50" tabindex="1" />
+			</div>
 		</div>
-	</div>
-            
-            
-                <div class="control-group">
-		<label class="control-label" for="rss_feed_url" >#i18n{rss.modify_rss_feed.rowTitleUrl} * :</label>  
-                <div class="controls">
-	<input type="text" id="rss_feed_url" name="rss_feed_url" size="60" maxlength="200" value="${rss_feed.url}" tabindex="2" />
+        <div class="control-group">
+		<label class="control-label" for="folder_path" >#i18n{rss.modify_rss_feed.rowTitleUrl} * :</label>  
+            <div class="controls">
+				<input type="text" id="rss_feed_url" name="rss_feed_url" value="${rss_feed.url}" class="input-xlarge"maxlength="200" tabindex="2" />
+			</div>
 		</div>
-	</div>
-            
-            
-			    <div class="control-group">
+        <div class="control-group">
 		<label class="control-label" for="rss_style">#i18n{rss.modify_rss_feed.rowRssStyle} : </label>		     
-			     <div class="controls">
-	<@combo name="rss_style" items=rss_style_list default_value="${rss_feed.idIncludeStyle}" />
+		     <div class="controls">
+					<@combo name="rss_style" items=rss_style_list default_value="${rss_feed.idIncludeStyle}" />
+			</div>
+		</div>
+		<div class="control-group">
+		<label class="control-label" for="workgroup_key">#i18n{rss.modify_rss_feed.rowWorkgroupFile} : </label>		     
+		     <div class="controls">
+				<@combo name="workgroup_key" items=user_workgroup_list default_value="${rss_feed.workgroup!}" />
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-primary" type="submit" ><i class="icon-ok icon-white"></i>&nbsp;#i18n{rss.modify_rss_feed.buttonModify}</button>
+			<button class="btn btn-primary" type="button" name="cancel" onclick="javascript:window.history.back();"><i class="icon-remove-circle icon-white"></i>&nbsp;#i18n{rss.create_rss_file_resource.button_back}</button>
+		</div>
+		</form>
+		</fieldset>
 		</div>
 	</div>
-			
-            
-			    <div class="control-group">
-		<label class="control-label" for="workgroup_key">#i18n{rss.modify_rss_feed.rowWorkgroupFile} : </label>
-			     <div class="controls">
-	<@combo name="workgroup_key" items=user_workgroup_list default_value="${rss_feed.workgroup!}" />
-		</div>
-	</div>
-			
-            <input type="hidden" name="id_rss_feed" value="${rss_feed.id}" />
-            <input type="hidden" name="rss_feed_is_active" value=<#if rss_feed.isActive>"true"<#else>"false"</#if> />
-            <button class="btn btn-primary" type="submit" >#i18n{rss.modify_rss_feed.buttonModify}</button>
-	
-        </fieldset>
-</form>
-    </div>
 </div>
+

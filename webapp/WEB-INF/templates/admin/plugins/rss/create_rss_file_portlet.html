@@ -1,83 +1,61 @@
 <div class="row" >
-    
-    <legend>#i18n{rss.create_rss_file.tableLabel}</legend>
-    
-    <form class="form-horizontal" method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFilePortlet.jsp">
-	<fieldset>
-        
-        
-            <div class="control-group">
-		<label class="control-label" for="rss_name" >#i18n{rss.create_rss_file.rowTitleName} * : </label> 
-            <div class="controls">
-	<input type="text" id="rss_name" name="rss_name" size="60" maxlength="50" tabindex="1" />
+	<div class="container" >
+		<div class="span10 offset1" >
+		<fieldset>
+		<legend>#i18n{rss.create_rss_file.tableLabel}</legend>
+			<form class="form-horizontal" method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFilePortlet.jsp">
+			<div class="control-group">
+			<label class="control-label" for="rss_name" >#i18n{rss.create_rss_file.rowTitleName} * : </label> 
+				<div class="controls">
+					<input type="text" id="rss_name" name="rss_name" class="input-xlarge" maxlength="50" tabindex="1" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="workgroup_key">#i18n{rss.create_rss_file.rowWorkgroupFile} : </label>		     
+				 <div class="controls">
+					<@combo name="workgroup_key" items=user_workgroup_list default_value="${selected_workgroup}" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="rss_portlet_id" >#i18n{rss.create_rss_file.rowTitleDocumentList} * : </label> 
+				<div class="controls">
+				<#if portlet_list?has_content>
+					<@combo name="rss_portlet_id" default_value="" items=portlet_list />
+				<#else>
+					<p class="label label-warning">#i18n{rss.create_rss_file.noPortletAvailable}</p>
+				</#if>
+				</div>
+			</div>
+			<div class="control-group">
+			<label class="control-label" for="rss_description" >#i18n{rss.create_rss_file.rowTitleDescription} * :</label>  
+				<div class="controls">
+					<input type="text" id="rss_description" name="rss_description" class="input-xlarge" maxlength="200" tabindex="2" />
+				</div>
+			</div>
+			<div class="control-group">
+			<label class="control-label" for="rss_max_items" >#i18n{rss.create_rss_file.maxItem} * : </label>
+				<div class="controls">
+					<input type="text" id="rss_max_items" name="rss_max_items" class="input-xlarge" maxlength="10" tabindex="2" value="${rss_max_items}"/>
+				</div>
+			</div>
+			<div class="control-group">
+			<label class="control-label" for="rss_feed_type">#i18n{rss.create_rss_file.feedType} : </label>		     
+				<div class="controls">
+					<@combo name="rss_feed_type" items=feed_type_list default_value="${rss_feed_type}" />
+				</div>
+			</div>
+			<div class="control-group">
+			<label class="control-label" for="rss_encoding">#i18n{rss.create_rss_file.encoding} : </label>		     
+				 <div class="controls">
+					<@combo name="rss_encoding" items=encoding_list default_value="${rss_encoding}" />
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary" type="submit" name="save"><i class="icon-ok icon-white"></i>&nbsp;#i18n{rss.create_rss_file.buttonValidate}</button>
+				<button class="btn btn-primary" type="button" name="cancel" onclick="javascript:window.history.back();"><i class="icon-remove-circle icon-white"></i>&nbsp;#i18n{rss.create_rss_file_resource.button_back}</button>
+			</div>
+			</form>
+	    </fieldset>
 		</div>
 	</div>
-        
-         
-		    <div class="control-group">
-		<label class="control-label" for="workgroup_key">#i18n{rss.create_rss_file.rowWorkgroupFile} : </label>		     
-		     <div class="controls">
-	<@combo name="workgroup_key" items=user_workgroup_list default_value="${selected_workgroup}" />
-		</div>
-	</div>
-		
-        
-            <div class="control-group">
-		<label class="control-label" for="rss_portlet_id" >#i18n{rss.create_rss_file.rowTitleDocumentList} * : </label> 
-			<#if portlet_list?has_content>
-	            <div class="controls">
-	<@combo name="rss_portlet_id" default_value="" items=portlet_list />
-		</div>
-	</div>
-            <#else>
-            	<em>#i18n{rss.create_rss_file.noPortletAvailable}</em>
-            </#if>
-        
-        
-        
-            <div class="control-group">
-		<label class="control-label" for="rss_description" >#i18n{rss.create_rss_file.rowTitleDescription} * :</label>  
-            <div class="controls">
-	<input type="text" id="rss_description" name="rss_description" size="60" maxlength="200" tabindex="2" />
-		</div>
-	</div>
-        
-        
-        
-            <div class="control-group">
-		<label class="control-label" for="rss_max_items" >#i18n{rss.create_rss_file.maxItem} * : </label>
-            <div class="controls">
-	<input type="text" id="rss_max_items" name="rss_max_items" size="60" maxlength="10" tabindex="2" value="${rss_max_items}"/>
-		</div>
-	</div>
-        
-        
-        	<div class="control-group">
-		<label class="control-label" for="rss_feed_type">#i18n{rss.create_rss_file.feedType} : </label>		     
-		     <div class="controls">
-	<@combo name="rss_feed_type" items=feed_type_list default_value="${rss_feed_type}" />
-		</div>
-	</div>
-        
-        
-        	<div class="control-group">
-		<label class="control-label" for="rss_encoding">#i18n{rss.create_rss_file.encoding} : </label>		     
-		     <div class="controls">
-	<@combo name="rss_encoding" items=encoding_list default_value="${rss_encoding}" />
-		</div>
-	</div>
-        
-        
-           
-            <button class="btn btn-primary" type="submit" >#i18n{rss.create_rss_file.buttonValidate}</button>
-	
-            <button class="btn btn-primary" type="submit" >#i18n{rss.create_rss_file_resource.button_back}</button>
-	
-        
-        
-    </fieldset>
-</form>
-    
 </div>
-
-

@@ -1,42 +1,31 @@
 <div class="row" >
-    
-    <legend>#i18n{rss.create_rss_file.tableLabel}</legend>
-    
-    <form class="form-horizontal" method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFile.jsp">
+	<div class="container">
+	<div class="span10 offset1">
 	<fieldset>
-        
-        
-            <div class="control-group">
-		<label class="control-label" for="rss_type" >#i18n{rss.create_rss_file.rowSwitchType} * : </label> 
-            
-            
-        
-		
-			<div class="controls">
-	<input type="radio" id="rss_type" name="rss_type" value="portlet" />
-		</div>
-	</div>#i18n{rss.create_rss_file.rowPortlet} 
-		<#if resource_list?size &gt; 0>
-		<div class="control-group">
-		<label class="control-label" for="rss_type" >&nbsp;</label> 
-        	<div class="controls">
-	<input type="radio" id="rss_type" name="rss_type" value="resourceRss" />
-		</div>
-	</div>#i18n{rss.create_rss_file.rowResourceRss} <div class="controls">
-	<@combo name="rss_resource_key" default_value="-1" items=resource_list />
+    <legend>#i18n{rss.create_rss_file.tableLabel}</legend>
+    <form class="form-horizontal" method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFile.jsp">
+	<div class="control-group">
+		<label class="control-label" for="" >#i18n{rss.create_rss_file.rowSwitchType} * </label> 
+		<div class="controls">
+			<label class="radio" for="rss_type" >
+			<input type="radio" id="rss_type" name="rss_type" value="portlet" />&nbsp;#i18n{rss.create_rss_file.rowPortlet}</label>
+			<#if resource_list?size &gt; 0>
+			<label class="radio" for="rss_resource_key" >#i18n{rss.create_rss_file.rowResourceRss}
+					<input type="radio" id="rss_type" name="rss_type" value="resourceRss" />
+					<@combo name="rss_resource_key" default_value="-1" items=resource_list />
+			</label>
+				
+			</#if>		
 		</div>
 	</div>
-        
-        </#if>
-           
-            <button class="btn btn-primary" type="submit" >#i18n{rss.create_rss_file.buttonValidate}</button>
-	
-            
-        
-        
+	<div class="form-actions">
+		<button class="btn btn-primary" type="submit" name="save">
+			<i class="icon-ok icon-white"></i>&nbsp;#i18n{rss.create_rss_file.buttonValidate}</button>
+	</div>
+	</form>
     </fieldset>
-</form>
-    
+    </div>
+    </div>
 </div>
 
 

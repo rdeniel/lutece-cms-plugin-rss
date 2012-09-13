@@ -1,60 +1,51 @@
 <div class="row" >
+	<div class="container">
+	<div class="span10 offset1">
+	<fieldset>
     <legend>#i18n{rss.modify_rss_file.tableLabel}</legend>
     <form class="form-horizontal" method="post"  name="modify_rss_file" id="modify_rss_file" action="jsp/admin/plugins/rss/DoModifyRssFileResource.jsp">
 	<fieldset>   
         <input name="rss_resource_key" value="${resource_rss.key}" type="hidden">
         <input type="hidden" id="rss_id" name="rss_id" value="${rssFile.id}" />
-        <div class="well">
-        
-            <div class="control-group">
-		<label class="control-label" for="rss_name" >#i18n{rss.modify_rss_file.rowTitleName} * : </label> 
+        <div class="control-group">
+		<label class="control-label" for="rss_name" >#i18n{rss.modify_rss_file.rowTitleName} *</label> 
             <div class="controls">
-	<input type="text" id="rss_name" name="rss_name" value="${rssFile.name}" size="60" maxlength="50" tabindex="1" />
+				<input type="text" id="rss_name" name="rss_name" value="${rssFile.name}" class="input-xlarge" maxlength="50" tabindex="1" />
+			</div>
 		</div>
-	</div>
-        
-        
-		    <div class="control-group">
-		<label class="control-label" for="workgroup_key">#i18n{rss.modify_rss_file.rowWorkgroupFile} : </label>
+        <div class="control-group">
+		<label class="control-label" for="workgroup_key">#i18n{rss.modify_rss_file.rowWorkgroupFile}</label>
 		     <div class="controls">
-	<@combo name="workgroup_key"  items=user_workgroup_list default_value="${rssFile.workgroup}" />
+				<@combo name="workgroup_key"  items=user_workgroup_list default_value="${rssFile.workgroup}" />
+			</div>
 		</div>
-	</div>
-		
-		
-            <div class="control-group">
-		<label class="control-label" for="rss_max_items" >#i18n{rss.modify_rss_file.maxItem} * : </label>
+		<div class="control-group">
+		<label class="control-label" for="rss_max_items" >#i18n{rss.modify_rss_file.maxItem} *</label>
             <div class="controls">
-	<input type="text" id="rss_max_items" name="rss_max_items" size="60" maxlength="10" tabindex="2" value="${rssFile.maxItems}"/>
+				<input type="text" id="rss_max_items" name="rss_max_items" class="input-xlarge" maxlength="10" tabindex="2" value="${rssFile.maxItems}"/>
+			</div>
 		</div>
-	</div>
-        
-        
-        	<div class="control-group">
-		<label class="control-label" for="rss_feed_type">#i18n{rss.modify_rss_file.feedType} : </label>		     
+        <div class="control-group">
+		<label class="control-label" for="rss_feed_type">#i18n{rss.modify_rss_file.feedType}</label>		     
 		     <div class="controls">
-	<@combo name="rss_feed_type" items=feed_type_list default_value="${rssFile.feedType}" />
+				<@combo name="rss_feed_type" items=feed_type_list default_value="${rssFile.feedType}" />
+			</div>
 		</div>
-	</div>
-        
-        
-        	<div class="control-group">
-		<label class="control-label" for="rss_encoding">#i18n{rss.modify_rss_file.encoding} : </label>		     
+        <div class="control-group">
+		<label class="control-label" for="rss_encoding">#i18n{rss.modify_rss_file.encoding}</label>		     
 		     <div class="controls">
-	<@combo name="rss_encoding" items=encoding_list default_value="${rssFile.encoding}" />
-		</div>
-	</div>
-        
+				<@combo name="rss_encoding" items=encoding_list default_value="${rssFile.encoding}" />
+			</div>
 		</div>
         ${resource_rss_config}
-           
-            <button class="btn btn-primary" type="submit" >#i18n{rss.modify_rss_file.buttonValidate}</button>
-	
-            <button class="btn btn-primary" type="submit" >#i18n{rss.create_rss_file_resource.button_back}</button>
-	
-         
-    </fieldset>
-</form>
+        <div class="form-action">
+            <button class="btn btn-primary" type="submit" ><i class="icon-ok icon-white"></i>&nbsp;#i18n{rss.modify_rss_file.buttonValidate}</button>
+	        <button class="btn btn-primary" type="button" name="cancel" onclick="javascript:window.history.back();"><i class="icon-remove-circle icon-white"></i>&nbsp;#i18n{rss.create_rss_file_resource.button_back}</button>
+		</div>
+    	</fieldset>
+		</form>
+		</div>
+	</div>
 </div>
 
 

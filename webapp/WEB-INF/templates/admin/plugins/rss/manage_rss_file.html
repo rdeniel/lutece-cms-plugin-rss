@@ -1,79 +1,57 @@
 <div class="row" >
-    <legend>#i18n{rss.manage_rss_file.tableLabel}</legend>
-    <form class="form-horizontal" method="post"  action="jsp/admin/plugins/rss/ManageRssFiles.jsp">
-	<fieldset>
-        <@pagination paginator=paginator />
-        
-        <!-- Number of files per page selector -->
-        #i18n{rss.manage_rss_file.labelItemsPerPage} :
-        <select name="items_per_page">
-            <#list [ "10" , "20" , "50" , "100" ] as nb>
-            <#if nb_items_per_page = nb >
-            <option selected="selected" value="${nb}">${nb}</option>
-            <#else>
-            <option value="${nb}">${nb}</option>
-            </#if>
-            </#list>
-        </select>
-        <button class="btn btn-primary" type="submit" >#i18n{rss.manage_rss_file.buttonItemsPerPage}</button>
-	
-    </fieldset>
-</form>
-    
-    
-    <table summary="#i18n{rss.manage_rss_file.tableSummary}">
+	<div class="container" >
+		<div class="span12" >
+		<fieldset>
+		<legend>#i18n{rss.manage_rss_file.tableLabel}
+			<form class="form-inline pull-right" method="post"  action="jsp/admin/plugins/rss/CreateRssFile.jsp">
+				<button class="btn btn-primary" type="submit" ><i class="icon-plus icon-white"></i>&nbsp;#i18n{rss.manage_rss_file.buttonAddFeed}</button>
+			</form>
+		</legend>
+		<div class="span4 pull-right">
+			<!-- Number of files per page selector -->
+			<@paginationAdmin paginator=paginator combo=1 label="#i18n{rss.manage_rss_file.labelItemsPerPage}" />
+		</div>
+       </fieldset>
+		<table class="table table-striped table-condensed" summary="#i18n{rss.manage_rss_file.tableSummary}">
         <tr>
-            <th width="20%">#i18n{rss.manage_rss_file.columnTitleFile}</th>
-            <th width="30%">#i18n{rss.manage_rss_file.columnTitleDescription}</th>
-            <th width="20%">#i18n{rss.manage_rss_file.columnTitleUrl}</th>
-            <th width="10%">#i18n{rss.manage_rss_file.columnTitlePortlet}</th>
-            <th width="5%">#i18n{rss.manage_rss_file.columnTitleState}</th>
-            <th width="5%">#i18n{rss.manage_rss_file.columnTitleAction}</th>
-            <th width="10%">#i18n{rss.manage_rss_file.columnTitleLastUpdate}</th>
+            <th>#i18n{rss.manage_rss_file.columnTitleFile}</th>
+            <th>#i18n{rss.manage_rss_file.columnTitleDescription}</th>
+            <th>#i18n{rss.manage_rss_file.columnTitleUrl}</th>
+            <th>#i18n{rss.manage_rss_file.columnTitlePortlet}</th>
+            <th>#i18n{rss.manage_rss_file.columnTitleState}</th>
+            <th>#i18n{rss.manage_rss_file.columnTitleLastUpdate}</th>
+            <th>#i18n{rss.manage_rss_file.columnTitleAction}</th>
         </tr>      
         <#list rss_files_list as rssFile >             
         <tr>
-            <td >
-                <a class="btn btn-primary btn-mini" href="jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}"  title="null" >
-	<i class="icon-question-sign icon-white"></i>
-	</a>
-
-            </td> 
-            <td >${rssFile.description}</td>
-            <td >
-                <a class="btn btn-primary btn-mini" href="${rss_file_url}${rssFile.name}"  title="null" >
-	<i class="icon-question-sign icon-white"></i>
-	</a>
-
+            <td>${rssFile.name}</td> 
+            <td>${rssFile.description}</td>
+            <td>
+				<a class="label label-info" href="${rss_file_url}${rssFile.name}"  title="#i18n{rss.manage_rss_file.columnTitleUrl} ${rssFile.description}" >
+					<i class="icon-download icon-white"></i>&nbsp;${rss_file_url}${rssFile.name}
+				</a>
+			</td>
+            <td><#if rssFile.portletName?exists>${rssFile.portletName}<#else><span class="label label-warning">No #i18n{rss.manage_rss_file.columnTitlePortlet}</span></#if>
             </td>
-            <td >
-            <#if rssFile.portletName?exists>
-                ${rssFile.portletName}
-            </#if>
-            </td>
-            <td >
-                <#if rssFile.state != 1>
+            <td>
+			    <#if rssFile.state != 1>
                 <span class="label label-success"><i class="icon-ok-sign icon-white"></i> #i18n{portal.util.labelEnabled}</span>
                 <#else>
                 <span class="label label-important"><i class="icon-remove-sign icon-white"></i> #i18n{portal.util.labelDisabled}</span>
                 </#if>
             </td> 
-            <td >
+			<td><#if rssFile.updateDate?exists>${rssFile.updateDate?date}</#if></td>
+            <td>
+				<a class="btn btn-primary btn-mini" href="jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}"  title="null" >
+					<i class="icon-edit icon-white"></i>
+				</a>
                 <a class="btn btn-danger btn-mini" href="null"  title="#i18n{rss.manage_rss_file.labelDelete}" >
-	<i class="icon-trash icon-white"></i>
-	</a>
-
-            </td>
-            <#if rssFile.updateDate?exists>
-            <td >${rssFile.updateDate?date}</td>
-            </#if>
+					<i class="icon-trash icon-white"></i>
+				</a>
+			</td>
         </tr>		
         </#list>
-    </table>
-    <form class="form-horizontal" method="post"  action="jsp/admin/plugins/rss/CreateRssFile.jsp">
-	<fieldset>
-        <button class="btn btn-primary" type="submit" >#i18n{rss.manage_rss_file.buttonAddFeed}</button>
-	
-    </fieldset>
-</form>
+		</table>
+		</div>
+	</div>
 </div>
