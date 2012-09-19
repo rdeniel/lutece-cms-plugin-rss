@@ -15,8 +15,7 @@
 					</#if>
 				</div>
 			</legend>
-			
-			<@paginationAdmin paginator=paginator_active combo=1 nb_items_per_page=nb_items_per_page_active label="#i18n{rss.manage_rss_feeds.labelItemsPerPage}" />
+			<@paginationAdmin paginator=paginator_active combo=1 nb_items_per_page=nb_items_per_page_active />
             <table class="table table-striped table-condensed" summary="#i18n{rss.manage_rss_feeds.tableSummary}">
 			<tr>
 				<th>#i18n{rss.manage_rss_feeds.columnTitleName}</th>
@@ -86,7 +85,7 @@
 		<div class="span12">
 			<fieldset>
 			<legend>#i18n{rss.manage_rss_feeds.inactive.tableLabel}</legend>
-			<@paginationAdmin paginator=paginator_inactive combo=1 nb_items_per_page=nb_items_per_page_inactive label="#i18n{rss.manage_rss_feeds.labelItemsPerPage}" />
+			<@paginationAdmin paginator=paginator_inactive combo=1 nb_items_per_page=nb_items_per_page_inactive />
 		   <table class="table table-striped table-condensed" summary="#i18n{rss.manage_rss_feeds.tableSummary}">
 			<tr>
 				<th>#i18n{rss.manage_rss_feeds.columnTitleName}</th>
