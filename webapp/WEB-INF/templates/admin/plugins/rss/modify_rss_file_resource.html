@@ -1,5 +1,4 @@
-<div class="row" >
-	<div class="container">
+<div class="row-fluid">
 	<div class="span10 offset1">
 	<fieldset>
     <legend>#i18n{rss.modify_rss_file.tableLabel}</legend>
@@ -37,14 +36,18 @@
 				<@combo name="rss_encoding" items=encoding_list default_value="${rssFile.encoding}" />
 			</div>
 		</div>
-        ${resource_rss_config}
+		<div class="control-group">
+		<label class="control-label" for=""></label>		     
+		     <div class="controls">
+				${resource_rss_config}
+			</div>
+		</div>
         <div class="form-action">
             <button class="btn btn-primary" type="submit" ><i class="icon-ok icon-white"></i>&nbsp;#i18n{rss.modify_rss_file.buttonValidate}</button>
 	        <button class="btn btn-primary" type="button" name="cancel" onclick="javascript:window.history.back();"><i class="icon-remove-circle icon-white"></i>&nbsp;#i18n{rss.create_rss_file_resource.button_back}</button>
 		</div>
     	</fieldset>
 		</form>
-		</div>
 	</div>
 </div>
 
