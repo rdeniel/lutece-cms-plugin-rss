@@ -52,13 +52,13 @@
                     </#if>
                 </td>
                 <td class="span3">
-					<a class="btn btn-primary btn-mini" href="jsp/admin/plugins/rss/ModifyRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true"  title="#i18n{rss.manage_rss_file.active.labelStateUp}" >
+					<a class="btn btn-primary btn-small" href="jsp/admin/plugins/rss/ModifyRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true"  title="#i18n{rss.manage_rss_file.active.labelStateUp}" >
 						<i class="icon-edit icon-white"></i>
 					</a>
-					<a class="btn btn-danger btn-mini" href="jsp/admin/plugins/rss/DoConfirmActivateRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true"  title="#i18n{rss.manage_rss_feeds.labelDeactivate} ${active_feed.name}" >
+					<a class="btn btn-danger btn-small" href="jsp/admin/plugins/rss/DoConfirmActivateRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true"  title="#i18n{rss.manage_rss_feeds.labelDeactivate} ${active_feed.name}" >
 						<i class="icon-remove-sign icon-white"></i>
 					</a>
-					<a class="btn btn-danger btn-mini" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true"  title="#i18n{rss.manage_rss_feeds.labelDelete}" >
+					<a class="btn btn-danger btn-small" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFeed.jsp?id_rss_feed=${active_feed.id}&rss_feed_is_active=true"  title="#i18n{rss.manage_rss_feeds.labelDelete}" >
 						<i class="icon-trash icon-white"></i>
 					</a>
 					<form class="form-inline pull-right" method="post" action="jsp/admin/plugins/rss/DoChangeRssFeedOrder.jsp">
@@ -68,7 +68,7 @@
 							<option <#if active_feed.id == i>selected="selected"</#if> value="${i}" >${i}</option>
 						</#list>
 					</select>                   
-					<button class="btn btn-primary btn-mini" type="submit" title="#i18n{rss.manage_rss_feeds.active.labelModifyOrder}">
+					<button class="btn btn-primary btn-small" type="submit" title="#i18n{rss.manage_rss_feeds.active.labelModifyOrder}">
 						<i class="icon-move icon-white"></i>
 					</button>
 					</form>
@@ -94,13 +94,13 @@
 				<td>${inactive_feed.name}</td>
 				<td>${inactive_feed.url}</td>
 				<td>
-					<a class="btn btn-primary btn-mini" href="jsp/admin/plugins/rss/ModifyRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false"  title="#i18n{rss.manage_rss_feeds.labelActivate} ${inactive_feed.name}" >
+					<a class="btn btn-primary btn-small" href="jsp/admin/plugins/rss/ModifyRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false"  title="#i18n{rss.manage_rss_feeds.labelActivate} ${inactive_feed.name}" >
 						<i class="icon-edit icon-white"></i>
 					</a>
-					<a class="btn btn-success btn-mini" href="jsp/admin/plugins/rss/DoActivateRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false" title="#i18n{rss.manage_rss_feeds.labelActivate} ${inactive_feed.name}">
+					<a class="btn btn-success btn-small" href="jsp/admin/plugins/rss/DoActivateRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false" title="#i18n{rss.manage_rss_feeds.labelActivate} ${inactive_feed.name}">
 						<i class="icon-ok icon-white"></i>
 					</a>
-					<a class="btn btn-danger btn-mini" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false"  title="#i18n{rss.manage_rss_feeds.labelDelete}" >
+					<a class="btn btn-danger btn-small" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFeed.jsp?id_rss_feed=${inactive_feed.id}&rss_feed_is_active=false"  title="#i18n{rss.manage_rss_feeds.labelDelete}" >
 						<i class="icon-trash icon-white"></i>
 					</a>
 				</td>

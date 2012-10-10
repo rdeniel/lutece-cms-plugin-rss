@@ -41,10 +41,10 @@
             </td> 
 			<td><#if rssFile.updateDate?exists>${rssFile.updateDate?date}</#if></td>
             <td>
-				<a class="btn btn-primary btn-mini" href="jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.modify_rss_file.buttonValidate}" >
+				<a class="btn btn-primary btn-small" href="jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.modify_rss_file.buttonValidate}" >
 					<i class="icon-edit icon-white"></i>
 				</a>
-                <a class="btn btn-danger btn-mini" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.manage_rss_file.labelDelete}" >
+                <a class="btn btn-danger btn-small" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.manage_rss_file.labelDelete}" >
 					<i class="icon-trash icon-white"></i>
 				</a>
 			</td>
