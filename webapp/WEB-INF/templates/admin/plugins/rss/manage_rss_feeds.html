@@ -63,13 +63,13 @@
 					</a>
 					<form class="form-inline pull-right" method="post" action="jsp/admin/plugins/rss/DoChangeRssFeedOrder.jsp">
 					<input type="hidden" name="id_rss_feed" value="${active_feed.id}" />
-					<select id="new_order" name="new_order" class="span2" >
+					<select id="new_order" name="new_order" class="input-mini" >
 						<#list 1..nb_active_rss_feed?number as i>
 							<option <#if active_feed.id == i>selected="selected"</#if> value="${i}" >${i}</option>
 						</#list>
 					</select>                   
 					<button class="btn btn-primary btn-small" type="submit" title="#i18n{rss.manage_rss_feeds.active.labelModifyOrder}">
-						<i class="icon-move icon-white"></i>
+						<i class="icon-ok icon-white"></i>
 					</button>
 					</form>
 				</td>
