@@ -20,13 +20,13 @@ INSERT INTO core_portlet_type (id_portlet_type,name,url_creation,url_update,home
 -- Dumping data for table core_style
 --
 INSERT INTO core_style (id_style, description_style, id_portlet_type, id_portal_component) VALUES (400,'Défaut','RSS_PORTLET',0);
-INSERT INTO core_style (id_style, description_style, id_portlet_type, id_portal_component) VALUES (4012,'Defaut','RSS_LIST_PORTLET',0);
+INSERT INTO core_style (id_style, description_style, id_portlet_type, id_portal_component) VALUES (401,'Defaut','RSS_LIST_PORTLET',0);
 
 --
 -- Dumping data for table core_style_mode_stylesheet
 --
 INSERT INTO core_style_mode_stylesheet (id_style, id_mode, id_stylesheet) VALUES (400,0,9005);
-INSERT INTO core_style_mode_stylesheet (id_style, id_mode, id_stylesheet) VALUES (4012,0,9002);
+INSERT INTO core_style_mode_stylesheet (id_style, id_mode, id_stylesheet) VALUES (401,0,9002);
 
 --
 -- Dumping data for table core_stylesheet
@@ -45,9 +45,9 @@ INSERT INTO core_user_right (id_right,id_user) VALUES ('RSS_MANAGEMENT',6);
 --
 -- Dumping data for table core_style
 --
-INSERT INTO core_style (id_style,description_style,id_portlet_type,id_portal_component) VALUES (401,'Défaut','RSS_LIST_PORTLET',0); 
+INSERT INTO core_style (id_style,description_style,id_portlet_type,id_portal_component) VALUES (402,'Défaut','RSS_LIST_PORTLET',0); 
 
 --
 -- Dumping data for table core_style_mode_stylesheet
 --
-INSERT INTO core_style_mode_stylesheet (id_style,id_mode,id_stylesheet) VALUES (401,0,9002);
+INSERT INTO core_style_mode_stylesheet (id_style,id_mode,id_stylesheet) VALUES (402,0,9002);
