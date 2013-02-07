@@ -1,16 +1,18 @@
 <div class="row-fluid">
-	<div class="span10 offset1">
+	<div class="span12">
 	<fieldset>
     <legend>#i18n{rss.create_rss_file.tableLabel}</legend>
-    <form class="form-inline" method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFile.jsp">
+    <form class="form offset1" method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFile.jsp">
 	<p class="head">#i18n{rss.create_rss_file.rowSwitchType} * </p> 
-	<label class="radio" for="rss_type">&nbsp;</label>
-	<input type="radio" id="rss_type" name="rss_type" value="portlet" />&nbsp;#i18n{rss.create_rss_file.rowPortlet}
+	<label class="radio" for="rss_type">
+		<input type="radio" id="rss_type1" name="rss_type" checked value="portlet" >&nbsp;#i18n{rss.create_rss_file.rowPortlet}
+	</label>
 	<#if resource_list?size &gt; 0>
-	<label class="radio inline" for="rss_type" >&nbsp;</label>
-	<input type="radio" class="inline" id="rss_type" name="rss_type" value="resourceRss" />
-	<label class="inline" for="rss_resource_key" >#i18n{rss.create_rss_file.rowResourceRss}
-	<@combo name="rss_resource_key" default_value="-1" items=resource_list /></label>
+		<label class="radio" for="rss_type" >
+			<input type="radio"id="rss_type2" name="rss_type" value="resourceRss">#i18n{rss.create_rss_file.rowResourceRss}
+		</label>
+		<label for="rss_resource_key" >
+		<@combo name="rss_resource_key" default_value="-1" items=resource_list /></label>
 	</#if>		
 	<div class="form-actions">
 		<button class="btn btn-primary btn-small" type="submit" name="save">
