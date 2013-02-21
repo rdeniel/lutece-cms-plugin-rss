@@ -76,9 +76,10 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
         "FROM portlet WHERE  portlet.id_portlet_type = ? ";
     private static final String SQL_QUERY_CHECK_PORTLET_EXISTENCE = "SELECT id_portlet" + " FROM core_portlet" +
         " WHERE id_portlet = ?";
-    private static final String SQL_QUERY_SELECT_DOCUMENT_BY_PORTLET = "SELECT a.id_document , a.code_document_type " +
-        ", a.date_creation , a.date_modification, a.title, a.document_summary, a.xml_validated_content FROM document as a  " +
-        " INNER JOIN document_published AS b WHERE a.id_document=b.id_document AND b.id_portlet = ? AND b.status = 0 ORDER BY b.date_publishing DESC ";
+    private static final String SQL_QUERY_SELECT_DOCUMENT_BY_PORTLET = "SELECT a.id_document , a.code_document_type ," +
+        "a.date_creation ,a.date_modification, a.title, a.document_summary, .xml_validated_content" +
+        "FROM document  a INNER JOIN document_published  b ON a.id_document=b.id_document" +
+        "WHERE b.id_portlet = ? AND b.status = 0 ORDER BY b.date_publishing DESC";
     private static final String SQL_QUERY_SELECT_XSL_FILE = " SELECT id_stylesheet , description , file_name, source " +
         " FROM stylesheet " + " WHERE id_stylesheet = ? ";
 
