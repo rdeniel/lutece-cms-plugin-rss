@@ -51,61 +51,60 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
 {
     // Constants
     private static final String SQL_QUERY_NEW_PK = " SELECT max(id_rss) FROM rss_generation ";
-    private static final String SQL_QUERY_INSERT = "  INSERT INTO rss_generation ( id_rss, id_portlet, name, state, date_update, description,workgroup_key, type_resource_rss, max_items, feed_type, feed_encoding )" +
-        " VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_QUERY_INSERT = "  INSERT INTO rss_generation ( id_rss, id_portlet, name, state, date_update, description,workgroup_key, type_resource_rss, max_items, feed_type, feed_encoding )"
+            + " VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_QUERY_DELETE = " DELETE FROM rss_generation WHERE id_rss = ?  ";
     /** state update */
     private static final String SQL_QUERY_UPDATE = " UPDATE rss_generation SET state = ?, date_update = ? WHERE id_rss = ? ";
-    private static final String SQL_QUERY_RSS_FILE_LIST = "SELECT a.id_rss, a.id_portlet, a.name, " +
-        "a.state, a.date_update, a.description, a.workgroup_key,a.type_resource_rss, a.max_items, a.feed_type, a.feed_encoding FROM rss_generation as a " +
-        "LEFT JOIN core_portlet as b ON (a.id_portlet=b.id_portlet) WHERE a.id_portlet=b.id_portlet OR a.type_resource_rss IS NOT NULL ORDER BY a.name ASC ";
-    private static final String SQL_QUERY_UPDATE_RSS_FILE = " UPDATE rss_generation SET id_portlet = ?, name = ?, state = ?, date_update = ?, description =?, " +
-        " workgroup_key =?, type_resource_rss=? , max_items = ? , feed_type = ? , feed_encoding = ? WHERE id_rss = ?";
-    private static final String SQL_QUERY_SELECT_GENERATE_FILE = " SELECT id_portlet, name, state, date_update,description,workgroup_key,type_resource_rss, max_items,feed_type,feed_encoding" +
-        " FROM rss_generation" + " WHERE id_rss = ?";
-    private static final String SQL_QUERY_EXIST_RSS_FILE = " SELECT id_rss, name, state, date_update" +
-        " FROM rss_generation" + " WHERE id_portlet = ?";
-    private static final String SQL_QUERY_FILE_NAME_EXIST = "SELECT id_rss " + "FROM rss_generation " +
-        "WHERE name = ?";
-    private static final String SQL_QUERY_SELECT_RSS_PORTLET = " SELECT a.id_portlet, a.name, a.date_update " +
-        " FROM portlet a LEFT JOIN rss_generation b ON a.id_portlet=b.id_portlet " +
-        " WHERE b.id_portlet IS NULL AND a.id_portlet_type = ? ";
-    private static final String SQL_QUERY_SELECT_PORTLET_NAME = " SELECT name " + " FROM portlet " +
-        " WHERE id_portlet = ? ";
-    private static final String SQL_QUERY_SELECT_ALL_RSS = " SELECT portlet.id_portlet, portlet.name, portlet.date_update " +
-        "FROM portlet WHERE  portlet.id_portlet_type = ? ";
-    private static final String SQL_QUERY_CHECK_PORTLET_EXISTENCE = "SELECT id_portlet" + " FROM core_portlet" +
-        " WHERE id_portlet = ?";
-    private static final String SQL_QUERY_SELECT_DOCUMENT_BY_PORTLET = "SELECT a.id_document , a.code_document_type ," +
-        "a.date_creation ,a.date_modification, a.title, a.document_summary, .xml_validated_content" +
-        "FROM document  a INNER JOIN document_published  b ON a.id_document=b.id_document" +
-        "WHERE b.id_portlet = ? AND b.status = 0 ORDER BY b.date_publishing DESC";
-    private static final String SQL_QUERY_SELECT_XSL_FILE = " SELECT id_stylesheet , description , file_name, source " +
-        " FROM stylesheet " + " WHERE id_stylesheet = ? ";
+    private static final String SQL_QUERY_RSS_FILE_LIST = "SELECT a.id_rss, a.id_portlet, a.name, "
+            + "a.state, a.date_update, a.description, a.workgroup_key,a.type_resource_rss, a.max_items, a.feed_type, a.feed_encoding FROM rss_generation as a "
+            + "LEFT JOIN core_portlet as b ON (a.id_portlet=b.id_portlet) WHERE a.id_portlet=b.id_portlet OR a.type_resource_rss IS NOT NULL ORDER BY a.name ASC ";
+    private static final String SQL_QUERY_UPDATE_RSS_FILE = " UPDATE rss_generation SET id_portlet = ?, name = ?, state = ?, date_update = ?, description =?, "
+            + " workgroup_key =?, type_resource_rss=? , max_items = ? , feed_type = ? , feed_encoding = ? WHERE id_rss = ?";
+    private static final String SQL_QUERY_SELECT_GENERATE_FILE = " SELECT id_portlet, name, state, date_update,description,workgroup_key,type_resource_rss, max_items,feed_type,feed_encoding"
+            + " FROM rss_generation" + " WHERE id_rss = ?";
+    private static final String SQL_QUERY_EXIST_RSS_FILE = " SELECT id_rss, name, state, date_update"
+            + " FROM rss_generation" + " WHERE id_portlet = ?";
+    private static final String SQL_QUERY_FILE_NAME_EXIST = "SELECT id_rss " + "FROM rss_generation "
+            + "WHERE name = ?";
+    private static final String SQL_QUERY_SELECT_RSS_PORTLET = " SELECT a.id_portlet, a.name, a.date_update "
+            + " FROM portlet a LEFT JOIN rss_generation b ON a.id_portlet=b.id_portlet "
+            + " WHERE b.id_portlet IS NULL AND a.id_portlet_type = ? ";
+    private static final String SQL_QUERY_SELECT_PORTLET_NAME = " SELECT name " + " FROM portlet "
+            + " WHERE id_portlet = ? ";
+    private static final String SQL_QUERY_SELECT_ALL_RSS = " SELECT portlet.id_portlet, portlet.name, portlet.date_update "
+            + "FROM portlet WHERE  portlet.id_portlet_type = ? ";
+    private static final String SQL_QUERY_CHECK_PORTLET_EXISTENCE = "SELECT id_portlet" + " FROM core_portlet"
+            + " WHERE id_portlet = ?";
+    private static final String SQL_QUERY_SELECT_DOCUMENT_BY_PORTLET = "SELECT a.id_document , a.code_document_type ,"
+            + "a.date_creation ,a.date_modification, a.title, a.document_summary, a.xml_validated_content "
+            + "FROM document a INNER JOIN document_published  b ON a.id_document=b.id_document "
+            + "WHERE b.id_portlet = ? AND b.status = 0 ORDER BY b.date_publishing DESC";
+    private static final String SQL_QUERY_SELECT_XSL_FILE = " SELECT id_stylesheet , description , file_name, source "
+            + " FROM stylesheet " + " WHERE id_stylesheet = ? ";
 
     /**
      * Calculates a new primary key to add a new record
      * @return The new key.
      */
-    private int newPrimaryKey(  )
+    private int newPrimaryKey( )
     {
         int nKey;
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
-        	nKey = daoUtil.getInt( 1 ) + 1;
+            nKey = daoUtil.getInt( 1 ) + 1;
         }
         else
         {
-        	// If the table is empty
-        	nKey = 1;
+            // If the table is empty
+            nKey = 1;
         }
 
-        
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nKey;
     }
@@ -116,23 +115,23 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
      */
     public void insert( RssGeneratedFile rssFile )
     {
-        int nNewPrimaryKey = newPrimaryKey(  );
+        int nNewPrimaryKey = newPrimaryKey( );
         rssFile.setId( nNewPrimaryKey );
 
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT );
-        daoUtil.setInt( 1, rssFile.getId(  ) );
-        daoUtil.setInt( 2, rssFile.getPortletId(  ) );
-        daoUtil.setString( 3, rssFile.getName(  ) );
-        daoUtil.setInt( 4, rssFile.getState(  ) );
-        daoUtil.setTimestamp( 5, new java.sql.Timestamp( new java.util.Date(  ).getTime(  ) ) );
-        daoUtil.setString( 6, rssFile.getDescription(  ) );
-        daoUtil.setString( 7, rssFile.getWorkgroup(  ) );
-        daoUtil.setString( 8, rssFile.getTypeResourceRss(  ) );
-        daoUtil.setInt( 9, rssFile.getMaxItems() );
-        daoUtil.setString( 10, rssFile.getFeedType() );
-        daoUtil.setString( 11, rssFile.getEncoding() );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.setInt( 1, rssFile.getId( ) );
+        daoUtil.setInt( 2, rssFile.getPortletId( ) );
+        daoUtil.setString( 3, rssFile.getName( ) );
+        daoUtil.setInt( 4, rssFile.getState( ) );
+        daoUtil.setTimestamp( 5, new java.sql.Timestamp( new java.util.Date( ).getTime( ) ) );
+        daoUtil.setString( 6, rssFile.getDescription( ) );
+        daoUtil.setString( 7, rssFile.getWorkgroup( ) );
+        daoUtil.setString( 8, rssFile.getTypeResourceRss( ) );
+        daoUtil.setInt( 9, rssFile.getMaxItems( ) );
+        daoUtil.setString( 10, rssFile.getFeedType( ) );
+        daoUtil.setString( 11, rssFile.getEncoding( ) );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -143,8 +142,8 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE );
         daoUtil.setInt( 1, nRssFileId );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -155,20 +154,20 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE_RSS_FILE );
 
-        daoUtil.setInt( 1, rssFile.getPortletId(  ) );
-        daoUtil.setString( 2, rssFile.getName(  ) );
-        daoUtil.setInt( 3, rssFile.getState(  ) );
-        daoUtil.setTimestamp( 4, new java.sql.Timestamp( new java.util.Date(  ).getTime(  ) ) );
-        daoUtil.setString( 5, rssFile.getDescription(  ) );
-        daoUtil.setString( 6, rssFile.getWorkgroup(  ) );
-        daoUtil.setString( 7, rssFile.getTypeResourceRss(  ) );
-        daoUtil.setInt( 8, rssFile.getMaxItems() );
-        daoUtil.setString( 9, rssFile.getFeedType() );
-        daoUtil.setString( 10, rssFile.getEncoding() );
-        daoUtil.setInt( 11, rssFile.getId(  ) );
+        daoUtil.setInt( 1, rssFile.getPortletId( ) );
+        daoUtil.setString( 2, rssFile.getName( ) );
+        daoUtil.setInt( 3, rssFile.getState( ) );
+        daoUtil.setTimestamp( 4, new java.sql.Timestamp( new java.util.Date( ).getTime( ) ) );
+        daoUtil.setString( 5, rssFile.getDescription( ) );
+        daoUtil.setString( 6, rssFile.getWorkgroup( ) );
+        daoUtil.setString( 7, rssFile.getTypeResourceRss( ) );
+        daoUtil.setInt( 8, rssFile.getMaxItems( ) );
+        daoUtil.setString( 9, rssFile.getFeedType( ) );
+        daoUtil.setString( 10, rssFile.getEncoding( ) );
+        daoUtil.setInt( 11, rssFile.getId( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -178,12 +177,12 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
     public void updateState( RssGeneratedFile rssFile )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE );
-        daoUtil.setInt( 1, rssFile.getState(  ) );
+        daoUtil.setInt( 1, rssFile.getState( ) );
         //FIXME The date should be rssFile.getUpdateDate(  )
-        daoUtil.setTimestamp( 2, new java.sql.Timestamp( new java.util.Date(  ).getTime(  ) ) );
-        daoUtil.setInt( 3, rssFile.getId(  ) );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.setTimestamp( 2, new java.sql.Timestamp( new java.util.Date( ).getTime( ) ) );
+        daoUtil.setInt( 3, rssFile.getId( ) );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -197,11 +196,11 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
 
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_GENERATE_FILE );
         daoUtil.setInt( 1, nRssFileId );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
-            rssFile = new RssGeneratedFile(  );
+            rssFile = new RssGeneratedFile( );
             rssFile.setId( nRssFileId );
             rssFile.setPortletId( daoUtil.getInt( 1 ) );
             rssFile.setName( daoUtil.getString( 2 ) );
@@ -215,7 +214,7 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
             rssFile.setEncoding( daoUtil.getString( 10 ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return rssFile;
     }
@@ -229,16 +228,16 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_EXIST_RSS_FILE );
         daoUtil.setInt( 1, nPortletId );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( !daoUtil.next(  ) )
+        if ( !daoUtil.next( ) )
         {
-            daoUtil.free(  );
+            daoUtil.free( );
 
             return false;
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return true;
     }
@@ -252,16 +251,16 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_FILE_NAME_EXIST );
         daoUtil.setString( 1, strRssFileName );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( !daoUtil.next(  ) )
+        if ( !daoUtil.next( ) )
         {
-            daoUtil.free(  );
+            daoUtil.free( );
 
             return false;
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return true;
     }
@@ -270,16 +269,16 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
      * Returns the list of the rss_generation files
      * @return the List of rss files
      */
-    public List<RssGeneratedFile> selectRssFileList(  )
+    public List<RssGeneratedFile> selectRssFileList( )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_RSS_FILE_LIST );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        List<RssGeneratedFile> list = new ArrayList<RssGeneratedFile>(  );
+        List<RssGeneratedFile> list = new ArrayList<RssGeneratedFile>( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
-            RssGeneratedFile rssFile = new RssGeneratedFile(  );
+            RssGeneratedFile rssFile = new RssGeneratedFile( );
             rssFile.setId( daoUtil.getInt( 1 ) );
             rssFile.setPortletId( daoUtil.getInt( 2 ) );
             rssFile.setName( daoUtil.getString( 3 ) );
@@ -295,7 +294,7 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
             list.add( rssFile );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return list;
     }
@@ -304,23 +303,23 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
      * Returns a collection of portlets for which there isn't any RSS files
      * @return the portlets in form of Collection
      */
-    public Collection selectRssPortlets(  )
+    public Collection selectRssPortlets( )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_RSS_PORTLET );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        ArrayList list = new ArrayList(  );
+        ArrayList list = new ArrayList( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
-            PortletImpl portlet = new PortletImpl(  );
+            PortletImpl portlet = new PortletImpl( );
             portlet.setId( daoUtil.getInt( 1 ) );
             portlet.setName( daoUtil.getString( 2 ) );
             portlet.setDateUpdate( daoUtil.getTimestamp( 3 ) );
             list.add( portlet );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return list;
     }
@@ -329,27 +328,27 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
      * Returns a collection of all portlets
      * @return the portlets in form of Collection
      */
-    public Collection selectAllRssPortlets(  )
+    public Collection selectAllRssPortlets( )
     {
-        String strPortletTypeId = DocumentListPortletHome.getInstance(  ).getPortletTypeId(  );
+        String strPortletTypeId = DocumentListPortletHome.getInstance( ).getPortletTypeId( );
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_ALL_RSS );
 
         daoUtil.setString( 1, strPortletTypeId );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        ArrayList list = new ArrayList(  );
+        ArrayList list = new ArrayList( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
-            PortletImpl portlet = new PortletImpl(  );
+            PortletImpl portlet = new PortletImpl( );
             portlet.setId( daoUtil.getInt( 1 ) );
             portlet.setName( daoUtil.getString( 2 ) );
             portlet.setDateUpdate( daoUtil.getTimestamp( 3 ) );
             list.add( portlet );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return list;
     }
@@ -365,14 +364,14 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_PORTLET_NAME );
         daoUtil.setInt( 1, nPortletId );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             strPortletName = daoUtil.getString( 1 );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return strPortletName;
     }
@@ -387,22 +386,23 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_CHECK_PORTLET_EXISTENCE );
         daoUtil.setInt( 1, nPortletId );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( !daoUtil.next(  ) )
+        if ( !daoUtil.next( ) )
         {
-            daoUtil.free(  );
+            daoUtil.free( );
 
             return false;
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return true;
     }
 
     /**
-     * Returns all the documents of a portlet whose identifier is specified in parameter
+     * Returns all the documents of a portlet whose identifier is specified in
+     * parameter
      * @param nPortletId the identifier of the portlet
      * @return List of documents
      */
@@ -411,13 +411,13 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_DOCUMENT_BY_PORTLET );
         daoUtil.setInt( 1, nPortletId );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        List list = new ArrayList(  );
+        List list = new ArrayList( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
-            Document document = new Document(  );
+            Document document = new Document( );
             document.setId( daoUtil.getInt( 1 ) );
             document.setCodeDocumentType( daoUtil.getString( 2 ) );
             document.setDateCreation( daoUtil.getTimestamp( 3 ) );
@@ -428,7 +428,7 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
             list.add( document );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return list;
     }
@@ -440,13 +440,13 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
      */
     public StyleSheet selectXslFile( int nStyleSheetId )
     {
-        StyleSheet stylesheet = new StyleSheet(  );
+        StyleSheet stylesheet = new StyleSheet( );
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_XSL_FILE );
         daoUtil.setInt( 1, nStyleSheetId );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             stylesheet.setId( daoUtil.getInt( 1 ) );
             stylesheet.setDescription( daoUtil.getString( 2 ) );
@@ -454,7 +454,7 @@ public final class RssGeneratedFileDAO implements IRssGeneratedFileDAO
             stylesheet.setSource( daoUtil.getBytes( 4 ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return stylesheet;
     }
