@@ -68,6 +68,7 @@ public final class RssContentService extends ResourceService
     /**
      * {@inheritDoc }
      */
+    @Override
     protected String getLoadersProperty(  )
     {
         return PROPERTY_LOADER;

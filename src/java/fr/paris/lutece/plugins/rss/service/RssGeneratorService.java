@@ -33,16 +33,8 @@
  */
 package fr.paris.lutece.plugins.rss.service;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import fr.paris.lutece.plugins.document.business.Document;
+import fr.paris.lutece.plugins.rss.business.RssGeneratedFile;
 import fr.paris.lutece.plugins.rss.business.RssGeneratedFileHome;
 import fr.paris.lutece.plugins.rss.web.FeedUtil;
 import fr.paris.lutece.portal.business.rss.FeedResource;
@@ -56,7 +48,14 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.html.HtmlTemplate;
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 
@@ -120,6 +119,7 @@ public final class RssGeneratorService
      * @param strEncoding encoding
      * @param strFeedType feed type
      * @param nMaxItems max items
+     * @param request The HTTP request
      * @return String the XML content of the RSS document
      */
     public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding, String strFeedType, int nMaxItems, HttpServletRequest request )
@@ -128,7 +128,7 @@ public final class RssGeneratorService
         String strRssFileLanguage = AppPropertiesService.getProperty( PROPERTY_SITE_LANGUAGE );
         String strIdPortlet = Integer.toString( nIdPortlet );
         String strWebAppUrl = AppPropertiesService.getProperty( PROPERTY_WEBAPP_PROD_URL );
-        String strSiteUrl = StringUtils.EMPTY;
+        String strSiteUrl;
         if ( StringUtils.isNotBlank( strWebAppUrl ) )
         {
         	strSiteUrl = strWebAppUrl + "/";
@@ -190,11 +190,11 @@ public final class RssGeneratorService
     /**
      * Creates the push RSS document corresponding to the given portlet
      *
-     * @param nIdPortlet the portlet id for wich the file is created
+     * @param listRssItem The RSS List
      * @param strRssFileDescription the Description
      * @return String the XML content of the RSS document
      */
-    public static String createRssDocument( List list_rss, String strRssFileDescription )
+    public static String createRssDocument( List listRssItem, String strRssFileDescription )
     {
         HashMap model = new HashMap(  );
 
@@ -214,7 +214,7 @@ public final class RssGeneratorService
         // Find documents by portlet
         //List listDocuments = RssGeneratedFileHome.findDocumentsByPortlet( nIdPortlet );
         //The date must respect RFC-822 date-time
-        model.put( MARK_ITEM_LIST, list_rss );
+        model.put( MARK_ITEM_LIST, listRssItem );
 
         Locale locale = new Locale( strRssFileLanguage );
 
@@ -231,7 +231,7 @@ public final class RssGeneratorService
      */
     public static void createFileRss( String strRssFileName, String strRssDocument )
     {
-        FileWriter fileRssWriter = null;
+        FileWriter fileRssWriter;
 
         try
         {
@@ -301,5 +301,23 @@ public final class RssGeneratorService
         {
             AppLogService.error( e.getMessage(  ), e );
         }
+    }
+    
+    /**
+     * Regenerate all Rss files in the file system
+     * @return Execution logs
+     */
+    public static String generateAllRss()
+    {
+        StringBuilder sb = new StringBuilder( "Regenerate all RSS files from the database to the filesystem.\n");
+        List<RssGeneratedFile> list = RssGeneratedFileHome.getRssFileList();
+        for( RssGeneratedFile file : list )
+        {
+            createRssDocument( file.getPortletId() , file.getDescription(), file.getEncoding(), file.getFeedType(), file.getMaxItems());
+            sb.append( "\nFile  ").append( file.getName()).append( " regenerated.\n");
+        }
+        AppLogService.info( sb.toString() );
+        return sb.toString();
+        
     }
 }
