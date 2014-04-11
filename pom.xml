@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>plugin-rss</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>3.0.3</version>
     <name>Lutece rss plugin</name>
 
     <repositories>
@@ -69,8 +69,8 @@
         <jiraComponentId>10151</jiraComponentId>
     </properties>
     <scm>
-        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/plugin-rss</connection>
-        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/plugin-rss</developerConnection>
-        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/trunk/plugins/cms/plugin-rss</url>
+        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/tags/plugin-rss-3.0.3</connection>
+        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/tags/plugin-rss-3.0.3</developerConnection>
+        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/tags/plugin-rss-3.0.3</url>
     </scm>
 </project>
