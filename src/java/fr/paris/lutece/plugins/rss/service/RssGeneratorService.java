@@ -89,7 +89,7 @@ public final class RssGeneratorService
     private static final String PROPERTY_SITE_LANGUAGE = "rss.language";
     private static final String PROPERTY_WEBAPP_PROD_URL = "lutece.prod.url";
     private static final String PROPERTY_BASE_URL = "lutece.base.url";
-    private static final String CONSTANT_IMAGE_RSS = "/images/local/skin/valid-rss.png";
+    private static final String CONSTANT_IMAGE_RSS = "/images/local/skin/plugins/rss/rss-image.png";
 
     /**
      * Private constructor
