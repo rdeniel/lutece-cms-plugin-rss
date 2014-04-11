@@ -3,7 +3,7 @@
     <!-- Plugin Informations -->
     <name>rss</name>
     <class>fr.paris.lutece.plugins.rss.service.RssPlugin</class>
-    <version>3.0.3</version>
+    <version>3.0.4-SNAPSHOT</version>
     <description>rss.plugin.description</description>
     <documentation/>
     <installation/>
