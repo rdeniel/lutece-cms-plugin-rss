@@ -43,25 +43,22 @@ import fr.paris.lutece.portal.business.rss.FeedResourceItem;
 import fr.paris.lutece.portal.business.rss.IFeedResource;
 import fr.paris.lutece.portal.business.rss.IFeedResourceImage;
 import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
+import fr.paris.lutece.portal.service.portal.PortalService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.html.HtmlTemplate;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -85,7 +82,6 @@ public final class RssGeneratorService
     private static final String MARK_DOCUMENT_ID = "document_id";
     private static final String MARK_RSS_SITE_DESCRIPTION = "site_description";
     private static final String MARK_ID_PORTLET = "id_portlet";
-    private static final String PROPERTY_SITE_NAME = "lutece.name";
     private static final String PROPERTY_SITE_LANGUAGE = "rss.language";
     private static final String PROPERTY_WEBAPP_PROD_URL = "lutece.prod.url";
     private static final String PROPERTY_BASE_URL = "lutece.base.url";
@@ -131,7 +127,7 @@ public final class RssGeneratorService
     public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding,
         String strFeedType, int nMaxItems, HttpServletRequest request )
     {
-        String strRssFileSiteName = AppPropertiesService.getProperty( PROPERTY_SITE_NAME );
+        String strRssFileSiteName = PortalService.getSiteName();
         String strRssFileLanguage = AppPropertiesService.getProperty( PROPERTY_SITE_LANGUAGE );
         String strIdPortlet = Integer.toString( nIdPortlet );
         String strWebAppUrl = AppPropertiesService.getProperty( PROPERTY_WEBAPP_PROD_URL );
@@ -209,7 +205,7 @@ public final class RssGeneratorService
         HashMap model = new HashMap(  );
 
         // Update the head of the document
-        String strRssFileSiteName = AppPropertiesService.getProperty( PROPERTY_SITE_NAME );
+        String strRssFileSiteName = PortalService.getSiteName();
         String strRssFileLanguage = AppPropertiesService.getProperty( PROPERTY_SITE_LANGUAGE );
 
         //String strIdPortlet = Integer.toString( nIdPortlet );
