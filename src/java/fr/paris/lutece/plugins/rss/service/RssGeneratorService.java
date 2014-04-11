@@ -208,13 +208,11 @@ public final class RssGeneratorService
         String strRssFileSiteName = PortalService.getSiteName();
         String strRssFileLanguage = AppPropertiesService.getProperty( PROPERTY_SITE_LANGUAGE );
 
-        //String strIdPortlet = Integer.toString( nIdPortlet );
         String strWebAppUrl = AppPropertiesService.getProperty( PROPERTY_WEBAPP_PROD_URL );
         String strSiteUrl = strWebAppUrl;
         model.put( MARK_RSS_SITE_NAME, strRssFileSiteName );
         model.put( MARK_RSS_FILE_LANGUAGE, strRssFileLanguage );
         model.put( MARK_RSS_SITE_URL, strSiteUrl );
-        // model.put( MARK_ID_PORTLET, strIdPortlet );
         model.put( MARK_RSS_SITE_DESCRIPTION, strRssFileDescription );
 
         // Find documents by portlet
