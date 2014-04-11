@@ -76,8 +76,7 @@ public class RssGeneratorFilter implements Filter
         throws IOException, ServletException
     {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        AppLogService.info( request.getRequestURI(  ) );
-
+ 
         String strURI = request.getRequestURI(  );
         String strRssStorageRoot = AppPropertiesService.getProperty( RssGeneratorService.PROPERTY_RSS_STORAGE_FOLDER_PATH );
         strRssStorageRoot = ( strRssStorageRoot.endsWith( "/" ) ) ? strRssStorageRoot : ( strRssStorageRoot + "/" );

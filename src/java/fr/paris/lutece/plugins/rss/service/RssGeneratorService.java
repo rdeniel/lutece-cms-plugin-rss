@@ -139,7 +139,7 @@ public final class RssGeneratorService
 
         if ( StringUtils.isNotBlank( strWebAppUrl ) )
         {
-            strSiteUrl = strWebAppUrl + "/";
+            strSiteUrl = strWebAppUrl;
         }
         else
         {
@@ -214,7 +214,7 @@ public final class RssGeneratorService
 
         //String strIdPortlet = Integer.toString( nIdPortlet );
         String strWebAppUrl = AppPropertiesService.getProperty( PROPERTY_WEBAPP_PROD_URL );
-        String strSiteUrl = strWebAppUrl + "/";
+        String strSiteUrl = strWebAppUrl;
         model.put( MARK_RSS_SITE_NAME, strRssFileSiteName );
         model.put( MARK_RSS_FILE_LANGUAGE, strRssFileLanguage );
         model.put( MARK_RSS_SITE_URL, strSiteUrl );
