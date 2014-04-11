@@ -33,12 +33,12 @@
  */
 package fr.paris.lutece.plugins.rss.business.portlet;
 
-import java.util.List;
-
 import fr.paris.lutece.portal.business.portlet.IPortletInterfaceDAO;
 import fr.paris.lutece.portal.business.portlet.PortletHome;
 import fr.paris.lutece.portal.business.portlet.PortletTypeHome;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+
+import java.util.List;
 
 
 /**
@@ -110,7 +110,7 @@ public class RssPortletHome extends PortletHome
     {
         return _dao.checkLinkedPortlet( nIdRssFeed ).isEmpty(  );
     }
-    
+
     /**
      * Checks whether the rss feed is linked to a portlet
      * @return The linked portlet if found, <code>null</code> otherwise
@@ -118,6 +118,6 @@ public class RssPortletHome extends PortletHome
      */
     public static List<RssPortlet> checkLinkedPortlet( int nIdRssFeed )
     {
-    	return _dao.checkLinkedPortlet( nIdRssFeed );
+        return _dao.checkLinkedPortlet( nIdRssFeed );
     }
 }

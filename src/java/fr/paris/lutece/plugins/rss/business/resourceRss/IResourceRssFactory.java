@@ -39,18 +39,19 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 import java.util.Collection;
 
+
 /**
  *
  * IResourceRssFactory
  *
  */
 public interface IResourceRssFactory
-{    
-	/**
-     * return an instance of ResourceRss Object depending on the task type
-     * @param strKey the type ResourceRss key
-     * @return an instance of Task  Object
-     */
+{
+    /**
+    * return an instance of ResourceRss Object depending on the task type
+    * @param strKey the type ResourceRss key
+    * @return an instance of Task  Object
+    */
     IResourceRss getResourceRss( String strKey );
 
     /**

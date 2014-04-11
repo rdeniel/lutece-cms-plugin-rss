@@ -74,5 +74,4 @@ public interface IRssListPortletDAO extends IPortletInterfaceDAO
      * @param portlet The reference of the portlet
      */
     void store( Portlet portlet );
-
 }

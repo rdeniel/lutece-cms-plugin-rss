@@ -239,22 +239,22 @@ public class RssFeed implements AdminWorkgroupResource
     {
         _nIdIncludeStyle = nIdIncludeStyle;
     }
-    
+
     /**
-     * 
+     *
      * @return true if this feed is active
      */
     public boolean getIsActive(  )
     {
-    	return _bActive;
+        return _bActive;
     }
-    
+
     /**
-     * 
+     *
      * @param bActive
      */
     public void setIsActive( boolean bActive )
     {
-    	_bActive = bActive;
+        _bActive = bActive;
     }
 }

@@ -46,8 +46,8 @@ import java.util.List;
 public final class RssFeedDAO implements IRssFeedDAO
 {
     // Constants
-	//There are to tables. One for the active feeds and the other for the inactive ones
-	//queries for active feeds
+    //There are to tables. One for the active feeds and the other for the inactive ones
+    //queries for active feeds
     private static final String SQL_QUERY_NEW_PK = " SELECT max( id_rss_feed ) FROM rss_feed ";
     private static final String SQL_QUERY_SELECT = " SELECT id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style FROM rss_feed WHERE id_rss_feed = ?  ";
     private static final String SQL_QUERY_INSERT = " INSERT INTO rss_feed ( id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ";
@@ -55,7 +55,7 @@ public final class RssFeedDAO implements IRssFeedDAO
     private static final String SQL_QUERY_UPDATE = " UPDATE rss_feed SET id_rss_feed = ?, name = ?, url = ?, workgroup_key = ?, include_style = ? WHERE id_rss_feed = ?  ";
     private static final String SQL_QUERY_SELECTALL = " SELECT id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style FROM rss_feed ";
     private static final String SQL_QUERY_UPDATE_LAST_FETCH_INFOS = " UPDATE rss_feed SET last_fetch_date = ?, last_fetch_status = ?, last_fetch_error = ? WHERE id_rss_feed = ?  ";
-    
+
     //queries for inactive feeds
     private static final String SQL_QUERY_NEW_PK_OFF = " SELECT max( id_rss_feed ) FROM rss_feed_inactive ";
     private static final String SQL_QUERY_SELECT_OFF = " SELECT id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style FROM rss_feed_inactive WHERE id_rss_feed = ?  ";
@@ -64,9 +64,7 @@ public final class RssFeedDAO implements IRssFeedDAO
     private static final String SQL_QUERY_UPDATE_OFF = " UPDATE rss_feed_inactive SET id_rss_feed = ?, name = ?, url = ?, workgroup_key = ?, include_style = ? WHERE id_rss_feed = ?  ";
     private static final String SQL_QUERY_SELECTALL_OFF = " SELECT id_rss_feed, name, url, last_fetch_date, last_fetch_status, last_fetch_error, workgroup_key, include_style FROM rss_feed_inactive ";
     private static final String SQL_QUERY_UPDATE_LAST_FETCH_INFOS_OFF = " UPDATE rss_feed_inactive SET last_fetch_date = ?, last_fetch_status = ?, last_fetch_error = ? WHERE id_rss_feed = ?  ";
-    
     private static final String SQL_QUERY_SELECT_URL = "SELECT url FROM rss_feed WHERE url = ? UNION SELECT url FROM rss_feed_inactive WHERE url = ? ";
-    
 
     /**
      * Generates a new primary key either in the active feed table or in the inactive feed one
@@ -98,7 +96,7 @@ public final class RssFeedDAO implements IRssFeedDAO
      */
     public void insert( RssFeed rssFeed )
     {
-    	boolean bActive = rssFeed.getIsActive(  );
+        boolean bActive = rssFeed.getIsActive(  );
         DAOUtil daoUtil = new DAOUtil( bActive ? SQL_QUERY_INSERT : SQL_QUERY_INSERT_OFF );
         rssFeed.setId( newPrimaryKey( bActive ) );
         daoUtil.setInt( 1, rssFeed.getId(  ) );
@@ -185,7 +183,8 @@ public final class RssFeedDAO implements IRssFeedDAO
      */
     public void storeLastFetchInfos( RssFeed rssFeed )
     {
-        DAOUtil daoUtil = new DAOUtil( rssFeed.getIsActive(  ) ? SQL_QUERY_UPDATE_LAST_FETCH_INFOS : SQL_QUERY_UPDATE_LAST_FETCH_INFOS_OFF );
+        DAOUtil daoUtil = new DAOUtil( rssFeed.getIsActive(  ) ? SQL_QUERY_UPDATE_LAST_FETCH_INFOS
+                                                               : SQL_QUERY_UPDATE_LAST_FETCH_INFOS_OFF );
         daoUtil.setTimestamp( 1, rssFeed.getLastFetchDate(  ) );
         daoUtil.setInt( 2, rssFeed.getLastFetchStatus(  ) );
         daoUtil.setString( 3, rssFeed.getLastFetchError(  ) );
@@ -194,7 +193,7 @@ public final class RssFeedDAO implements IRssFeedDAO
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
     }
-    
+
     /**
      * Load the list of rssFeeds
      * @param bActive <code>true</code> if the field is active

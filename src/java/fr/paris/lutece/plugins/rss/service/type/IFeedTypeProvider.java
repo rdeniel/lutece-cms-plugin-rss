@@ -37,6 +37,7 @@ import com.sun.syndication.feed.WireFeed;
 
 import fr.paris.lutece.portal.business.rss.IFeedResource;
 
+
 /**
  *
  * IRssFeedType
@@ -44,20 +45,20 @@ import fr.paris.lutece.portal.business.rss.IFeedResource;
  */
 public interface IFeedTypeProvider
 {
-	/**
-	 * Check if the provider is invoked
-	 * @param strFeedType the feed type
-	 * @return true if the provider is invoked, false otherwise
-	 */
-	boolean isInvoked( String strFeedType );
+    /**
+     * Check if the provider is invoked
+     * @param strFeedType the feed type
+     * @return true if the provider is invoked, false otherwise
+     */
+    boolean isInvoked( String strFeedType );
 
-	/**
-	 * Get the wire feed
-	 * @param strFeedType the feed type
-	 * @param resource the resource
-	 * @param strEncoding the encoding
-	 * @param nMaxItems the max number of items
-	 * @return a {@link WireFeed}
-	 */
-	WireFeed getWireFeed( String strFeedType, IFeedResource resource, String strEncoding, int nMaxItems );
+    /**
+     * Get the wire feed
+     * @param strFeedType the feed type
+     * @param resource the resource
+     * @param strEncoding the encoding
+     * @param nMaxItems the max number of items
+     * @return a {@link WireFeed}
+     */
+    WireFeed getWireFeed( String strFeedType, IFeedResource resource, String strEncoding, int nMaxItems );
 }

@@ -38,15 +38,17 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 
+
 /**
- * 
+ *
  * RssFeedParameterHome
  *
  */
 public class RssFeedParameterHome
 {
-	// Static variable pointed at the DAO instance
-    private static IRssFeedParameterDAO _dao = (IRssFeedParameterDAO) SpringContextService.getPluginBean( "rss", "rssFeedParameterDAO" );
+    // Static variable pointed at the DAO instance
+    private static IRssFeedParameterDAO _dao = (IRssFeedParameterDAO) SpringContextService.getPluginBean( "rss",
+            "rssFeedParameterDAO" );
 
     /**
     * Load the parameter value
@@ -69,7 +71,7 @@ public class RssFeedParameterHome
     {
         _dao.store( param, plugin );
     }
-    
+
     /**
      * Load all the parameter default values
      * @param plugin Plugin
@@ -77,7 +79,6 @@ public class RssFeedParameterHome
      */
     public static ReferenceList findAll( Plugin plugin )
     {
-    	return _dao.selectAll( plugin );
+        return _dao.selectAll( plugin );
     }
-    
 }

@@ -86,7 +86,7 @@ public final class RssListPortletDAO implements IRssListPortletDAO
      */
     public void store( Portlet portlet )
     {
-    	RssListPortlet p = (RssListPortlet) portlet;
+        RssListPortlet p = (RssListPortlet) portlet;
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE );
         daoUtil.setInt( 1, p.getId(  ) );
         daoUtil.setInt( 2, p.getId(  ) );
@@ -102,7 +102,7 @@ public final class RssListPortletDAO implements IRssListPortletDAO
      */
     public Portlet load( int nIdPortlet )
     {
-    	RssListPortlet portlet = new RssListPortlet(  );
+        RssListPortlet portlet = new RssListPortlet(  );
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT );
         daoUtil.setInt( 1, nIdPortlet );
         daoUtil.executeQuery(  );

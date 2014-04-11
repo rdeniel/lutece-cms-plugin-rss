@@ -33,14 +33,14 @@
  */
 package fr.paris.lutece.plugins.rss.business.portlet;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.rss.business.RssFeed;
 import fr.paris.lutece.plugins.rss.business.RssFeedHome;
 import fr.paris.lutece.portal.business.portlet.Portlet;
 import fr.paris.lutece.util.xml.XmlUtil;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -51,7 +51,7 @@ public class RssListPortlet extends Portlet
     private static final String TAG_RSS_LIST_PORTLET = "rss-list-portlet";
     private static final String TAG_RSS_LIST_PORTLET_NAME = "rss-list-portlet-name";
     private static final String TAG_RSS_LIST_PORTLET_URL = "rss-list-portlet-url";
-    
+
     /**
      * Sets the identifier of the portlet type to value specified
      */
@@ -84,14 +84,15 @@ public class RssListPortlet extends Portlet
 
         if ( listRssFeedList != null )
         {
-        	for( RssFeed feed: listRssFeedList )
-        	{
-	            XmlUtil.beginElement( strXml, TAG_RSS_LIST_PORTLET );
-	            XmlUtil.addElementHtml( strXml, TAG_RSS_LIST_PORTLET_NAME, feed.getName() );
-	            XmlUtil.addElementHtml( strXml, TAG_RSS_LIST_PORTLET_URL, feed.getUrl() );
-	            XmlUtil.endElement( strXml, TAG_RSS_LIST_PORTLET );
-        	}
+            for ( RssFeed feed : listRssFeedList )
+            {
+                XmlUtil.beginElement( strXml, TAG_RSS_LIST_PORTLET );
+                XmlUtil.addElementHtml( strXml, TAG_RSS_LIST_PORTLET_NAME, feed.getName(  ) );
+                XmlUtil.addElementHtml( strXml, TAG_RSS_LIST_PORTLET_URL, feed.getUrl(  ) );
+                XmlUtil.endElement( strXml, TAG_RSS_LIST_PORTLET );
+            }
         }
+
         return addPortletTags( strXml );
     }
 
@@ -100,7 +101,7 @@ public class RssListPortlet extends Portlet
      */
     public void update(  )
     {
-    	RssListPortletHome.getInstance(  ).update( this );
+        RssListPortletHome.getInstance(  ).update( this );
     }
 
     /**
@@ -108,6 +109,6 @@ public class RssListPortlet extends Portlet
      */
     public void remove(  )
     {
-    	RssListPortletHome.getInstance(  ).remove( this );
+        RssListPortletHome.getInstance(  ).remove( this );
     }
 }

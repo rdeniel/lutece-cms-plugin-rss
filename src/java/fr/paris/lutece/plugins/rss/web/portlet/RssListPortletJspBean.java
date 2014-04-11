@@ -33,14 +33,14 @@
  */
 package fr.paris.lutece.plugins.rss.web.portlet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.rss.business.portlet.RssListPortlet;
 import fr.paris.lutece.plugins.rss.business.portlet.RssListPortletHome;
 import fr.paris.lutece.portal.business.portlet.PortletHome;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.web.portlet.PortletJspBean;
 import fr.paris.lutece.util.html.HtmlTemplate;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -178,5 +178,4 @@ public class RssListPortletJspBean extends PortletJspBean
         // Displays the page with the updated portlet
         return getPageUrl( portlet.getPageId(  ) );
     }
-    
 }

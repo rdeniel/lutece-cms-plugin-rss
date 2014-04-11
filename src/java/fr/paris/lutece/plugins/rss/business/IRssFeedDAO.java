@@ -43,13 +43,13 @@ import java.util.List;
  */
 public interface IRssFeedDAO
 {
-	/**
-     * Generates a new primary key either in the active feed table or in the inactive feed one
-     * @param bActive <code>true</code> for the active feed table
-     * @return The new primary key
-     */
+    /**
+    * Generates a new primary key either in the active feed table or in the inactive feed one
+    * @param bActive <code>true</code> for the active feed table
+    * @return The new primary key
+    */
     int newPrimaryKey( boolean bActive );
-    
+
     /**
      * Checks whether url referenced is pointed as an external feed
      * @param strUrl The url to be tested
@@ -76,7 +76,7 @@ public interface IRssFeedDAO
      * @param bActive <code>true</code> if the field is active
      */
     RssFeed load( int nRssFeedId, boolean bActive );
-    
+
     /**
      * Load the list of rssFeeds
      * @param bActive <code>true</code> for active feeds
@@ -90,7 +90,7 @@ public interface IRssFeedDAO
      * @return The List of the RssFeeds
      */
     List<RssFeed> selectRssFeeds( boolean bActive );
-    
+
     /**
      * Update the record in the table
      * @param rssFeed The reference of rssFeed

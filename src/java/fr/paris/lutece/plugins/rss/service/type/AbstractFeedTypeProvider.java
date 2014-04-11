@@ -41,5 +41,5 @@ package fr.paris.lutece.plugins.rss.service.type;
  */
 public abstract class AbstractFeedTypeProvider implements IFeedTypeProvider
 {
-	protected static final int MAX_ITEM_UNLIMITED = 0;
+    protected static final int MAX_ITEM_UNLIMITED = 0;
 }

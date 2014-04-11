@@ -33,10 +33,10 @@
  */
 package fr.paris.lutece.plugins.rss.business.portlet;
 
-import java.util.List;
-
 import fr.paris.lutece.portal.business.portlet.IPortletInterfaceDAO;
 import fr.paris.lutece.portal.business.portlet.Portlet;
+
+import java.util.List;
 
 
 /**

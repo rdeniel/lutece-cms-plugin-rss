@@ -31,7 +31,6 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.rss.web.filter;
 
 import fr.paris.lutece.plugins.rss.business.RssGeneratedFileHome;
@@ -39,8 +38,10 @@ import fr.paris.lutece.plugins.rss.service.RssGeneratorService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+
 import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -48,6 +49,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+
 
 /**
  *
@@ -74,24 +76,28 @@ public class RssGeneratorFilter implements Filter
         throws IOException, ServletException
     {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        AppLogService.info( request.getRequestURI() );
-        String strURI = request.getRequestURI();
-        String strRssStorageRoot = AppPropertiesService.getProperty( RssGeneratorService.PROPERTY_RSS_STORAGE_FOLDER_PATH);
-        strRssStorageRoot = ( strRssStorageRoot.endsWith("/")) ? strRssStorageRoot : strRssStorageRoot + "/";
-        String strRssName = strURI.substring( strURI.indexOf( strRssStorageRoot ) + strRssStorageRoot.length() );
+        AppLogService.info( request.getRequestURI(  ) );
+
+        String strURI = request.getRequestURI(  );
+        String strRssStorageRoot = AppPropertiesService.getProperty( RssGeneratorService.PROPERTY_RSS_STORAGE_FOLDER_PATH );
+        strRssStorageRoot = ( strRssStorageRoot.endsWith( "/" ) ) ? strRssStorageRoot : ( strRssStorageRoot + "/" );
+
+        String strRssName = strURI.substring( strURI.indexOf( strRssStorageRoot ) + strRssStorageRoot.length(  ) );
         String strRssPath = AppPathService.getPath( RssGeneratorService.PROPERTY_RSS_STORAGE_FOLDER_PATH, strRssName );
         File dirRSS = new File( strRssPath );
-        if( ! dirRSS.exists() )
+
+        if ( !dirRSS.exists(  ) )
         {
-            AppLogService.info( "Requested RSS file '" + strRssName + "' not found in the file system.");
-            if( RssGeneratedFileHome.checkRssFileFileName( strRssName ))
+            AppLogService.info( "Requested RSS file '" + strRssName + "' not found in the file system." );
+
+            if ( RssGeneratedFileHome.checkRssFileFileName( strRssName ) )
             {
-                AppLogService.info( "Requested RSS file '" + strRssName + "' exists. File regenerated inf file system");
-                RssGeneratorService.generateAllRss();
+                AppLogService.info( "Requested RSS file '" + strRssName + "' exists. File regenerated inf file system" );
+                RssGeneratorService.generateAllRss(  );
             }
             else
             {
-                AppLogService.info( "Requested RSS file '" + strRssName + "' doesn't exist in database.");
+                AppLogService.info( "Requested RSS file '" + strRssName + "' doesn't exist in database." );
             }
         }
 

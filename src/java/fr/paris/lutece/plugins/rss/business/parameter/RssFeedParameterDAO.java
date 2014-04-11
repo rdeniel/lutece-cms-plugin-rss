@@ -38,45 +38,45 @@ import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.sql.DAOUtil;
 
+
 /**
- * 
+ *
  * RssFeedParameterDAO
  *
  */
 public class RssFeedParameterDAO implements IRssFeedParameterDAO
 {
-	private static final String TRUE = "1";
-	private static final String SQL_QUERY_SELECT = "SELECT parameter_vlue FROM rss_feed_parameter WHERE parameter_key = ? ";
-	private static final String SQL_QUERY_UPDATE = "UPDATE rss_feed_parameter SET parameter_value = ? WHERE parameter_key = ? ";
-	private static final String SQL_QUERY_SELECT_ALL = "SELECT parameter_key, parameter_value FROM rss_feed_parameter ORDER BY parameter_key ASC ";
-	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public ReferenceItem load( String strParameterKey, Plugin plugin )
-	{
-		ReferenceItem param = null;
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
-		daoUtil.setString( 1, strParameterKey );
-		daoUtil.executeQuery(  );
-		
-		if( daoUtil.next(  ) )
-		{
-			param = new ReferenceItem(  );
-			param.setCode( strParameterKey );
-			param.setName( daoUtil.getString( 1 ) );
-		}
-		
-		daoUtil.free(  );
-		
-		return param;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public void store( ReferenceItem param, Plugin plugin )
+    private static final String TRUE = "1";
+    private static final String SQL_QUERY_SELECT = "SELECT parameter_vlue FROM rss_feed_parameter WHERE parameter_key = ? ";
+    private static final String SQL_QUERY_UPDATE = "UPDATE rss_feed_parameter SET parameter_value = ? WHERE parameter_key = ? ";
+    private static final String SQL_QUERY_SELECT_ALL = "SELECT parameter_key, parameter_value FROM rss_feed_parameter ORDER BY parameter_key ASC ";
+
+    /**
+     * {@inheritDoc}
+     */
+    public ReferenceItem load( String strParameterKey, Plugin plugin )
+    {
+        ReferenceItem param = null;
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
+        daoUtil.setString( 1, strParameterKey );
+        daoUtil.executeQuery(  );
+
+        if ( daoUtil.next(  ) )
+        {
+            param = new ReferenceItem(  );
+            param.setCode( strParameterKey );
+            param.setName( daoUtil.getString( 1 ) );
+        }
+
+        daoUtil.free(  );
+
+        return param;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void store( ReferenceItem param, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
@@ -86,11 +86,11 @@ public class RssFeedParameterDAO implements IRssFeedParameterDAO
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
     }
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public ReferenceList selectAll( Plugin plugin )
+
+    /**
+     * {@inheritDoc}
+     */
+    public ReferenceList selectAll( Plugin plugin )
     {
         ReferenceList listParams = new ReferenceList(  );
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_ALL, plugin );
@@ -109,5 +109,4 @@ public class RssFeedParameterDAO implements IRssFeedParameterDAO
 
         return listParams;
     }
-
 }

@@ -133,13 +133,14 @@ public final class AutoUpdatingRss
                     resourceRss.setMaxItems( generatedFile.getMaxItems(  ) );
                     resourceRss.setEncoding( generatedFile.getEncoding(  ) );
                     resourceRss.setFeedType( generatedFile.getFeedType(  ) );
-                    
+
                     strRss = FeedUtil.getFeed( resourceRss );
                 }
                 else
                 {
                     strRss = RssGeneratorService.createRssDocument( generatedFile.getPortletId(  ),
-                            generatedFile.getDescription(  ), generatedFile.getEncoding(  ), generatedFile.getFeedType(  ), generatedFile.getMaxItems() );
+                            generatedFile.getDescription(  ), generatedFile.getEncoding(  ),
+                            generatedFile.getFeedType(  ), generatedFile.getMaxItems(  ) );
                 }
 
                 // Call the create file method

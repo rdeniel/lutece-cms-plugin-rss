@@ -45,7 +45,8 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 public class RssListPortletHome extends PortletHome
 {
     // Static variable pointed at the DAO instance
-    private static IRssListPortletDAO _dao = (IRssListPortletDAO) SpringContextService.getPluginBean( "rssList", "rssListPortletDAO" );
+    private static IRssListPortletDAO _dao = (IRssListPortletDAO) SpringContextService.getPluginBean( "rssList",
+            "rssListPortletDAO" );
 
     /* This class implements the Singleton design pattern. */
     private static RssListPortletHome _singleton;

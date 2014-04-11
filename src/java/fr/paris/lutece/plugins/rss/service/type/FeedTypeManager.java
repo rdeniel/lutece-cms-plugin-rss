@@ -33,81 +33,81 @@
  */
 package fr.paris.lutece.plugins.rss.service.type;
 
-import java.util.List;
-
 import com.sun.syndication.feed.WireFeed;
 
 import fr.paris.lutece.plugins.rss.service.RssPlugin;
 import fr.paris.lutece.portal.business.rss.IFeedResource;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
+import java.util.List;
+
+
 /**
- * 
+ *
  * FeedTypeManager
  *
  */
 public final class FeedTypeManager
 {
-	private static final String BEAN_FEED_TYPE_MANAGER = "rss.feedTypeManager";
-	private List<IFeedTypeProvider> _listDefaultProviders;
-	private List<IFeedTypeProvider> _listProviders;
+    private static final String BEAN_FEED_TYPE_MANAGER = "rss.feedTypeManager";
+    private List<IFeedTypeProvider> _listDefaultProviders;
+    private List<IFeedTypeProvider> _listProviders;
 
-	/**
-	 * Get the instance of the manager
-	 * @return the manager
-	 */
-	public static FeedTypeManager getManager(  )
-	{
-		return (FeedTypeManager) SpringContextService.getPluginBean( RssPlugin.PLUGIN_NAME, 
-				BEAN_FEED_TYPE_MANAGER );
-	}
-	
-	/**
-	 * Set the list of providers
-	 * @param listProviders the list of providers
-	 */
-	public void setProvidersList( List<IFeedTypeProvider> listProviders )
-	{
-		_listProviders = listProviders;
-	}
-	
-	/**
-	 * Set the default providers list
-	 * @param listDefaultProviders the default providers list
-	 */
-	public void setDefaultProvidersList( List<IFeedTypeProvider> listDefaultProviders )
-	{
-		_listDefaultProviders = listDefaultProviders;
-	}
+    /**
+     * Get the instance of the manager
+     * @return the manager
+     */
+    public static FeedTypeManager getManager(  )
+    {
+        return (FeedTypeManager) SpringContextService.getPluginBean( RssPlugin.PLUGIN_NAME, BEAN_FEED_TYPE_MANAGER );
+    }
 
-	/**
-	 * Get the wire feed
-	 * @param strFeedType the feed type
-	 * @param resource the resource
-	 * @param strEncoding the encoding
-	 * @param nMaxItems the max items
-	 * @return the wire feed
-	 */
-	public WireFeed getWireFeed( String strFeedType,IFeedResource resource,  String strEncoding, int nMaxItems )
-	{
-		// Get from providers first
-		for ( IFeedTypeProvider provider : _listProviders )
-		{
-			if ( provider.isInvoked( strFeedType ) )
-			{
-				return provider.getWireFeed( strFeedType, resource, strEncoding, nMaxItems );
-			}
-		}
-		
-		// If no providers are invoked, then get from default providers
-		for ( IFeedTypeProvider defaultProvider : _listDefaultProviders )
-		{
-			if ( defaultProvider.isInvoked( strFeedType ) )
-			{
-				return defaultProvider.getWireFeed( strFeedType, resource, strEncoding, nMaxItems );
-			}
-		}
-		
-		return null;
-	}
+    /**
+     * Set the list of providers
+     * @param listProviders the list of providers
+     */
+    public void setProvidersList( List<IFeedTypeProvider> listProviders )
+    {
+        _listProviders = listProviders;
+    }
+
+    /**
+     * Set the default providers list
+     * @param listDefaultProviders the default providers list
+     */
+    public void setDefaultProvidersList( List<IFeedTypeProvider> listDefaultProviders )
+    {
+        _listDefaultProviders = listDefaultProviders;
+    }
+
+    /**
+     * Get the wire feed
+     * @param strFeedType the feed type
+     * @param resource the resource
+     * @param strEncoding the encoding
+     * @param nMaxItems the max items
+     * @return the wire feed
+     */
+    public WireFeed getWireFeed( String strFeedType, IFeedResource resource, String strEncoding, int nMaxItems )
+    {
+        // Get from providers first
+        for ( IFeedTypeProvider provider : _listProviders )
+        {
+            if ( provider.isInvoked( strFeedType ) )
+            {
+                return provider.getWireFeed( strFeedType, resource, strEncoding, nMaxItems );
+            }
+        }
+
+        // If no providers are invoked, then get from default providers
+        for ( IFeedTypeProvider defaultProvider : _listDefaultProviders )
+        {
+            if ( defaultProvider.isInvoked( strFeedType ) )
+            {
+                return defaultProvider.getWireFeed( strFeedType, resource, strEncoding, nMaxItems );
+            }
+        }
+
+        return null;
+    }
 }

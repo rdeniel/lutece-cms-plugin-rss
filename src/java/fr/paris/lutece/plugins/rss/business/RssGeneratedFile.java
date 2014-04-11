@@ -33,10 +33,10 @@
  */
 package fr.paris.lutece.plugins.rss.business;
 
-import java.sql.Timestamp;
-
 import fr.paris.lutece.portal.service.portlet.PortletRemovalListenerService;
 import fr.paris.lutece.portal.service.workgroup.AdminWorkgroupResource;
+
+import java.sql.Timestamp;
 
 
 /**
@@ -61,9 +61,9 @@ public class RssGeneratedFile implements AdminWorkgroupResource
     private String _strEncoding;
     private int _nMaxItems;
 
-	/**
-     * Initialize the Rss
-     */
+    /**
+    * Initialize the Rss
+    */
     public static void init(  )
     {
         // Create removal listeners and register them
@@ -235,60 +235,60 @@ public class RssGeneratedFile implements AdminWorkgroupResource
     {
         _strTypeResourceRss = strTypeResourceRss;
     }
-    
+
     /**
      * Gets the max items
      * @return the max item
      */
-    public int getMaxItems()
-	{
-		return _nMaxItems;
-	}
+    public int getMaxItems(  )
+    {
+        return _nMaxItems;
+    }
 
     /**
      * Sets the max items
      * @param nMaxItems the max items
      */
-	public void setMaxItems( int nMaxItems )
-	{
-		this._nMaxItems = nMaxItems;
-	}
-	
-	/**
-	 * The feed type
-	 * @return the feed type
-	 * @see FeedType#getType()
-	 */
-	public String getFeedType()
-	{
-		return _strFeedType;
-	}
-	
-	/**
-	 * The feed type 
-	 * @param strFeedType the feed type
-	 * @see FeedType#getType()
-	 */
-	public void setFeedType( String strFeedType )
-	{
-		_strFeedType = strFeedType;
-	}
-	
+    public void setMaxItems( int nMaxItems )
+    {
+        this._nMaxItems = nMaxItems;
+    }
+
+    /**
+     * The feed type
+     * @return the feed type
+     * @see FeedType#getType()
+     */
+    public String getFeedType(  )
+    {
+        return _strFeedType;
+    }
+
+    /**
+     * The feed type
+     * @param strFeedType the feed type
+     * @see FeedType#getType()
+     */
+    public void setFeedType( String strFeedType )
+    {
+        _strFeedType = strFeedType;
+    }
+
     /**
      * Gets the encoding
      * @return the encoding
      */
-	public String getEncoding()
-	{
-		return _strEncoding;
-	}
+    public String getEncoding(  )
+    {
+        return _strEncoding;
+    }
 
-	/**
-	 * Gets the encoding
-	 * @param strEncoding the encoding
-	 */
-	public void setEncoding( String strEncoding )
-	{
-		this._strEncoding = strEncoding;
-	}
+    /**
+     * Gets the encoding
+     * @param strEncoding the encoding
+     */
+    public void setEncoding( String strEncoding )
+    {
+        this._strEncoding = strEncoding;
+    }
 }

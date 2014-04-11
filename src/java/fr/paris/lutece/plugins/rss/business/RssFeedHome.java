@@ -49,8 +49,8 @@ public final class RssFeedHome
 {
     // Static variable pointed at the DAO instance
     private static IRssFeedDAO _dao = (IRssFeedDAO) SpringContextService.getPluginBean( "rss", "rssFeedDAO" );
-    
-    private static IRssPortletDAO _daoPortlet = (IRssPortletDAO) SpringContextService.getPluginBean( "rss", "rssPortletDAO" );
+    private static IRssPortletDAO _daoPortlet = (IRssPortletDAO) SpringContextService.getPluginBean( "rss",
+            "rssPortletDAO" );
 
     /**
      * Private constructor - this class need not be instantiated
@@ -101,11 +101,12 @@ public final class RssFeedHome
      */
     public static void remove( RssFeed rssFeed )
     {
-    	if( rssFeed.getIsActive(  ) )
-    	{
-    		int nMaxOrder = _dao.newPrimaryKey( true ) -1;
-    		rssFeed = updateOrder( rssFeed, nMaxOrder);	
-    	}
+        if ( rssFeed.getIsActive(  ) )
+        {
+            int nMaxOrder = _dao.newPrimaryKey( true ) - 1;
+            rssFeed = updateOrder( rssFeed, nMaxOrder );
+        }
+
         _dao.delete( rssFeed );
     }
 
@@ -131,7 +132,7 @@ public final class RssFeedHome
     {
         return _dao.selectRssFeeds( true );
     }
-    
+
     /**
      * Returns a list of rss feeds
      * @param bActive <code>true</code> for active feeds
@@ -150,7 +151,7 @@ public final class RssFeedHome
     {
         return _dao.selectRssFeedReferenceList( true );
     }
-    
+
     /**
      * Returns a list of rssFeeds objects
      * @param bActive <code>true</code> for active feeds
@@ -170,7 +171,7 @@ public final class RssFeedHome
     {
         return _dao.checkUrlNotUsed( strUrl );
     }
-    
+
     /**
      * Updates an active feed to a new order and shifts in-between feeds consequently.
      * Linked portlets get updated as well.
@@ -181,17 +182,17 @@ public final class RssFeedHome
      * @throws IndexOutOfBoundsException if  the new order parameter is less than 1 or greater than the current max order
      */
     public static RssFeed updateOrder( RssFeed rssFeed, int nNewOrder )
-    	throws IndexOutOfBoundsException
+        throws IndexOutOfBoundsException
     {
-    	if( !rssFeed.getIsActive(  ) )
-    	{
-    		return null;
-    	}
-    	
-    	int nMaxOrder = _dao.newPrimaryKey( true ) - 1;
-    	int nOldOrder = rssFeed.getId(  );
-    	
-    	if ( ( nNewOrder < 1 ) || ( nNewOrder > nMaxOrder ) )
+        if ( !rssFeed.getIsActive(  ) )
+        {
+            return null;
+        }
+
+        int nMaxOrder = _dao.newPrimaryKey( true ) - 1;
+        int nOldOrder = rssFeed.getId(  );
+
+        if ( ( nNewOrder < 1 ) || ( nNewOrder > nMaxOrder ) )
         {
             throw new IndexOutOfBoundsException(  );
         }
@@ -200,55 +201,57 @@ public final class RssFeedHome
         {
             return rssFeed;
         }
-        
+
         List<RssPortlet> listLinkedPortlet = new ArrayList<RssPortlet>(  );
-        
-        for( RssFeed currentRssFeed : getRssFeeds( true ) )
+
+        for ( RssFeed currentRssFeed : getRssFeeds( true ) )
         {
-        	int nCurrentOrder = currentRssFeed.getId(  );
-        	
-        	if ( ( nOldOrder > nNewOrder ) && ( nCurrentOrder < nOldOrder ) && ( nCurrentOrder >= nNewOrder ) )
+            int nCurrentOrder = currentRssFeed.getId(  );
+
+            if ( ( nOldOrder > nNewOrder ) && ( nCurrentOrder < nOldOrder ) && ( nCurrentOrder >= nNewOrder ) )
             {
                 currentRssFeed.setId( nCurrentOrder + 1 );
                 _dao.store( currentRssFeed );
-            	_dao.storeLastFetchInfos( currentRssFeed );
-            	for( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nCurrentOrder ) )
-            	{
-            		linkedPortlet.setRssFeedId( Integer.toString( nCurrentOrder + 1 ) );
-            		listLinkedPortlet.add( linkedPortlet );
-            	}
+                _dao.storeLastFetchInfos( currentRssFeed );
+
+                for ( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nCurrentOrder ) )
+                {
+                    linkedPortlet.setRssFeedId( Integer.toString( nCurrentOrder + 1 ) );
+                    listLinkedPortlet.add( linkedPortlet );
+                }
             }
             else if ( ( nOldOrder < nNewOrder ) && ( nCurrentOrder > nOldOrder ) && ( nCurrentOrder <= nNewOrder ) )
             {
                 currentRssFeed.setId( nCurrentOrder - 1 );
                 _dao.store( currentRssFeed );
-            	_dao.storeLastFetchInfos( currentRssFeed );
-            	for( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nCurrentOrder ) )
-            	{
-            		linkedPortlet.setRssFeedId( Integer.toString( nCurrentOrder - 1 ) );
-            		listLinkedPortlet.add( linkedPortlet );
-            	}
+                _dao.storeLastFetchInfos( currentRssFeed );
+
+                for ( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nCurrentOrder ) )
+                {
+                    linkedPortlet.setRssFeedId( Integer.toString( nCurrentOrder - 1 ) );
+                    listLinkedPortlet.add( linkedPortlet );
+                }
             }
         }
-        
+
         rssFeed.setId( nNewOrder );
         _dao.store( rssFeed );
         _dao.storeLastFetchInfos( rssFeed );
-        
-        for( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nOldOrder ) )
-    	{
-    		linkedPortlet.setRssFeedId( Integer.toString( nNewOrder ) );
-    		listLinkedPortlet.add( linkedPortlet );
-    	}
-        
-        for( RssPortlet portletToUpdate : listLinkedPortlet )
+
+        for ( RssPortlet linkedPortlet : _daoPortlet.checkLinkedPortlet( nOldOrder ) )
         {
-        	_daoPortlet.store( portletToUpdate );
+            linkedPortlet.setRssFeedId( Integer.toString( nNewOrder ) );
+            listLinkedPortlet.add( linkedPortlet );
         }
-        
+
+        for ( RssPortlet portletToUpdate : listLinkedPortlet )
+        {
+            _daoPortlet.store( portletToUpdate );
+        }
+
         return rssFeed;
     }
-    
+
     /**
      * De/activate a feed
      * @param rssFeed the feed to de/activate
@@ -256,9 +259,10 @@ public final class RssFeedHome
      * @return the updated feed
      */
     public static RssFeed setActive( RssFeed rssFeed, boolean bActive )
-    {    	
-    	remove( rssFeed );
-    	rssFeed.setIsActive( bActive );
-    	return create( rssFeed );
+    {
+        remove( rssFeed );
+        rssFeed.setIsActive( bActive );
+
+        return create( rssFeed );
     }
 }

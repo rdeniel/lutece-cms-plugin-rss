@@ -33,17 +33,6 @@
  */
 package fr.paris.lutece.plugins.rss.web;
 
-import java.io.File;
-import java.io.StringReader;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.transform.stream.StreamSource;
-
 import fr.paris.lutece.plugins.rss.business.RssFeed;
 import fr.paris.lutece.plugins.rss.business.RssFeedHome;
 import fr.paris.lutece.plugins.rss.service.RssContent;
@@ -64,6 +53,19 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.html.HtmlTemplate;
+
+import java.io.File;
+import java.io.StringReader;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.xml.transform.stream.StreamSource;
 
 
 /**

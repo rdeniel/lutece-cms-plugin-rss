@@ -33,8 +33,6 @@
  */
 package fr.paris.lutece.plugins.rss.web;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.sun.syndication.feed.WireFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.WireFeedOutput;
@@ -44,79 +42,82 @@ import fr.paris.lutece.portal.business.rss.IFeedResource;
 import fr.paris.lutece.portal.business.rss.IResourceRss;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
+import org.apache.commons.lang.StringUtils;
+
+
 /**
- * 
+ *
  * RSSUtil.
  */
 public final class FeedUtil
 {
-	/**
-	 * Utility class
-	 */
-	private FeedUtil()
-	{
-		// nothing
-	}
-	
-	/**
-	 * Gets an XML for the given resource.
-	 * @param resource resource
-	 * @param strFeedType feed type
-	 * @param strEncoding encoding
-	 * @param nMaxItems max items
-	 * @return the xml generated
-	 */
-	public static String getFeed( IFeedResource resource, String strFeedType, String strEncoding, int nMaxItems )
-	{
-    	if ( resource.getItems(  ).isEmpty(  ) )
-    	{
-    		return StringUtils.EMPTY;
-    	}
-    	
-    	// WireFeed does not contain enough data, but can be passed for output generation.
-    	WireFeed wireFeed = FeedTypeManager.getManager(  ).getWireFeed( strFeedType, resource, strEncoding, nMaxItems );
-    	
-    	WireFeedOutput output = new WireFeedOutput();
-    	String strXML = StringUtils.EMPTY;
-    	try
-		{
-    		strXML = output.outputString( wireFeed );
-		}
-		catch ( IllegalArgumentException e )
-		{
-			AppLogService.error( e.getMessage(  ), e );
-		}
-		catch ( FeedException e )
-		{
-			AppLogService.error( e.getMessage(  ), e );
-		}
-		
-		return strXML;
-	}
-	
-	/**
-	 * Gets an XML for the given resource.
-	 * @param resourceRSS the resource
-	 * @return the XML as String, encoding is {@link IResourceRss#getEncoding()}. Returns an empty String if no items. 
-	 * Returns <code>{@link IResourceRss#createHtmlRss()}</code> if {@link IResourceRss#getFeed()} is not implemented yet.
-	 */
-	public static String getFeed( IResourceRss resourceRSS )
-	{
-    	IFeedResource resource = resourceRSS.getFeed(  );
-    	
-    	if ( resource == null )
-    	{
-    		// no implementation - use the deprecated
-    		return resourceRSS.createHtmlRss(  );
-    	}
-    	
-    	if ( resource.getItems(  ).isEmpty(  ) )
-    	{
-    		// an empty feed will fail
-    		return StringUtils.EMPTY;
-    	}
-    	
-    	return getFeed( resource, resourceRSS.getFeedType(  ), resourceRSS.getEncoding(  ), resourceRSS.getMaxItems(  ) );
-	}
-    
+    /**
+     * Utility class
+     */
+    private FeedUtil(  )
+    {
+        // nothing
+    }
+
+    /**
+     * Gets an XML for the given resource.
+     * @param resource resource
+     * @param strFeedType feed type
+     * @param strEncoding encoding
+     * @param nMaxItems max items
+     * @return the xml generated
+     */
+    public static String getFeed( IFeedResource resource, String strFeedType, String strEncoding, int nMaxItems )
+    {
+        if ( resource.getItems(  ).isEmpty(  ) )
+        {
+            return StringUtils.EMPTY;
+        }
+
+        // WireFeed does not contain enough data, but can be passed for output generation.
+        WireFeed wireFeed = FeedTypeManager.getManager(  ).getWireFeed( strFeedType, resource, strEncoding, nMaxItems );
+
+        WireFeedOutput output = new WireFeedOutput(  );
+        String strXML = StringUtils.EMPTY;
+
+        try
+        {
+            strXML = output.outputString( wireFeed );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            AppLogService.error( e.getMessage(  ), e );
+        }
+        catch ( FeedException e )
+        {
+            AppLogService.error( e.getMessage(  ), e );
+        }
+
+        return strXML;
+    }
+
+    /**
+     * Gets an XML for the given resource.
+     * @param resourceRSS the resource
+     * @return the XML as String, encoding is {@link IResourceRss#getEncoding()}. Returns an empty String if no items.
+     * Returns <code>{@link IResourceRss#createHtmlRss()}</code> if {@link IResourceRss#getFeed()} is not implemented yet.
+     */
+    public static String getFeed( IResourceRss resourceRSS )
+    {
+        IFeedResource resource = resourceRSS.getFeed(  );
+
+        if ( resource == null )
+        {
+            // no implementation - use the deprecated
+            return resourceRSS.createHtmlRss(  );
+        }
+
+        if ( resource.getItems(  ).isEmpty(  ) )
+        {
+            // an empty feed will fail
+            return StringUtils.EMPTY;
+        }
+
+        return getFeed( resource, resourceRSS.getFeedType(  ), resourceRSS.getEncoding(  ), resourceRSS.getMaxItems(  ) );
+    }
 }

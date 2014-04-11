@@ -33,9 +33,9 @@
  */
 package fr.paris.lutece.plugins.rss.service;
 
-import java.io.Serializable;
-
 import fr.paris.lutece.portal.service.resource.Resource;
+
+import java.io.Serializable;
 
 
 /**

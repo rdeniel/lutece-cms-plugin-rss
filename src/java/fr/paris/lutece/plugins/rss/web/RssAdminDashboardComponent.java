@@ -33,10 +33,6 @@
  */
 package fr.paris.lutece.plugins.rss.web;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.rss.service.RssAdvanceParamService;
 import fr.paris.lutece.portal.business.rbac.RBAC;
 import fr.paris.lutece.portal.business.user.AdminUser;
@@ -46,25 +42,29 @@ import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.user.AdminUserResourceIdService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
-public class RssAdminDashboardComponent extends AdminDashboardComponent 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+
+public class RssAdminDashboardComponent extends AdminDashboardComponent
 {
+    private static final String TEMPLATE_ADMIN_DASHBOARD = "admin/plugins/rss/rss_admindashboard.html";
+    private static final String EMPTY_STRING = "";
 
-	private static final String TEMPLATE_ADMIN_DASHBOARD = "admin/plugins/rss/rss_admindashboard.html";
-	private static final String EMPTY_STRING = "";
-	
-	@Override
-	public String getDashboardData( AdminUser user, HttpServletRequest request ) 
-	{
+    @Override
+    public String getDashboardData( AdminUser user, HttpServletRequest request )
+    {
         if ( RBACService.isAuthorized( AdminUser.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, user ) )
+                    AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, user ) )
         {
-			Map<String, Object> model = RssAdvanceParamService.getInstance(  ).getManageAdvancedParameters( user );
-			HtmlTemplate template = new HtmlTemplate(  );
-			template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale(  ), model );
-			return template.getHtml(  );
-		}
-		
-		return EMPTY_STRING;
-	}
+            Map<String, Object> model = RssAdvanceParamService.getInstance(  ).getManageAdvancedParameters( user );
+            HtmlTemplate template = new HtmlTemplate(  );
+            template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale(  ), model );
 
+            return template.getHtml(  );
+        }
+
+        return EMPTY_STRING;
+    }
 }

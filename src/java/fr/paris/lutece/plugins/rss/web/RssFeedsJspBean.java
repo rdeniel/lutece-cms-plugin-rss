@@ -33,15 +33,6 @@
  */
 package fr.paris.lutece.plugins.rss.web;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-
 import fr.paris.lutece.plugins.rss.business.RssFeed;
 import fr.paris.lutece.plugins.rss.business.RssFeedHome;
 import fr.paris.lutece.plugins.rss.business.parameter.RssFeedParameterHome;
@@ -72,6 +63,15 @@ import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.html.Paginator;
 import fr.paris.lutece.util.url.UrlItem;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -141,7 +141,7 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
     private int _nItemsPerPageActive;
     private String _strCurrentPageIndexActive;
     private int _nItemsPerPageInactive;
-    private String _strCurrentPageIndexInactive;    
+    private String _strCurrentPageIndexInactive;
 
     /**
      * Returns external rss feeds management form
@@ -159,7 +159,8 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
 
         List<RssFeed> listRssFeedActive = RssFeedHome.getRssFeeds( true );
         int nActiveRssFeeds = listRssFeedActive.size(  );
-        listRssFeedActive = (List<RssFeed>) AdminWorkgroupService.getAuthorizedCollection( listRssFeedActive, getUser(  ) );
+        listRssFeedActive = (List<RssFeed>) AdminWorkgroupService.getAuthorizedCollection( listRssFeedActive,
+                getUser(  ) );
 
         HashMap<String, Object> model = new HashMap<String, Object>(  );
         String strIncludeBegin = I18nService.getLocalizedString( PROPERTY_RSS_INCLUDE_BEGIN, getLocale(  ) );
@@ -171,18 +172,20 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
                 String.valueOf( rssFeed.getId(  ) ) + strIncludeEnd;
             rssFeed.setIncludeTag( strRssMarker );
         }
-        
-        boolean bPermissionAdvancedParameter = RBACService.isAuthorized( AdminUser.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) ;
+
+        boolean bPermissionAdvancedParameter = RBACService.isAuthorized( AdminUser.RESOURCE_TYPE,
+                RBAC.WILDCARD_RESOURCES_ID, AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS,
+                getUser(  ) );
 
         Paginator paginator_active = new Paginator( listRssFeedActive, _nItemsPerPageActive, getHomeUrl( request ),
                 PARAMETER_PAGE_INDEX_ACTIVE, _strCurrentPageIndexActive );
-        
+
         List<RssFeed> listRssFeedInactive = RssFeedHome.getRssFeeds( false );
-        listRssFeedInactive = (List<RssFeed>) AdminWorkgroupService.getAuthorizedCollection( listRssFeedInactive, getUser(  ) );
-        
-        Paginator paginator_inactive = new Paginator( listRssFeedInactive, _nItemsPerPageInactive, getHomeUrl( request ),
-                PARAMETER_PAGE_INDEX_INACTIVE, _strCurrentPageIndexInactive );
+        listRssFeedInactive = (List<RssFeed>) AdminWorkgroupService.getAuthorizedCollection( listRssFeedInactive,
+                getUser(  ) );
+
+        Paginator paginator_inactive = new Paginator( listRssFeedInactive, _nItemsPerPageInactive,
+                getHomeUrl( request ), PARAMETER_PAGE_INDEX_INACTIVE, _strCurrentPageIndexInactive );
 
         model.put( MARK_PAGINATOR_ACTIVE, paginator_active );
         model.put( MARK_PAGINATOR_INACTIVE, paginator_inactive );
@@ -225,7 +228,7 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
 
         return strUrl;
     }
-    
+
     /**
      * Confirms the De/activation of a feed
      *
@@ -253,7 +256,6 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
 
         return strUrl;
     }
-    
 
     /**
      * Returns the creation form of a feed
@@ -278,10 +280,10 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
         {
             model.put( MARK_WORKGROUP_SELECTED, refListWorkGroups.get( 0 ).getCode(  ) );
         }
-        
-        for( ReferenceItem param : RssFeedParameterHome.findAll( getPlugin(  ) ) )
+
+        for ( ReferenceItem param : RssFeedParameterHome.findAll( getPlugin(  ) ) )
         {
-        	model.put( param.getCode(  ), param.getName(  ) );
+            model.put( param.getCode(  ), param.getName(  ) );
         }
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_RSS_FEED, getLocale(  ), model );
@@ -307,8 +309,6 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
         rss.setWorkgroup( strWorkgroup );
         rss.setIdIncludeStyle( Integer.parseInt( strIdIncludeStyle ) );
         rss.setIsActive( bActive );
-        
-        
 
         // Mandatory fields
         if ( request.getParameter( PARAMETER_RSS_FEED_NAME ).equals( "" ) ||
@@ -320,9 +320,9 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
         RssFeedHome.create( rss );
 
         // Load the content to fetch the RSS feed a first time
-        if( bActive )
+        if ( bActive )
         {
-        	RssContentService.getInstance(  ).getRssContent( rss.getId(  ) );
+            RssContentService.getInstance(  ).getRssContent( rss.getId(  ) );
         }
 
         return getHomeUrl( request );
@@ -423,7 +423,7 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
 
         return getHomeUrl( request );
     }
-    
+
     /**
      * Process Des/activation of a feed
      * @param request The Http request
@@ -431,17 +431,17 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
      */
     public String doActivateRssFeed( HttpServletRequest request )
     {
-    	int nId = Integer.parseInt( request.getParameter( PARAMETER_RSS_FEED_ID ) );
-    	boolean bActive = request.getParameter( PARAMETER_RSS_FEED_IS_ACTIVE ).equalsIgnoreCase( TRUE );
-    	
-    	RssFeed rssFeed = RssFeedHome.findByPrimaryKey( nId, bActive );
-    	
-    	//Deactivate the feed
-    	RssFeedHome.setActive( rssFeed, !bActive );
-    	
-    	return getHomeUrl( request );
+        int nId = Integer.parseInt( request.getParameter( PARAMETER_RSS_FEED_ID ) );
+        boolean bActive = request.getParameter( PARAMETER_RSS_FEED_IS_ACTIVE ).equalsIgnoreCase( TRUE );
+
+        RssFeed rssFeed = RssFeedHome.findByPrimaryKey( nId, bActive );
+
+        //Deactivate the feed
+        RssFeedHome.setActive( rssFeed, !bActive );
+
+        return getHomeUrl( request );
     }
-    
+
     /**
      * Change the order of an active feed in the list
      * @param request The Http request
@@ -449,14 +449,14 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
      */
     public String doChangeRssFeedOrder( HttpServletRequest request )
     {
-    	int nId = Integer.parseInt( request.getParameter( PARAMETER_RSS_FEED_ID ) );
-    	int nNewOrder = Integer.parseInt( request.getParameter( PARAMETER_RSS_FEED_NEW_ORDER ) );
-    	
-    	RssFeed rssFeed = RssFeedHome.findByPrimaryKey( nId, true );
-    	
-    	RssFeedHome.updateOrder( rssFeed, nNewOrder );
-    	
-    	return getHomeUrl( request );
+        int nId = Integer.parseInt( request.getParameter( PARAMETER_RSS_FEED_ID ) );
+        int nNewOrder = Integer.parseInt( request.getParameter( PARAMETER_RSS_FEED_NEW_ORDER ) );
+
+        RssFeed rssFeed = RssFeedHome.findByPrimaryKey( nId, true );
+
+        RssFeedHome.updateOrder( rssFeed, nNewOrder );
+
+        return getHomeUrl( request );
     }
 
     /**
@@ -468,7 +468,8 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
     private int getItemsPerPage( HttpServletRequest request, boolean bActive )
     {
         int nItemsPerPage;
-        String strItemsPerPage = request.getParameter( ( bActive ? PARAMETER_ITEMS_PER_PAGE_ACTIVE : PARAMETER_ITEMS_PER_PAGE_INACTIVE ) );
+        String strItemsPerPage = request.getParameter( ( bActive ? PARAMETER_ITEMS_PER_PAGE_ACTIVE
+                                                                 : PARAMETER_ITEMS_PER_PAGE_INACTIVE ) );
 
         if ( strItemsPerPage != null )
         {
@@ -498,7 +499,8 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
     private String getPageIndex( HttpServletRequest request, boolean bActive )
     {
         String strPageIndex = request.getParameter( bActive ? PARAMETER_PAGE_INDEX_ACTIVE : PARAMETER_PAGE_INDEX_INACTIVE );
-        strPageIndex = ( strPageIndex != null ) ? strPageIndex : ( bActive ? _strCurrentPageIndexActive :_strCurrentPageIndexInactive );
+        strPageIndex = ( strPageIndex != null ) ? strPageIndex
+                                                : ( bActive ? _strCurrentPageIndexActive : _strCurrentPageIndexInactive );
 
         return strPageIndex;
     }
@@ -537,52 +539,56 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
 
         return stylesListWithLabels;
     }
-    
+
     /**
      * Return RSS advanced parameters
      * @param request The Http request
      * @return Html form
      */
-    public String getManageAdvancedParameters( HttpServletRequest request ) throws AccessDeniedException
+    public String getManageAdvancedParameters( HttpServletRequest request )
+        throws AccessDeniedException
     {
         if ( !RBACService.isAuthorized( AdminUser.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser( ) ) )
+                    AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) )
         {
-    		throw new AccessDeniedException(  );
-    	}
-        Map<String, Object> model = new HashMap<String, Object>( );
-        for( ReferenceItem param : RssFeedParameterHome.findAll( getPlugin(  ) ) )
-        {
-        	model.put( param.getCode(  ), param.getName(  ) );
+            throw new AccessDeniedException(  );
         }
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_ADVANCED_PARAMETERS, getLocale(  ), model );
+
+        Map<String, Object> model = new HashMap<String, Object>(  );
+
+        for ( ReferenceItem param : RssFeedParameterHome.findAll( getPlugin(  ) ) )
+        {
+            model.put( param.getCode(  ), param.getName(  ) );
+        }
+
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_ADVANCED_PARAMETERS, getLocale(  ),
+                model );
 
         return getAdminPage( template.getHtml(  ) );
     }
-    
+
     /**
      * Modify RSS feed parameters default values
      * @param request the request
      * @return JSP return to the feature home
      * @throws AccessDeniedException if the user is not authorized to manage advanced parameters
      */
-    public String doModifyRssAdvancedParameters ( HttpServletRequest request ) 
-    	throws AccessDeniedException
+    public String doModifyRssAdvancedParameters( HttpServletRequest request )
+        throws AccessDeniedException
     {
-    	if ( !RBACService.isAuthorized( AdminUser.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser( ) ) )
+        if ( !RBACService.isAuthorized( AdminUser.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) )
         {
-    		throw new AccessDeniedException(  );
-    	}
-    	
-    	for( ReferenceItem param : RssFeedParameterHome.findAll( getPlugin(  ) ) )
-    	{
-    		String strParamValue = request.getParameter( param.getCode(  ) );
-    		param.setName( StringUtils.isBlank( strParamValue ) ? ZERO : strParamValue );
-    		RssFeedParameterHome.update( param, getPlugin(  ) );
-    	}
-    	
-    	return getHomeUrl( request );
+            throw new AccessDeniedException(  );
+        }
+
+        for ( ReferenceItem param : RssFeedParameterHome.findAll( getPlugin(  ) ) )
+        {
+            String strParamValue = request.getParameter( param.getCode(  ) );
+            param.setName( StringUtils.isBlank( strParamValue ) ? ZERO : strParamValue );
+            RssFeedParameterHome.update( param, getPlugin(  ) );
+        }
+
+        return getHomeUrl( request );
     }
-    
 }

@@ -33,13 +33,6 @@
  */
 package fr.paris.lutece.plugins.rss.web;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.rss.business.RssFeed;
 import fr.paris.lutece.plugins.rss.business.RssFeedHome;
 import fr.paris.lutece.portal.service.content.PageData;
@@ -47,13 +40,19 @@ import fr.paris.lutece.portal.service.includes.PageInclude;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * This class provides the user interface to manage rss features
  */
 public class RssListInclude implements PageInclude
 {
-
     /**
      * The list of the rss files
      */
@@ -73,7 +72,7 @@ public class RssListInclude implements PageInclude
      */
     public void fillTemplate( Map<String, Object> rootModel, PageData data, int nMode, HttpServletRequest request )
     {
-        Map model = new HashMap();
+        Map model = new HashMap(  );
         List<RssFeed> listRssFeedList = RssFeedHome.getRssFeeds(  );
 
         model.put( MARK_RSS_FILES_LIST, listRssFeedList );

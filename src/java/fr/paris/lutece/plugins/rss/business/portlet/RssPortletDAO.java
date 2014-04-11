@@ -33,11 +33,11 @@
  */
 package fr.paris.lutece.plugins.rss.business.portlet;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.paris.lutece.portal.business.portlet.Portlet;
 import fr.paris.lutece.util.sql.DAOUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -136,12 +136,12 @@ public final class RssPortletDAO implements IRssPortletDAO
         daoUtil.executeQuery(  );
 
         List<RssPortlet> listPortlet = new ArrayList<RssPortlet>(  );
-        
+
         while ( daoUtil.next(  ) )
         {
             RssPortlet portlet = new RssPortlet(  );
             portlet.setId( daoUtil.getInt( 1 ) );
-            portlet.setRssFeedId( Integer.toString( nIdRssFeed ) ); 
+            portlet.setRssFeedId( Integer.toString( nIdRssFeed ) );
             listPortlet.add( portlet );
         }
 

@@ -48,16 +48,21 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.html.HtmlTemplate;
+
+import org.apache.commons.lang.StringUtils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang.StringUtils;
+
 
 /**
  * This class provides utilities to create RSS documents.
@@ -106,11 +111,12 @@ public final class RssGeneratorService
      * @param nMaxItems max items
      * @return String the XML content of the RSS document
      */
-    public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding, String strFeedType, int nMaxItems )
+    public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding,
+        String strFeedType, int nMaxItems )
     {
-    	return createRssDocument(nIdPortlet, strRssFileDescription, strEncoding, strFeedType, nMaxItems, null );
+        return createRssDocument( nIdPortlet, strRssFileDescription, strEncoding, strFeedType, nMaxItems, null );
     }
-    
+
     /**
      * Creates the push RSS document corresponding to the given portlet
      *
@@ -122,69 +128,73 @@ public final class RssGeneratorService
      * @param request The HTTP request
      * @return String the XML content of the RSS document
      */
-    public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding, String strFeedType, int nMaxItems, HttpServletRequest request )
+    public static String createRssDocument( int nIdPortlet, String strRssFileDescription, String strEncoding,
+        String strFeedType, int nMaxItems, HttpServletRequest request )
     {
-    	String strRssFileSiteName = AppPropertiesService.getProperty( PROPERTY_SITE_NAME );
+        String strRssFileSiteName = AppPropertiesService.getProperty( PROPERTY_SITE_NAME );
         String strRssFileLanguage = AppPropertiesService.getProperty( PROPERTY_SITE_LANGUAGE );
         String strIdPortlet = Integer.toString( nIdPortlet );
         String strWebAppUrl = AppPropertiesService.getProperty( PROPERTY_WEBAPP_PROD_URL );
         String strSiteUrl;
+
         if ( StringUtils.isNotBlank( strWebAppUrl ) )
         {
-        	strSiteUrl = strWebAppUrl + "/";
+            strSiteUrl = strWebAppUrl + "/";
         }
         else
         {
-        	if ( request == null )
-        	{
-        		strSiteUrl = AppPropertiesService.getProperty( PROPERTY_BASE_URL );
-        	}
-        	else
-        	{
-        		strSiteUrl = AppPathService.getBaseUrl( request );
-        	}
-        }        
+            if ( request == null )
+            {
+                strSiteUrl = AppPropertiesService.getProperty( PROPERTY_BASE_URL );
+            }
+            else
+            {
+                strSiteUrl = AppPathService.getBaseUrl( request );
+            }
+        }
 
-    	IFeedResource resource = new FeedResource();
-    	resource.setTitle( strRssFileSiteName );
-    	resource.setLanguage( strRssFileLanguage );
-    	resource.setLink( strSiteUrl );
-    	resource.setDescription( strRssFileDescription );
-    	
-    	IFeedResourceImage image = new FeedResourceImage();
-    	image.setLink( strSiteUrl );
-    	image.setTitle( strRssFileDescription );
-    	image.setUrl( strSiteUrl + CONSTANT_IMAGE_RSS );
-    	resource.setImage( image );
-    	
-    	Locale locale = new Locale( strRssFileLanguage );
-    	
+        IFeedResource resource = new FeedResource(  );
+        resource.setTitle( strRssFileSiteName );
+        resource.setLanguage( strRssFileLanguage );
+        resource.setLink( strSiteUrl );
+        resource.setDescription( strRssFileDescription );
+
+        IFeedResourceImage image = new FeedResourceImage(  );
+        image.setLink( strSiteUrl );
+        image.setTitle( strRssFileDescription );
+        image.setUrl( strSiteUrl + CONSTANT_IMAGE_RSS );
+        resource.setImage( image );
+
+        Locale locale = new Locale( strRssFileLanguage );
+
         List<Document> listDocuments = RssGeneratedFileHome.findDocumentsByPortlet( nIdPortlet );
-    	
-        List<IFeedResourceItem> listItems = new ArrayList<IFeedResourceItem>();
-    	for ( Document document :  listDocuments )
-    	{
-    		IFeedResourceItem item = new FeedResourceItem();
-    		item.setTitle( document.getTitle() );
-    		item.setDescription( document.getSummary() );
-    		item.setDate( document.getDateModification() );
-    		
-    		// link creation
-    		Map<String, Object> model = new HashMap<String, Object>();
-    		model.put( MARK_ID_PORTLET, strIdPortlet );
-    		model.put( MARK_DOCUMENT_ID, document.getId() );    		
-    		model.put( MARK_RSS_SITE_URL, strSiteUrl );
-    		HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_FEED_LINK, locale, model );
-    		String strLink = template.getHtml();
-    		item.setGUID( strLink );
-    		item.setLink( strLink );
-    		
-    		listItems.add( item );
-    	}
-    	
-    	resource.setItems( listItems );
-    	
-    	return FeedUtil.getFeed( resource, strFeedType, strEncoding, nMaxItems );
+
+        List<IFeedResourceItem> listItems = new ArrayList<IFeedResourceItem>(  );
+
+        for ( Document document : listDocuments )
+        {
+            IFeedResourceItem item = new FeedResourceItem(  );
+            item.setTitle( document.getTitle(  ) );
+            item.setDescription( document.getSummary(  ) );
+            item.setDate( document.getDateModification(  ) );
+
+            // link creation
+            Map<String, Object> model = new HashMap<String, Object>(  );
+            model.put( MARK_ID_PORTLET, strIdPortlet );
+            model.put( MARK_DOCUMENT_ID, document.getId(  ) );
+            model.put( MARK_RSS_SITE_URL, strSiteUrl );
+
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_FEED_LINK, locale, model );
+            String strLink = template.getHtml(  );
+            item.setGUID( strLink );
+            item.setLink( strLink );
+
+            listItems.add( item );
+        }
+
+        resource.setItems( listItems );
+
+        return FeedUtil.getFeed( resource, strFeedType, strEncoding, nMaxItems );
     }
 
     /**
@@ -302,22 +312,25 @@ public final class RssGeneratorService
             AppLogService.error( e.getMessage(  ), e );
         }
     }
-    
+
     /**
      * Regenerate all Rss files in the file system
      * @return Execution logs
      */
-    public static String generateAllRss()
+    public static String generateAllRss(  )
     {
-        StringBuilder sb = new StringBuilder( "Regenerate all RSS files from the database to the filesystem.\n");
-        List<RssGeneratedFile> list = RssGeneratedFileHome.getRssFileList();
-        for( RssGeneratedFile file : list )
+        StringBuilder sb = new StringBuilder( "Regenerate all RSS files from the database to the filesystem.\n" );
+        List<RssGeneratedFile> list = RssGeneratedFileHome.getRssFileList(  );
+
+        for ( RssGeneratedFile file : list )
         {
-            createRssDocument( file.getPortletId() , file.getDescription(), file.getEncoding(), file.getFeedType(), file.getMaxItems());
-            sb.append( "\nFile  ").append( file.getName()).append( " regenerated.\n");
+            createRssDocument( file.getPortletId(  ), file.getDescription(  ), file.getEncoding(  ),
+                file.getFeedType(  ), file.getMaxItems(  ) );
+            sb.append( "\nFile  " ).append( file.getName(  ) ).append( " regenerated.\n" );
         }
-        AppLogService.info( sb.toString() );
-        return sb.toString();
-        
+
+        AppLogService.info( sb.toString(  ) );
+
+        return sb.toString(  );
     }
 }

@@ -33,16 +33,17 @@
  */
 package fr.paris.lutece.plugins.rss.service.type.rss;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.sun.syndication.feed.rss.Content;
 import com.sun.syndication.feed.rss.Guid;
 import com.sun.syndication.feed.rss.Item;
 
 import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *
@@ -51,67 +52,69 @@ import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
  */
 public class DefaultRssFeedTypeProvider extends AbstractRssFeedTypeProvider
 {
-	private static final String RSS_PREFIX = "rss";
+    private static final String RSS_PREFIX = "rss";
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean isInvoked( String strFeedType )
-	{
-		return StringUtils.isNotBlank( strFeedType ) && strFeedType.startsWith( RSS_PREFIX );
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Item> getRSSItems( List<IFeedResourceItem> listItems, int nMaxItems )
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isInvoked( String strFeedType )
     {
-    	List<Item> listEntries = new ArrayList<Item>(  );
-    	
-    	boolean bLimit = nMaxItems != MAX_ITEM_UNLIMITED;
-    	int nIndex = 1;
-		for ( IFeedResourceItem item : listItems )
-		{
-			listEntries.add( getRSSItem( item ) );
-			if ( bLimit )
-			{
-				if ( nIndex < nMaxItems )
-				{
-					nIndex++;
-				}
-				else
-				{
-					break;
-				}
-			}
-		}
-		
-		return listEntries;
+        return StringUtils.isNotBlank( strFeedType ) && strFeedType.startsWith( RSS_PREFIX );
     }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Item> getRSSItems( List<IFeedResourceItem> listItems, int nMaxItems )
+    {
+        List<Item> listEntries = new ArrayList<Item>(  );
+
+        boolean bLimit = nMaxItems != MAX_ITEM_UNLIMITED;
+        int nIndex = 1;
+
+        for ( IFeedResourceItem item : listItems )
+        {
+            listEntries.add( getRSSItem( item ) );
+
+            if ( bLimit )
+            {
+                if ( nIndex < nMaxItems )
+                {
+                    nIndex++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        return listEntries;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Item getRSSItem( IFeedResourceItem resourceItem )
     {
-    	Item item = new Item(  );
-    	
-    	String strTitle = StringUtils.EMPTY;
-		strTitle = resourceItem.getTitle(  );
-		
-    	item.setTitle( strTitle );
-    	item.setPubDate( resourceItem.getDate(  ) );
-    	item.setLink( resourceItem.getLink(  ) );
-    	
-    	Guid guid = new Guid(  );
-    	guid.setValue( resourceItem.getGUID(  ) );
-    	guid.setPermaLink( false );
-    	item.setGuid( guid );
-    	
-    	Content content = new Content(  );
-    	content.setValue( resourceItem.getDescription(  ) );
-    	item.setContent( content );
+        Item item = new Item(  );
 
-    	return item;
+        String strTitle = StringUtils.EMPTY;
+        strTitle = resourceItem.getTitle(  );
+
+        item.setTitle( strTitle );
+        item.setPubDate( resourceItem.getDate(  ) );
+        item.setLink( resourceItem.getLink(  ) );
+
+        Guid guid = new Guid(  );
+        guid.setValue( resourceItem.getGUID(  ) );
+        guid.setPermaLink( false );
+        item.setGuid( guid );
+
+        Content content = new Content(  );
+        content.setValue( resourceItem.getDescription(  ) );
+        item.setContent( content );
+
+        return item;
     }
 }

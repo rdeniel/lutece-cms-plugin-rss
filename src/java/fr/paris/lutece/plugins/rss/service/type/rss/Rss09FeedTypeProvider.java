@@ -33,16 +33,17 @@
  */
 package fr.paris.lutece.plugins.rss.service.type.rss;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.sun.syndication.feed.rss.Content;
 import com.sun.syndication.feed.rss.Guid;
 import com.sun.syndication.feed.rss.Item;
 
 import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *
@@ -51,77 +52,80 @@ import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
  */
 public class Rss09FeedTypeProvider extends AbstractRssFeedTypeProvider
 {
-	private static final String RSS_0_9_PREFIX = "rss_0.9";
-	private static final int ITEM_TITLE_MAX_LENGTH = 100;
-	private static final int MAX_NUMBER_ITEMS = 15;
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean isInvoked( String strFeedType )
-	{
-		return RSS_0_9_PREFIX.equals( strFeedType );
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Item> getRSSItems( List<IFeedResourceItem> listItems, int nMaxItems )
+    private static final String RSS_0_9_PREFIX = "rss_0.9";
+    private static final int ITEM_TITLE_MAX_LENGTH = 100;
+    private static final int MAX_NUMBER_ITEMS = 15;
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isInvoked( String strFeedType )
     {
-    	List<Item> listEntries = new ArrayList<Item>(  );
-    	
-    	boolean bLimit = MAX_NUMBER_ITEMS != MAX_ITEM_UNLIMITED;
-    	int nIndex = 1;
-		for ( IFeedResourceItem item : listItems )
-		{
-			listEntries.add( getRSSItem( item ) );
-			if ( bLimit )
-			{
-				if ( nIndex < MAX_NUMBER_ITEMS )
-				{
-					nIndex++;
-				}
-				else
-				{
-					break;
-				}
-			}
-		}
-		
-		return listEntries;
+        return RSS_0_9_PREFIX.equals( strFeedType );
     }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Item> getRSSItems( List<IFeedResourceItem> listItems, int nMaxItems )
+    {
+        List<Item> listEntries = new ArrayList<Item>(  );
+
+        boolean bLimit = MAX_NUMBER_ITEMS != MAX_ITEM_UNLIMITED;
+        int nIndex = 1;
+
+        for ( IFeedResourceItem item : listItems )
+        {
+            listEntries.add( getRSSItem( item ) );
+
+            if ( bLimit )
+            {
+                if ( nIndex < MAX_NUMBER_ITEMS )
+                {
+                    nIndex++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        return listEntries;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Item getRSSItem( IFeedResourceItem resourceItem )
     {
-    	Item item = new Item(  );
-    	
-    	String strTitle = StringUtils.EMPTY;
-		if ( StringUtils.isNotBlank( resourceItem.getTitle(  ) ) && 
-				resourceItem.getTitle(  ).length(  ) >= ITEM_TITLE_MAX_LENGTH )
-		{
-			strTitle = resourceItem.getTitle(  ).substring( 0, ITEM_TITLE_MAX_LENGTH - 1 );
-		}
-		else
-		{
-			strTitle = resourceItem.getTitle(  );
-		}
-		
-    	item.setTitle( strTitle );
-    	item.setPubDate( resourceItem.getDate(  ) );
-    	item.setLink( resourceItem.getLink(  ) );
-    	
-    	Guid guid = new Guid(  );
-    	guid.setValue( resourceItem.getGUID(  ) );
-    	guid.setPermaLink( false );
-    	item.setGuid( guid );
-    	
-    	Content content = new Content(  );
-    	content.setValue( resourceItem.getDescription(  ) );
-    	item.setContent( content );
+        Item item = new Item(  );
 
-    	return item;
+        String strTitle = StringUtils.EMPTY;
+
+        if ( StringUtils.isNotBlank( resourceItem.getTitle(  ) ) &&
+                ( resourceItem.getTitle(  ).length(  ) >= ITEM_TITLE_MAX_LENGTH ) )
+        {
+            strTitle = resourceItem.getTitle(  ).substring( 0, ITEM_TITLE_MAX_LENGTH - 1 );
+        }
+        else
+        {
+            strTitle = resourceItem.getTitle(  );
+        }
+
+        item.setTitle( strTitle );
+        item.setPubDate( resourceItem.getDate(  ) );
+        item.setLink( resourceItem.getLink(  ) );
+
+        Guid guid = new Guid(  );
+        guid.setValue( resourceItem.getGUID(  ) );
+        guid.setPermaLink( false );
+        item.setGuid( guid );
+
+        Content content = new Content(  );
+        content.setValue( resourceItem.getDescription(  ) );
+        item.setContent( content );
+
+        return item;
     }
 }

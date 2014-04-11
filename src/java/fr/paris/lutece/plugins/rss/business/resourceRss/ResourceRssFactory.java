@@ -47,30 +47,31 @@ import java.util.Collection;
 public class ResourceRssFactory implements IResourceRssFactory
 {
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public IResourceRss getResourceRss( String strKey )
     {
-    	if ( strKey == null )
-    	{
-    		return null;
-    	}
-    	
+        if ( strKey == null )
+        {
+            return null;
+        }
+
         IResourceRss resourceRss = null;
         IResourceRssType resourceRssType = null;
-        
+
         Collection<IResourceRssType> listResourceRssType = SpringContextService.getBeansOfType( IResourceRssType.class );
-        
+
         for ( IResourceRssType rssType : listResourceRssType )
         {
-        	if ( strKey.equals( rssType.getKey(  ) ) )
-        	{
-        		resourceRssType = rssType;
-        		break;
-        	}
+            if ( strKey.equals( rssType.getKey(  ) ) )
+            {
+                resourceRssType = rssType;
+
+                break;
+            }
         }
-        
+
         if ( resourceRssType != null )
         {
             try
@@ -100,7 +101,7 @@ public class ResourceRssFactory implements IResourceRssFactory
     }
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public Collection<IResourceRssType> getAllResourceRssType(  )
