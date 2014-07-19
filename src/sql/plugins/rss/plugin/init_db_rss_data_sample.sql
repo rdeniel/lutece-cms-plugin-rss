@@ -3,8 +3,6 @@
 --
 INSERT INTO rss_feed (id_rss_feed,name,url,last_fetch_date,last_fetch_status,last_fetch_error,workgroup_key) VALUES 
  (1,'Apache Jakarta','http://jakarta.apache.org/site/rss.xml','2007-03-15 16:06:13',0,'','all');
-INSERT INTO rss_feed (id_rss_feed,name,url,last_fetch_date,last_fetch_status,last_fetch_error,workgroup_key) VALUES 
- (2,'Lutece','http://fr.lutece.paris.fr/fr/plugins/rss/lutece.xml','2007-03-15 16:06:13',0,'','all');
 
 --
 -- Dumping data for table rss_feed_inactive
