@@ -1,40 +1,48 @@
-<div class="row-fluid">
-	<div class="span12" >
-		<div class="span10 offset1">
-		<fieldset>
-		<legend>#i18n{rss.create_rss_feed.tableLabel}</legend>
-		<form class="form-horizontal" method="post"  name="create_rss_feed" id="create_rss_feed" action="jsp/admin/plugins/rss/DoCreateRssFeed.jsp">
-		<input type="hidden" name="rss_feed_is_active" value=<#if is_active! = "1">"true"<#else>"false"</#if> />  
-        <div class="control-group">
-		<label class="control-label" for="folder_name" >#i18n{rss.create_rss_feed.rowTitleName} * : </label> 
-            <div class="controls">
-				<input type="text" id="rss_feed_name" name="rss_feed_name" class="input-xlarge" maxlength="50" tabindex="1" />
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="box box-primary">
+			<div class="box-header">
+				<h3 class="box-title">#i18n{rss.create_rss_feed.pageTitle}</h3>
+            </div>
+            <div class="box-body">
+				<form class="form-horizontal" method="post"  name="create_rss_feed" id="create_rss_feed" action="jsp/admin/plugins/rss/DoCreateRssFeed.jsp">
+					<input type="hidden" name="rss_feed_is_active" value=<#if is_active! = "1">"true"<#else>"false"</#if>>  
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="folder_name" >#i18n{rss.create_rss_feed.rowTitleName} *</label> 
+						<div class="col-xs-12 col-sm-10 col-md-10">
+							<input type="text" id="rss_feed_name" name="rss_feed_name" class="form-control" maxlength="50" tabindex="1">
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="folder_path" >#i18n{rss.create_rss_feed.rowTitleUrl} *</label>  
+						<div class="col-xs-12 col-sm-10 col-md-10">
+							<input type="text" id="rss_feed_url" name="rss_feed_url" class="form-control"maxlength="200" tabindex="2">
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="rss_style">#i18n{rss.create_rss_feed.rowRssStyle}</label>		     
+						 <div class="col-xs-12 col-sm-10 col-md-10">
+							<@comboWithParams name="rss_style" default_value="" additionalParameters="class=\"form-control\"" items=rss_style_list />
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="workgroup_key">#i18n{rss.create_rss_feed.rowWorkgroupFile}</label>		     
+						 <div class="col-xs-12 col-sm-10 col-md-10">
+							<@comboWithParams name="workgroup_key" default_value="all" additionalParameters="class=\"form-control\"" items=user_workgroup_list />
+						</div>
+					</div>
+					<div class="form-group">
+						 <div class="col-xs-12 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
+						<button class="btn btn-primary btn-flat" type="submit" >
+							<i class="fa fa-check"></i>&nbsp;#i18n{rss.create_rss_feed.buttonValidate}
+						</button>
+						<button class="btn btn-default btn-flat" type="button" name="cancel" onclick="javascript:window.history.back();">
+							<i class="fa fa-close"></i>&nbsp;#i18n{rss.create_rss_file_resource.button_back}
+						</button>
+						</div>
+					</div>
+				</form>
 			</div>
-		</div>
-        <div class="control-group">
-		<label class="control-label" for="folder_path" >#i18n{rss.create_rss_feed.rowTitleUrl} * :</label>  
-            <div class="controls">
-				<input type="text" id="rss_feed_url" name="rss_feed_url" class="input-xlarge"maxlength="200" tabindex="2" />
-			</div>
-		</div>
-        <div class="control-group">
-		<label class="control-label" for="rss_style">#i18n{rss.create_rss_feed.rowRssStyle} : </label>		     
-		     <div class="controls">
-				<@combo name="rss_style" items=rss_style_list default_value="" />
-			</div>
-		</div>
-		<div class="control-group">
-		<label class="control-label" for="workgroup_key">#i18n{rss.create_rss_feed.rowWorkgroupFile} : </label>		     
-		     <div class="controls">
-				<@combo name="workgroup_key" items=user_workgroup_list default_value="${selected_workgroup}" />
-			</div>
-		</div>
-		<div class="form-actions">
-			<button class="btn btn-primary btn-small" type="submit" ><i class="icon-ok icon-white"></i>&nbsp;#i18n{rss.create_rss_feed.buttonValidate}</button>
-			<button class="btn btn-primary btn-small" type="button" name="cancel" onclick="javascript:window.history.back();"><i class="icon-remove-circle icon-white"></i>&nbsp;#i18n{rss.create_rss_file_resource.button_back}</button>
-		</div>
-		</form>
-		</fieldset>
 		</div>
 	</div>
 </div>

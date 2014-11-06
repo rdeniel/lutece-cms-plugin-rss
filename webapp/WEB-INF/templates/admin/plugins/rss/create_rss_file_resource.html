@@ -1,51 +1,58 @@
-<div class="row-fluid">
-	<div class="span12">
-		<fieldset>
-		<legend>#i18n{workflow.modify_task.title}</legend>
-		<form class="form-horizontal" action="jsp/admin/plugins/rss/DoCreateRssFileResource.jsp" method="post" name="" id=""  >
-		<input name="rss_resource_key" value="${resource_rss.key}" type="hidden">
-		<input name="rss_type" value="${rss_type}" type="hidden">
-			<div class="control-group">
-			<label class="control-label" for="rss_name" >#i18n{rss.create_rss_file.rowTitleName} * : </label>
-				<div class="controls">
-					<input type="text" id="rss_name" name="rss_name" size="60" maxlength="50" tabindex="1" value="${rss_name}"/>
-				</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="box box-primary">
+			<div class="box-header">
+				<h3 class="box-title">#i18n{workflow.modify_task.title}</h3>
+            </div>
+			<div class="box-body">
+				<form class="form-horizontal" action="jsp/admin/plugins/rss/DoCreateRssFileResource.jsp" method="post" name="" id=""  >
+				<input name="rss_resource_key" value="${resource_rss.key}" type="hidden">
+				<input name="rss_type" value="${rss_type}" type="hidden">
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="rss_name" >#i18n{rss.create_rss_file.rowTitleName} *  </label>
+						<div class="col-xs-12 col-sm-10 col-md-10">
+							<input type="text" id="rss_name" name="rss_name" class="form-control" maxlength="50" tabindex="1" value="${rss_name}">
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="rss_max_items" >#i18n{rss.create_rss_file.maxItem} *  </label>
+						<div class="col-xs-12 col-sm-1 col-md-1">
+							<input type="number" min="1" max="100" id="rss_max_items" name="rss_max_items" class="form-control" maxlength="10" tabindex="2" value="<#if rss_max_items?has_content>${rss_max_items}<#else>1</#if>">
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="rss_feed_type">#i18n{rss.create_rss_file.feedType}  </label>		     
+						<div class="col-xs-12 col-sm-1 col-md-1">
+							<@comboWithParams name="rss_feed_type" default_value="${rss_feed_type}" additionalParameters="class=\"form-control\"" items=feed_type_list/>
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="rss_encoding">#i18n{rss.create_rss_file.encoding}  </label>		     
+						<div class="col-xs-12 col-sm-1 col-md-1">
+							<@comboWithParams name="rss_encoding" default_value="${rss_encoding}" additionalParameters="class=\"form-control\"" items=encoding_list/>
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="workgroup_key">#i18n{rss.create_rss_file.rowWorkgroupFile}  </label>		     
+						<div class="col-xs-12 col-sm-2 col-md-2">
+							<@comboWithParams name="workgroup_key" default_value="all" additionalParameters="class=\"form-control\"" items=user_workgroup_list/>
+						</div>
+					</div>
+					${resource_rss_config}
+					<div class="form-group">
+						<div class="col-xs-12 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
+							<button class="btn btn-primary btn-flat" type="submit" >
+								<i class="fa fa-check"></i>&nbsp;#i18n{rss.create_rss_file_resource.button_save}
+							</button>
+							<a class="btn btn-default btn-flat" href="jsp/admin/plugins/rss/ManageRssFiles.jsp">
+								<i class="fa fa-close"></i>&nbsp;#i18n{portal.util.labelBack}
+							</a>
+						</div>
+					</div>
+					</div>
+				</form>
 			</div>
-			<div class="control-group">
-			<label class="control-label" for="workgroup_key">#i18n{rss.create_rss_file.rowWorkgroupFile} : </label>		     
-				<div class="controls">
-					<@combo name="workgroup_key" items=user_workgroup_list default_value="${selected_workgroup}" />
-				</div>
-			</div>
-			<div class="control-group">
-			<label class="control-label" for="rss_max_items" >#i18n{rss.create_rss_file.maxItem} * : </label>
-				<div class="controls">
-					<input type="text" id="rss_max_items" name="rss_max_items" size="60" maxlength="10" tabindex="2" value="${rss_max_items}"/>
-				</div>
-			</div>
-			<div class="control-group">
-			<label class="control-label" for="rss_feed_type">#i18n{rss.create_rss_file.feedType} : </label>		     
-				<div class="controls">
-					<@combo name="rss_feed_type" items=feed_type_list default_value="${rss_feed_type}" />
-				</div>
-			</div>
-			<div class="control-group">
-			<label class="control-label" for="rss_encoding">#i18n{rss.create_rss_file.encoding} : </label>		     
-				<div class="controls">
-					<@combo name="rss_encoding" items=encoding_list default_value="${rss_encoding}" />
-				</div>
-			</div>
-			${resource_rss_config}
-			<div class="form-actions">
-				<button class="btn btn-primary btn-small" type="submit" >
-					<i class="icon-ok icon-white"></i>&nbsp;#i18n{rss.create_rss_file_resource.button_save}
-				</button>
-				<a class="btn btn-small" href="jsp/admin/plugins/rss/ManageRssFiles.jsp">
-					<i class="icon-remove-circle "></i>&nbsp;#i18n{portal.util.labelBack}
-				</a>
-			</div>
-		</form>
- 	</fieldset>
+		</div>
 	</div>
 </div>
 
