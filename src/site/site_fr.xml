@@ -13,19 +13,11 @@
             <item name="Lutece" href="http://fr.lutece.paris.fr/" />
         </links>
 
-        <menu name="Plugin RSS">
-            <item name="Introduction" href="index.html"/>
-        </menu>
-        
-        <menu name="Documentation technique">
-            <item name="Installation" href="rss-install.html"/>
-        </menu>
-
         <menu name="Téléchargements" inherit="bottom" >
-			     <item name="Versions stables" href="../../../stable_builds/plugins/plugin-rss/"/>
-			     <item name="Nightly builds" href="../../../nightly_builds/plugins/plugin-rss/" />
-		</menu>
+            <item name="Versions stables" href="../../../stable_builds/plugins/plugin-rss/"/>
+            <item name="Nightly builds" href="../../../nightly_builds/plugins/plugin-rss/" />
+        </menu>
 
-		<menu ref="reports" />
+        <menu ref="reports" />
     </body>
 </project>
