@@ -7,23 +7,24 @@
         <section name="Plugin RSS">
             <subsection name="Introduction">
                 <p>
-                    Le plugin RSS deux fonctions principales :
+                    The plugin provides two main features:
                     <ul>
                         <li>
-                            La publication de flux RSS externes dans des rubriques spéficiques (portlets).
+                            The publication of external RSS feeds into portlets.
                         </li>
                         <li>
-                            La génération de flux RSS à partir de contenus internes.
+                            The generation of RSS feeds from internal content.
                         </li>
                     </ul>
                 </p>
             </subsection>
             <subsection name="Configuration">
                 <p>
-                    La configuration du plugin se fait dans le fichier <code>WEB-INF/conf/plugins/rss.properties</code> comme suit :
-                </p>      
+                    Configuration is defined in the <code>WEB-INF/conf/plugins/rss.properties</code> file as follow :
+                </p>         
                 <div class="source">          
-<pre>
+       
+                    <pre>
 ################################################################################
 # Configuration file of Lutece RSS functionality
 
@@ -66,7 +67,7 @@ daemon.fetchRssFeeds.onstartup=1
 
 daemon.resetRssFeeds.interval=300
 daemon.resetRssFeeds.onstartup=1
-            </pre>
+                    </pre>
                 </div>
                 
             </subsection>
