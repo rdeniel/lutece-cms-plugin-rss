@@ -7,51 +7,63 @@
 					<form class="form-inline pull-right" method="post"  action="jsp/admin/plugins/rss/CreateRssFile.jsp">
 						<button class="btn btn-primary btn-xs btn-flat" type="submit" ><i class="icon-plus icon-white"></i>&nbsp;#i18n{rss.manage_rss_file.buttonAddFeed}</button>
 					</form>
+
 				</div>
 			</div>
-            <div class="box-body table-responsive">
+      <div class="box-body table-responsive">
 				<@paginationAdmin paginator=paginator combo=1 />
 				<table class="table table-hover table-condensed" summary="#i18n{rss.manage_rss_file.tableSummary}">
-				<tr>
-					<th>#i18n{rss.manage_rss_file.columnTitleDescription}</th>
-					<th>#i18n{rss.manage_rss_file.columnTitleAction}</th>
-				</tr>      
-				<#list rss_files_list as rssFile >             
-				<tr>
-					<td><#if rssFile.state != 1>
-						<span class="label label-success" title=" #i18n{portal.util.labelEnabled}">
-							<i class="fa fa-check" ></i></span>
-						<#else>
-						<span class="label label-important" title=" #i18n{portal.util.labelDisabled}">
-							<i class="fa fa-close"></i>
-						</span>
-						</#if>
-						&nbsp;
-						<strong>${rssFile.description}</strong> <#if rssFile.portletName?exists><span class="label">#i18n{rss.manage_rss_file.columnTitlePortlet}: ${rssFile.portletName}</span></#if>
-						&nbsp;
-						<span class="label label-info">
-							<a href="${rss_file_url}${rssFile.name}" style="color:#fff;" target="_blank" title="#i18n{rss.manage_rss_file.columnTitleUrl} ${rssFile.description}" >
-								${rss_file_url}${rssFile.name} <span class="fa fa-external-link" ></span>
+					<thead>
+						<tr>
+							<th>#i18n{rss.manage_rss_file.columnTitleDescription}</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th>#i18n{rss.manage_rss_file.columnTitleAction}</th>
+						</tr>
+					</thead>
+					<tbody>
+					<#list rss_files_list as rssFile >
+					<tr>
+						<td>
+							<#if rssFile.state != 1>
+								<span class="label label-success" title=" #i18n{portal.util.labelEnabled}">
+									<i class="fa fa-check" ></i>
+								</span>
+							<#else>
+								<span class="label label-danger" title=" #i18n{portal.util.labelDisabled}">
+									<i class="fa fa-close"></i>
+								</span>
+							</#if>
+							&nbsp;<strong>${rssFile.description}</strong>
+						</td>
+						<td>
+							<#if rssFile.portletName?exists><span class="label">#i18n{rss.manage_rss_file.columnTitlePortlet}: ${rssFile.portletName}</span></#if>
+						</td>
+						<td>
+							<a href="${rss_file_url}${rssFile.name}" class="btn btn-link" target="_blank" title="#i18n{rss.manage_rss_file.columnTitleUrl} ${rssFile.description}" >
+									${rss_file_url}${rssFile.name}
+									<span class="fa fa-external-link" ></span>
 							</a>
-						</span>
-						<#if rssFile.updateDate?exists>
-							<span class="pull-right" title="#i18n{rss.manage_rss_file.columnTitleLastUpdate}"> <i class="fa fa-calendar" ></i>&nbsp;${rssFile.updateDate?date}</span>
-						</#if>
-					
-						
-					</td>
-					<td>
-						<a class="btn btn-primary btn-xs btn-flat" href="jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.modify_rss_file.buttonValidate}" >
-							<i class="fa fa-pencil"></i>
-						</a>
-						<a class="btn btn-danger btn-xs btn-flat" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.manage_rss_file.labelDelete}" >
-							<i class="fa fa-trash"></i>
-						</a>
-					</td>
-				</tr>		
-				</#list>
-				</table>
-			</div>
+						</td>
+						<td>
+							<#if rssFile.updateDate?exists>
+								<span class="pull-right" title="#i18n{rss.manage_rss_file.columnTitleLastUpdate}"> <i class="fa fa-calendar" ></i>&nbsp;${rssFile.updateDate?date}</span>
+							</#if>
+						</td>
+						<td>
+							<a class="btn btn-primary btn-xs btn-flat" href="jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.modify_rss_file.buttonValidate}" >
+								<i class="fa fa-pencil"></i>
+							</a>
+							<a class="btn btn-danger btn-xs btn-flat" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.manage_rss_file.labelDelete}" >
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+					</#list>
+				</tbody>
+			</table>
+		</div>
 		</div>
 	</div>
 </div>

@@ -9,25 +9,25 @@
 				<input type="hidden" name="id_rss_feed" value="${rss_feed.id}" />
 				<input type="hidden" name="rss_feed_is_active" value=<#if rss_feed.isActive>"true"<#else>"false"</#if> />
 				<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-2 col-md-2" for="folder_name" >#i18n{rss.modify_rss_feed.rowTitleName} *  </label> 
+				<label class="control-label col-xs-12 col-sm-2 col-md-2" for="folder_name" >#i18n{rss.modify_rss_feed.rowTitleName} *  </label>
 					<div class="col-xs-12 col-sm-10 col-md-10">
 						<input type="text" id="rss_feed_name" name="rss_feed_name"  value="${rss_feed.name}" class="form-control" maxlength="50" tabindex="1">
 					</div>
 				</div>
 				<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-2 col-md-2" for="folder_path" >#i18n{rss.modify_rss_feed.rowTitleUrl} * </label>  
+				<label class="control-label col-xs-12 col-sm-2 col-md-2" for="folder_path" >#i18n{rss.modify_rss_feed.rowTitleUrl} * </label>
 					<div class="col-xs-12 col-sm-10 col-md-10">
 						<input type="text" id="rss_feed_url" name="rss_feed_url" value="${rss_feed.url}" class="form-control" maxlength="200" tabindex="2">
 					</div>
 				</div>
 				<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-2 col-md-2" for="rss_style">#i18n{rss.modify_rss_feed.rowRssStyle}  </label>		     
+				<label class="control-label col-xs-12 col-sm-2 col-md-2" for="rss_style">#i18n{rss.modify_rss_feed.rowRssStyle}  </label>
 					 <div class="col-xs-12 col-sm-3 col-md-3">
 						<@comboWithParams name="rss_style" default_value="${rss_feed.idIncludeStyle}" additionalParameters="class=\"form-control\"" items=rss_style_list/>
 					</div>
 				</div>
 				<div class="form-group">
-				<label class="control-label col-xs-12 col-sm-2 col-md-2" for="workgroup_key">#i18n{rss.modify_rss_feed.rowWorkgroupFile}  </label>		     
+				<label class="control-label col-xs-12 col-sm-2 col-md-2" for="workgroup_key">#i18n{rss.modify_rss_feed.rowWorkgroupFile}  </label>
 					 <div class="col-xs-12 col-sm-2 col-md-2">
 						<@comboWithParams name="workgroup_key" default_value="${rss_feed.workgroup}" additionalParameters="class=\"form-control\"" items=user_workgroup_list/>
 					</div>
@@ -38,7 +38,7 @@
 							<i class="fa fa-check"></i>&nbsp;#i18n{rss.modify_rss_feed.buttonModify}
 						</button>
 						<a class="btn btn-default btn-flat" href="jsp/admin/plugins/rss/ManageRssFeeds.jsp">
-							<i class="fa fa-close"></i>&nbsp;#i18n{portal.util.labelBack}
+							<i class="fa fa-close"></i> #i18n{portal.util.labelBack}
 						</a>
 					</div>
 				</div>
@@ -47,4 +47,3 @@
 		</div>
 	</div>
 </div>
-

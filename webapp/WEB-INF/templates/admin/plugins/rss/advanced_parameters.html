@@ -1,16 +1,25 @@
 <form class="form-horizontal" method="post" action="jsp/admin/plugins/rss/DoModifyRssParameterValues.jsp">
 <!-- FEED ACTIVATED BY DEFAULT -->
-<div class="control-group">
-<label class="control-label" for="is_active">#i18n{rss.manage_rss.labelActivationDefault} :</label>
-<#list ["0", "1"] as b_active>
-	<div class="controls">
-	<label class="radio">#i18n{rss.manage_rss.activationDefault.${b_active}}
-		<input type="radio" name="is_active" value="${b_active}" <#if is_active = b_active>checked="checked"</#if> >
-	</label>
+<div class="form-group">
+	<label class="control-label col-xs-12 col-sm-2" for="is_active">#i18n{rss.manage_rss.labelActivationDefault} :</label>
+	<div class="col-xs-12 col-sm-9">
+	<#list ["0", "1"] as b_active>
+		<div class="radio">
+			<label>
+				<input type="radio" name="is_active" value="${b_active}" <#if is_active = b_active>checked="checked"</#if>> #i18n{rss.manage_rss.activationDefault.${b_active}}
+			</label>
+		</div>
+	</#list>
 	</div>
-</#list>
 </div>
-<div class="form-actions">
-	<button class="btn btn-primary btn-small" type="submit" name="save"><i class="icon-ok icon-white"></i>&nbsp;#i18n{rss.modify_rss_feed.buttonModify}</button>
-</div>        
+<div class="form-group">
+	<div class="col-xs-12 col-sm-offset-2 col-sm-9">
+		<button class="btn btn-primary btn-flat" type="submit" name="save">
+			<i class="fa fa-check"></i> #i18n{rss.modify_rss_feed.buttonModify}
+		</button>
+		<button class="btn btn-default btn-flat" type="submit" name="cancel">
+			<i class="fa fa-remove"></i> #i18n{rss.modify_rss_feed.buttonModify}
+		</button>
+	</div>
+</div>
 </form>
