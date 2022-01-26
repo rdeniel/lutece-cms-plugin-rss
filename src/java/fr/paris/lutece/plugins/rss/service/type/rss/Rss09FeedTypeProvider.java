@@ -39,7 +39,7 @@ import com.sun.syndication.feed.rss.Item;
 
 import fr.paris.lutece.portal.business.rss.IFeedResourceItem;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

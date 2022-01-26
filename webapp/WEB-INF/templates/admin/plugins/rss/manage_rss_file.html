@@ -1,69 +1,57 @@
-<div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12">
-		<div class="box box-primary">
-			<div class="box-header">
-				<h3 class="box-title">#i18n{rss.manage_rss_file.tableLabel}</h3>
-				<div class="box-tools pull-right">
-					<form class="form-inline pull-right" method="post"  action="jsp/admin/plugins/rss/CreateRssFile.jsp">
-						<button class="btn btn-primary btn-xs btn-flat" type="submit" ><i class="icon-plus icon-white"></i>&nbsp;#i18n{rss.manage_rss_file.buttonAddFeed}</button>
-					</form>
-
-				</div>
-			</div>
-      <div class="box-body table-responsive">
+<@row>
+	<@columns>
+		<@box>
+			<@boxHeader title='#i18n{rss.manage_rss_file.tableLabel}'>
+				<@tform method='post' action='jsp/admin/plugins/rss/CreateRssFile.jsp'>
+					<@button type='submit' title='#i18n{rss.manage_rss_file.buttonAddFeed}' hideTitle=['xs','sm','md'] buttonIcon='plus-circle' size='sm' />
+				</@tform>
+			</@boxHeader>
+			<@boxBody>
 				<@paginationAdmin paginator=paginator combo=1 />
-				<table class="table table-hover table-condensed" summary="#i18n{rss.manage_rss_file.tableSummary}">
-					<thead>
-						<tr>
-							<th>#i18n{rss.manage_rss_file.columnTitleDescription}</th>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th>#i18n{rss.manage_rss_file.columnTitleAction}</th>
-						</tr>
-					</thead>
-					<tbody>
-					<#list rss_files_list as rssFile >
-					<tr>
-						<td>
-							<#if rssFile.state != 1>
-								<span class="label label-success" title=" #i18n{portal.util.labelEnabled}">
-									<i class="fa fa-check" ></i>
-								</span>
-							<#else>
-								<span class="label label-danger" title=" #i18n{portal.util.labelDisabled}">
-									<i class="fa fa-close"></i>
-								</span>
-							</#if>
-							&nbsp;<strong>${rssFile.description}</strong>
-						</td>
-						<td>
-							<#if rssFile.portletName?exists><span class="label">#i18n{rss.manage_rss_file.columnTitlePortlet}: ${rssFile.portletName}</span></#if>
-						</td>
-						<td>
-							<a href="${rss_file_url}${rssFile.name}" class="btn btn-link" target="_blank" title="#i18n{rss.manage_rss_file.columnTitleUrl} ${rssFile.description}" >
+				<@table summary='#i18n{rss.manage_rss_file.tableSummary}'>
+					<@tableHead>
+						<@tr>
+							<@th>#i18n{rss.manage_rss_file.columnTitleDescription}</@th>
+							<@th></@th>
+							<@th></@th>
+							<@th></@th>
+							<@th>#i18n{rss.manage_rss_file.columnTitleAction}</@th>
+						</@tr>
+					</@tableHead>
+					<@tableBody>
+						<#list rss_files_list as rssFile >
+						<@tr>
+							<@td>
+								<#if rssFile.state != 1>
+									<@tag color='success' title='#i18n{portal.util.labelEnabled}' tagIcon='check' />
+								<#else>
+									<@tag color='danger' title='#i18n{portal.util.labelDisabled}' tagIcon='times' />
+								</#if>
+								&nbsp;<strong>${rssFile.description}</strong>
+							</@td>
+							<@td>
+								<#if rssFile.portletName?exists><@tag color='default'>#i18n{rss.manage_rss_file.columnTitlePortlet}: ${rssFile.portletName}</@tag></#if>
+							</@td>
+							<@td>
+								<@link href='${rss_file_url}${rssFile.name}' target='_blank' title='#i18n{rss.manage_rss_file.columnTitleUrl} ${rssFile.description}'>
 									${rss_file_url}${rssFile.name}
-									<span class="fa fa-external-link" ></span>
-							</a>
-						</td>
-						<td>
-							<#if rssFile.updateDate?exists>
-								<span class="pull-right" title="#i18n{rss.manage_rss_file.columnTitleLastUpdate}"> <i class="fa fa-calendar" ></i>&nbsp;${rssFile.updateDate?date}</span>
-							</#if>
-						</td>
-						<td>
-							<a class="btn btn-primary btn-xs btn-flat" href="jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.modify_rss_file.buttonValidate}" >
-								<i class="fa fa-pencil"></i>
-							</a>
-							<a class="btn btn-danger btn-xs btn-flat" href="jsp/admin/plugins/rss/DoConfirmDeleteRssFile.jsp?rss_id=${rssFile.id}"  title="#i18n{rss.manage_rss_file.labelDelete}" >
-								<i class="fa fa-trash"></i>
-							</a>
-						</td>
-					</tr>
-					</#list>
-				</tbody>
-			</table>
-		</div>
-		</div>
-	</div>
-</div>
+									<@icon style='external-link' />
+								</@link>
+							</@td>
+							<@td>
+								<#if rssFile.updateDate?exists>
+									<@span align='right' title="#i18n{rss.manage_rss_file.columnTitleLastUpdate}"> <@icon style='calendar' />&nbsp;${rssFile.updateDate?date}</@span>
+								</#if>
+							</@td>
+							<@td>
+								<@aButton href='jsp/admin/plugins/rss/ModifyRssFile.jsp?rss_id=${rssFile.id}'  title='#i18n{rss.modify_rss_file.buttonValidate}' hideTitle=['all'] buttonIcon='pencil' size='sm' />
+								<@aButton href='jsp/admin/plugins/rss/DoConfirmDeleteRssFile.jsp?rss_id=${rssFile.id}' title='#i18n{rss.manage_rss_file.labelDelete}' hideTitle=['all'] buttonIcon='trash' size='sm' color='danger' />
+							</@td>
+						</@tr>
+						</#list>
+					</@tableBody>
+				</@table>
+			</@boxBody>
+		</@box>
+	</@columns>
+</@row>

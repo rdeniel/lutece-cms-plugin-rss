@@ -1,44 +1,24 @@
-<div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12">
-		<div class="box box-primary">
-			<div class="box-header">
-				<h3 class="box-title">#i18n{rss.create_rss_file.tableLabel}</h3>
-            </div>
-            <div class="box-body">
-				<form class="form-horizontal" role="form" method="post"  name="create_rss_file" id="create_rss_file" action="jsp/admin/plugins/rss/DoCreateRssFile.jsp">
-				<div class="form-group">
-					<label class="control-label col-xs-12 col-sm-2 col-md-2" for="folder_path" >#i18n{rss.create_rss_file.rowSwitchType} *</label>  
-					<div class="col-xs-12 col-sm-4 col-md-4">
-						<div class="radio">
-							<label for="rss_type1">
-								<input type="radio" id="rss_type1" name="rss_type" checked value="portlet" >
-								#i18n{rss.create_rss_file.rowPortlet}
-							</label>
-						</div>
+<@row>
+	<@columns>
+		<@box>
+			<@boxHeader title='#i18n{rss.create_rss_file.tableLabel}' />
+			<@boxBody>
+				<@tform method='post' name='create_rss_file' id='create_rss_file' action='jsp/admin/plugins/rss/DoCreateRssFile.jsp'>
+					<@formGroup labelFor='folder_path' labelKey='#i18n{rss.create_rss_file.rowSwitchType}' mandatory=true>  
+						<@radioButton labelFor='rss_type1' labelKey='#i18n{rss.create_rss_file.rowPortlet}' id='rss_type1' name='rss_type' checked=true value='portlet' />
 						<#if resource_list?size &gt; 0>
-							<label class="sr-only" for="" >#i18n{rss.create_rss_file.rowResourceRss</label>  
-							<div class="radio">
-								<label for="rss_type2" >
-									<input type="radio"id="rss_type2" name="rss_type" value="resourceRss">
-									#i18n{rss.create_rss_file.rowResourceRss}
-								</label>
-							</div>
+							<label class="sr-only" for="">#i18n{rss.create_rss_file.rowResourceRss</label>  
+							<@radioButton labelFor='rss_type2' labelKey='#i18n{rss.create_rss_file.rowResourceRss}' id='rss_type2' name='rss_type' value='resourceRss' />
+							
 							<label for="rss_resource_key" class="sr-only"></label>
-							<@comboWithParams name="rss_resource_key" default_value="-1" additionalParameters="class=\"form-control\"" items=resource_list />
-						</#if>		
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-xs-12 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
-						<button class="btn btn-primary btn-flat" type="submit" name="save">
-							<i class="fa fa-check"></i>&nbsp;#i18n{rss.create_rss_file.buttonValidate}
-						</button>
-					</div>
-				</div>
-				</form>
-			</div>
-		</div>
-    </div>
-</div>
-
-
+							<@select name='rss_resource_key' default_value='-1' items=resource_list />
+						</#if>
+					</@formGroup>
+					<@formGroup>
+						<@button type='submit' name='save' title='#i18n{rss.create_rss_file.buttonValidate}' buttonIcon='save' />
+					</@formGroup>
+				</@tform>
+			</@boxBody>
+		</@box>
+	</@columns>
+</@row>
