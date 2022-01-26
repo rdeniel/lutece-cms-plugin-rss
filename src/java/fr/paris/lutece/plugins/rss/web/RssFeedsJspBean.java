@@ -131,6 +131,7 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
     //Messages
     private static final String MESSAGE_CONFIRM_DELETE_RSS_FEED = "rss.message.confirmDeleteRssFeed";
     private static final String MESSAGE_RSS_LINKED_PORTLET = "rss.message.linkedToPortlet";
+    private static final String MESSAGE_ACCESS_DENIED = "rss.message.accesDenied";
 
     //Constante
     private static final String CONSTANTE_RSS_PORTLET_TYPE = "RSS_PORTLET";
@@ -551,10 +552,10 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
         if ( !RBACService.isAuthorized( AdminUser.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
                     AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) )
         {
-            throw new AccessDeniedException(  );
+            throw new AccessDeniedException( MESSAGE_ACCESS_DENIED );
         }
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<>(  );
 
         for ( ReferenceItem param : RssFeedParameterHome.findAll( getPlugin(  ) ) )
         {
@@ -579,7 +580,7 @@ public class RssFeedsJspBean extends PluginAdminPageJspBean
         if ( !RBACService.isAuthorized( AdminUser.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
                     AdminUserResourceIdService.PERMISSION_MANAGE_ADVANCED_PARAMETERS, getUser(  ) ) )
         {
-            throw new AccessDeniedException(  );
+            throw new AccessDeniedException( MESSAGE_ACCESS_DENIED );
         }
 
         for ( ReferenceItem param : RssFeedParameterHome.findAll( getPlugin(  ) ) )

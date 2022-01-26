@@ -37,6 +37,8 @@ import com.sun.syndication.feed.WireFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.WireFeedOutput;
 
+import fr.paris.lutece.plugins.rss.business.RssFeed;
+import fr.paris.lutece.plugins.rss.business.RssFeedHome;
 import fr.paris.lutece.plugins.rss.service.type.FeedTypeManager;
 import fr.paris.lutece.portal.business.rss.IFeedResource;
 import fr.paris.lutece.portal.business.rss.IResourceRss;
@@ -84,11 +86,7 @@ public final class FeedUtil
         {
             strXML = output.outputString( wireFeed );
         }
-        catch ( IllegalArgumentException e )
-        {
-            AppLogService.error( e.getMessage(  ), e );
-        }
-        catch ( FeedException e )
+        catch ( IllegalArgumentException | FeedException e )
         {
             AppLogService.error( e.getMessage(  ), e );
         }
@@ -109,7 +107,7 @@ public final class FeedUtil
         if ( resource == null )
         {
             // no implementation - use the deprecated
-            return resourceRSS.createHtmlRss(  );
+            return RssFeedHome.create( (RssFeed) resourceRSS ).toString( );
         }
 
         if ( resource.getItems(  ).isEmpty(  ) )

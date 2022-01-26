@@ -44,6 +44,10 @@ import java.io.Serializable;
  */
 public class RssContent implements Resource, Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5975914341532985011L;
     private String _strContent;
 
     /**
